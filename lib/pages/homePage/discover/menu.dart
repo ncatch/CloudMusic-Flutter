@@ -39,7 +39,7 @@ class DiscoverMenu extends StatelessWidget {
 
     menuInfo.forEach((ele) {
       menus.add(Container(
-          padding: EdgeInsets.fromLTRB(14, 0, 14, 0),
+          padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
           child: InkWell(
             child: Column(
               children: [

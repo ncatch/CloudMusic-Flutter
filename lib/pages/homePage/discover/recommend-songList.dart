@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-04-02 18:04:16
+ * @LastEditTime: 2021-04-06 16:52:03
  * @LastEditors: Walker
  */
 import 'package:flutter/cupertino.dart';
@@ -32,20 +32,24 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
   }
 
   String handleSongName(String val) {
-    if (val.length <= 18) return val;
+    if (val.length <= 16) return val;
 
-    return val.substring(0, 17) + '...';
+    return val.substring(0, 15) + '...';
   }
+
+  void moreSongList() {}
 
   @override
   Widget build(BuildContext context) {
     var list = <Widget>[];
 
-    songList.forEach((ele) {
+    for (var i = 0; i < songList.length; i++) {
+      var ele = songList[i];
+
       list.add(Container(
         height: 180,
-        width: 120,
-        padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+        width: 110,
+        padding: EdgeInsets.fromLTRB(i == 0 ? 0 : 10, 0, 0, 0),
         child: Stack(
           children: [
             Column(children: [
@@ -56,6 +60,8 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
                   child: Image.network(
                     ele['picUrl'],
                     fit: BoxFit.fill,
+                    width: 100,
+                    height: 100,
                   ),
                 ),
               ),
@@ -63,8 +69,9 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
             ]),
             Positioned(
                 child: Container(
+                  padding: EdgeInsets.fromLTRB(6, 0, 6, 6),
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: Colors.black38,
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                   child: Row(
@@ -78,24 +85,46 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
                     ],
                   ),
                 ),
-                width: 60,
-                height: 20,
-                top: 5,
-                left: 40)
+                height: 22,
+                top: 4,
+                right: 4)
           ],
         ),
       ));
-    });
+    }
 
     return Container(
       height: 200,
-      padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-      child: list.length > 0
-          ? ListView(
+      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: Stack(
+        children: [
+          Text('推荐歌单'),
+          Positioned(
+            child: Container(
+              padding: EdgeInsets.fromLTRB(4, 0, 2, 0),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  border: Border.all(color: Colors.black38, width: 0.6)),
+              child: TextButton(
+                child: Text(
+                  '更多 >',
+                  style: TextStyle(color: Colors.black),
+                ),
+                onPressed: moreSongList,
+              ),
+            ),
+            top: 0,
+            right: 00,
+          ),
+          Container(
+            margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+            child: ListView(
               scrollDirection: Axis.horizontal,
               children: list,
-            )
-          : Text('loading'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
