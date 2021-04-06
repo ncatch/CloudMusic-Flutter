@@ -2,15 +2,18 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-04-02 16:21:03
+ * @LastEditTime: 2021-04-06 19:08:14
  * @LastEditors: Walker
  */
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import '../../../services/home.dart';
 import '../../../libs/enums.dart';
+import '../../../utils/preference.dart';
 
 class DiscoverBanner extends StatefulWidget {
   DiscoverBanner({Key? key}) : super(key: key);
@@ -26,11 +29,24 @@ class DiscoverBannerState extends State<DiscoverBanner> {
   initState() {
     super.initState();
 
-    getBanner(clientType['android']).then((value) => {
-          this.setState(() {
-            images = value.data['banners'];
-          })
+    getBannerInfo();
+  }
+
+  getBannerInfo() {
+    var bannerHistory = PreferenceUtils.getString(PreferencesKey.HOME_BANNER);
+
+    if (bannerHistory != '') {
+      this.setState(() {});
+    } else {
+      getBanner(clientType['android']).then((value) {
+        PreferenceUtils.saveString(
+            PreferencesKey.HOME_BANNER, value.data['banners']);
+
+        this.setState(() {
+          images = value.data['banners'];
         });
+      });
+    }
   }
 
   @override
