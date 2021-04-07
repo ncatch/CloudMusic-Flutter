@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-06 17:39:01
- * @LastEditTime: 2021-04-06 19:07:26
+ * @LastEditTime: 2021-04-07 15:20:50
  * @LastEditors: Walker
  */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,10 +14,11 @@ class PreferencesKey {
 
 /// shared_preferences 管理类
 class PreferenceUtils {
-  static var _instance;
+  static var _instance = null;
 
-  static SharedPreferences get instance {
-    return _instance;
+  static Future<SharedPreferences> get instance async {
+    if (_instance != null) return _instance;
+    return await init();
   }
 
   static init() async {
@@ -25,42 +26,46 @@ class PreferenceUtils {
     return _instance;
   }
 
-  static saveInteger(String key, int value) => _instance.setInt(key, value);
+  static saveInteger(String key, int value) async =>
+      (await instance).setInt(key, value);
 
-  static saveString(String key, String value) =>
-      _instance.setString(key, value);
+  static saveString(String key, String value) async =>
+      (await instance).setString(key, value);
 
-  static saveBool(String key, bool value) => _instance.setBool(key, value);
+  static saveBool(String key, bool value) async =>
+      (await instance).setBool(key, value);
 
-  static saveDouble(String key, double value) =>
-      _instance.setDouble(key, value);
+  static saveDouble(String key, double value) async =>
+      (await instance).setDouble(key, value);
 
-  static saveStringList(String key, List<String> value) =>
-      _instance.setStringList(key, value);
+  static saveStringList(String key, List<String> value) async =>
+      (await instance).setStringList(key, value);
 
-  static int getInteger(String key, [int defaultValue = 0]) {
-    var value = _instance.getInt(key);
+  static Future<int> getInteger(String key, [int defaultValue = 0]) async {
+    var value = (await instance).getInt(key);
     return value ?? defaultValue;
   }
 
-  static String getString(String key, [String defaultValue = '']) {
-    var value = _instance.getString(key);
+  static Future<String> getString(String key,
+      [String defaultValue = '']) async {
+    var value = (await instance).getString(key);
     return value ?? defaultValue;
   }
 
-  static bool getBool(String key, [bool defaultValue = false]) {
-    var value = _instance.getBool(key);
+  static Future<bool> getBool(String key, [bool defaultValue = false]) async {
+    var value = (await instance).getBool(key);
     return value ?? defaultValue;
   }
 
-  static double getDouble(String key, [double defaultValue = 0.0]) {
-    var value = _instance.getDouble(key);
+  static Future<double> getDouble(String key,
+      [double defaultValue = 0.0]) async {
+    var value = (await instance).getDouble(key);
     return value ?? defaultValue;
   }
 
-  static List<String> getStringList(String key,
-      [List<String> defaultValue = const <String>[]]) {
-    var value = _instance.getStringList(key);
+  static Future<List<String>> getStringList(String key,
+      [List<String> defaultValue = const <String>[]]) async {
+    var value = (await instance).getStringList(key);
     return value ?? defaultValue;
   }
 }

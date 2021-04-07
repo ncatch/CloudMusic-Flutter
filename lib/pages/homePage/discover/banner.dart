@@ -2,7 +2,7 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-04-06 19:08:14
+ * @LastEditTime: 2021-04-07 16:02:50
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -10,6 +10,8 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+
+import '../../../model/Banner.dart';
 
 import '../../../services/home.dart';
 import '../../../libs/enums.dart';
@@ -32,15 +34,16 @@ class DiscoverBannerState extends State<DiscoverBanner> {
     getBannerInfo();
   }
 
-  getBannerInfo() {
-    var bannerHistory = PreferenceUtils.getString(PreferencesKey.HOME_BANNER);
+  getBannerInfo() async {
+    var bannerHistory =
+        await PreferenceUtils.getString(PreferencesKey.HOME_BANNER);
 
     if (bannerHistory != '') {
-      this.setState(() {});
+      images = jsonDecode(bannerHistory);
     } else {
       getBanner(clientType['android']).then((value) {
         PreferenceUtils.saveString(
-            PreferencesKey.HOME_BANNER, value.data['banners']);
+            PreferencesKey.HOME_BANNER, jsonEncode(value.data['banners']));
 
         this.setState(() {
           images = value.data['banners'];
@@ -53,7 +56,7 @@ class DiscoverBannerState extends State<DiscoverBanner> {
   Widget build(BuildContext context) {
     return Container(
       height: 180,
-      child: new Swiper(
+      child: Swiper(
         itemBuilder: (BuildContext context, int index) {
           return Container(
             padding: EdgeInsets.fromLTRB(15, 10, 15, 10),

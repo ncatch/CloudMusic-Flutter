@@ -8,28 +8,17 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-class MenuInfo {
-  String text = "";
-  String icon = "";
-  String url = "";
-
-  MenuInfo(String text, String icon, String url) {
-    this.text = text;
-    this.icon = icon;
-    this.url = url;
-  }
-}
+import '../../../model/MenuInfo.dart';
 
 var menuInfo = [
-  MenuInfo("每日推荐", "assets/icon.png", ""),
-  MenuInfo("私人FM", "assets/icon.png", ""),
-  MenuInfo("歌单", "assets/icon.png", ""),
-  MenuInfo("排行榜", "assets/icon.png", ""),
-  MenuInfo("直播", "assets/icon.png", ""),
-  MenuInfo("数字专辑", "assets/icon.png", ""),
-  MenuInfo("歌房", "assets/icon.png", ""),
-  MenuInfo("游戏专区", "assets/icon.png", "")
+  MenuInfoModel("每日推荐", "assets/icon.png", ""),
+  MenuInfoModel("私人FM", "assets/icon.png", ""),
+  MenuInfoModel("歌单", "assets/icon.png", ""),
+  MenuInfoModel("排行榜", "assets/icon.png", ""),
+  MenuInfoModel("直播", "assets/icon.png", ""),
+  MenuInfoModel("数字专辑", "assets/icon.png", ""),
+  MenuInfoModel("歌房", "assets/icon.png", ""),
+  MenuInfoModel("游戏专区", "assets/icon.png", "")
 ];
 
 class DiscoverMenu extends StatelessWidget {
