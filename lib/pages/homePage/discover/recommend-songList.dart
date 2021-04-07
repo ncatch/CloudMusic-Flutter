@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-04-07 14:52:12
+ * @LastEditTime: 2021-04-07 19:32:28
  * @LastEditors: Walker
  */
 import 'package:flutter/cupertino.dart';
@@ -87,7 +87,7 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
                 ),
                 height: 22,
                 top: 4,
-                right: i == 0 ? 14 : 4)
+                right: 4)
           ],
         ),
       ));

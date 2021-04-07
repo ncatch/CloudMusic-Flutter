@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: Walker
+ * @Date: 2021-04-01 14:05:41
+ * @LastEditTime: 2021-04-07 19:31:43
+ * @LastEditors: Walker
+ */
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +13,7 @@ import './homePage/cloudVillage.dart';
 import './homePage/discover.dart';
 import './homePage/my.dart';
 import './homePage/sing.dart';
+import '../components/DrawerMenu.dart';
 
 import '../libs/theme.dart';
 
@@ -28,37 +36,7 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: const <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                ),
-                child: Text(
-                  'Drawer Header',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
-              ),
-              ListTile(
-                leading: Icon(Icons.message),
-                title: Text('Messages'),
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Profile'),
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-              ),
-            ],
-          ),
-        ),
+        drawer: DrawerMenu(),
         appBar: AppBar(
             backgroundColor: primaryColor,
             title: Container(
