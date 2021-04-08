@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-04-07 19:31:43
+ * @LastEditTime: 2021-04-08 13:52:22
  * @LastEditors: Walker
  */
 import 'package:flutter/cupertino.dart';
@@ -38,24 +38,28 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
     return Scaffold(
         drawer: DrawerMenu(),
         appBar: AppBar(
-            backgroundColor: primaryColor,
             title: Container(
-              height: 38,
-              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: Colors.grey),
-                  Text(
-                    '搜索',
-                    style: TextStyle(color: Colors.grey),
-                  )
-                ],
-              ),
-            )),
+          height: 38,
+          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+          ),
+          child: InkWell(
+            onTap: () {
+              Navigator.pushNamed(context, '/search');
+            },
+            child: Row(
+              children: [
+                Icon(Icons.search, color: Colors.grey),
+                Text(
+                  '搜索',
+                  style: TextStyle(color: Colors.grey),
+                )
+              ],
+            ),
+          ),
+        )),
         body: [
           Discover(),
           Blogs(),

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-04-07 19:24:51
+ * @LastEditTime: 2021-04-08 14:46:58
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -17,11 +17,10 @@ import '../utils/preference.dart';
 Future<List<dynamic>> getBanner(type, [bool disableCache = false]) async {
   // 取缓存
   if (!disableCache) {
-    var bannerHistory =
-        await PreferenceUtils.getString(PreferencesKey.HOME_BANNER);
+    var cache = await PreferenceUtils.getString(PreferencesKey.HOME_BANNER);
 
-    if (bannerHistory != '') {
-      return jsonDecode(bannerHistory);
+    if (cache != '') {
+      return jsonDecode(cache);
     }
   }
 
@@ -36,7 +35,23 @@ Future<List<dynamic>> getBanner(type, [bool disableCache = false]) async {
   });
 }
 
-Future<Response> getRecommendSongList(int limit) async {
+Future<List<dynamic>> getRecommendSongList(int limit,
+    [bool disableCache = false]) async {
+  // 取缓存
+  if (!disableCache) {
+    var cache = await PreferenceUtils.getString(PreferencesKey.HOME_SONGLIST);
+
+    if (cache != '') {
+      return jsonDecode(cache);
+    }
+  }
+
   return await DioUtil.dio
-      .post(server + '/personalized?limit=' + limit.toString());
+      .post(server + '/personalized?limit=' + limit.toString())
+      .then((value) {
+    PreferenceUtils.saveString(
+        PreferencesKey.HOME_SONGLIST, jsonEncode(value.data['result']));
+
+    return value.data['result'];
+  });
 }

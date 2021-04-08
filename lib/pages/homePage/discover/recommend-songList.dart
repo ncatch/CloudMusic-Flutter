@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-04-07 19:32:28
+ * @LastEditTime: 2021-04-08 14:19:13
  * @LastEditors: Walker
  */
 import 'package:flutter/cupertino.dart';
@@ -26,7 +26,7 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
 
     getRecommendSongList(6).then((value) => {
           this.setState(() {
-            songList = value.data['result'];
+            songList = value;
           })
         });
   }
@@ -98,23 +98,20 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: Stack(
         children: [
-          Text('推荐歌单'),
+          Text(
+            '推荐歌单',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
           Positioned(
-            child: Container(
-              padding: EdgeInsets.fromLTRB(4, 0, 2, 0),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(15)),
-                  border: Border.all(color: Colors.black38, width: 0.6)),
-              child: TextButton(
-                child: Text(
-                  '更多 >',
-                  style: TextStyle(color: Colors.black),
-                ),
-                onPressed: moreSongList,
+            child: TextButton(
+              child: Text(
+                '更多 >',
+                style: TextStyle(color: Colors.black),
               ),
+              onPressed: moreSongList,
             ),
-            top: 0,
-            right: 00,
+            top: -3,
+            right: 0,
           ),
           Container(
             margin: EdgeInsets.fromLTRB(0, 40, 0, 0),

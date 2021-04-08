@@ -2,14 +2,15 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-04-07 15:21:03
+ * @LastEditTime: 2021-04-08 14:13:58
  * @LastEditors: Walker
  */
 // @dart=2.9
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './pages/home.dart';
-import './utils/preference.dart';
+import 'libs/routes.dart';
+import './libs/theme.dart';
 
 void main() async {
   runApp(MyApp());
@@ -24,8 +25,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: '网抑云',
+      theme: ThemeData(
+          primaryColor: primaryColor,
+          backgroundColor: Colors.white,
+          scaffoldBackgroundColor: Colors.white),
       home: HomeStatefulWidget(),
+      routes: routes,
     );
   }
 }
