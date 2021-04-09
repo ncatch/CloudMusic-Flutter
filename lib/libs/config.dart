@@ -1,1 +1,1 @@
-const server = "http://172.31.6.69:3001";
+const server = "http://127.0.0.1:3000";

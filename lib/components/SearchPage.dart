@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-04-08 19:40:33
+ * @LastEditTime: 2021-04-09 10:16:59
  * @LastEditors: Walker
  */
 
@@ -120,8 +120,8 @@ class SearchPageState extends State<SearchPage> {
           children: [
             Container(
               width: width,
-              padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
-              margin: EdgeInsets.fromLTRB(0, 15, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+              margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
               decoration: BoxDecoration(
                   border: Border(
                       bottom: BorderSide(width: 1, color: Color(0xffe5e5e5)))),
@@ -162,14 +162,22 @@ class SearchPageState extends State<SearchPage> {
               ),
             ),
             ...hotTitles,
-            Container(
-              child: TextButton(
-                child: Text('展开更多热搜'),
-                onPressed: () {
-                  showAll = true;
-                },
-              ),
-            )
+            showAll
+                ? Text('')
+                : Container(
+                    child: Center(
+                    child: TextButton(
+                      child: Text(
+                        '展开更多热搜',
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      onPressed: () {
+                        this.setState(() {
+                          showAll = true;
+                        });
+                      },
+                    ),
+                  ))
           ],
         ),
       ),
