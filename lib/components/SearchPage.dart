@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-04-09 15:54:55
+ * @LastEditTime: 2021-04-15 14:34:42
  * @LastEditors: Walker
  */
 
@@ -164,7 +164,8 @@ class SearchPageState extends State<SearchPage> {
                       border: Border(
                           bottom:
                               BorderSide(width: 1, color: Color(0xffe5e5e5)))),
-                  child: Text(element['name'] + element['artists'][0]['name']),
+                  child: Text(
+                      element['name'] + ' ' + element['artists'][0]['name']),
                 )
               ],
             ),
