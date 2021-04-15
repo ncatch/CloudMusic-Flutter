@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-15 17:49:02
+ * @LastEditTime: 2021-04-15 19:47:29
  * @LastEditors: Walker
  */
 
@@ -35,6 +35,8 @@ class PlayState extends State<Play> {
   var position;
   bool isPlayer = false;
 
+  double volume = 0.2;
+
   PlayState(Map params) {
     this.musicInfo = params['info'];
   }
@@ -44,23 +46,26 @@ class PlayState extends State<Play> {
     super.initState();
 
     audioPlayer
-      ..onDurationChanged.listen((duration) {
+      ..onDurationChanged.listen((e) {
         setState(() {
-          this.duration = duration;
+          duration = e;
 
-          if (this.position != null) {
-            this.sliderValue = (this.position.inSeconds / duration.inSeconds);
+          if (position != null) {
+            sliderValue = (position.inSeconds / duration.inSeconds);
           }
         });
       })
-      ..onAudioPositionChanged.listen((position) {
+      ..onAudioPositionChanged.listen((e) {
         setState(() {
-          this.position = position;
+          position = e;
 
-          if (this.duration != null) {
-            this.sliderValue = (position.inSeconds / this.duration.inSeconds);
+          if (duration != null) {
+            sliderValue = (position.inSeconds / duration.inSeconds);
           }
         });
+      })
+      ..onPlayerCompletion.listen((event) {
+        audioPlayer.stop();
       });
 
     getMusicUrl(musicInfo['id']).then((result) async {
@@ -79,15 +84,15 @@ class PlayState extends State<Play> {
 
   void play() async {
     var result;
-    if (this.isPlayer) {
+    if (isPlayer) {
       result = await audioPlayer.pause();
     } else {
-      result = await audioPlayer.play(playInfo[0]['url']);
+      result = await audioPlayer.play(playInfo[0]['url'], volume: volume);
     }
 
     if (result == 1) {
       // success
-      this.setState(() {
+      setState(() {
         isPlayer = !isPlayer;
       });
     }
@@ -154,9 +159,7 @@ class PlayState extends State<Play> {
             child: Column(
               children: [
                 IconButton(
-                  onPressed: () {
-                    play();
-                  },
+                  onPressed: play,
                   icon: Icon(isPlayer ? Icons.pause : Icons.play_arrow),
                   color: Colors.white,
                 ),
@@ -177,6 +180,7 @@ class PlayState extends State<Play> {
                       duration.toString() +
                       '-' +
                       position.toString(),
+                  style: TextStyle(color: Colors.white),
                 )
               ],
             ))
