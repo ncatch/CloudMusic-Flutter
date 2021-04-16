@@ -2,28 +2,36 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-04-06 14:04:36
+ * @LastEditTime: 2021-04-16 10:21:19
  * @LastEditors: Walker
  */
 import 'package:dio/dio.dart';
+import '../libs/config.dart';
 
 class DioUtil {
   static Dio dio = new Dio();
 
   //拦截器部分
-  // static tokenInter() {
-  //   dio.interceptors
-  //       .add(InterceptorsWrapper(onRequest: (RequestOptions options) {
-  //     // 在发送请求之前做一些预处理
-  //     //我这边是在发送前到SharedPreferences（本地存储）中取出token的值，然后添加到请求头中
-  //     //dio.lock()是先锁定请求不发送出去，当整个取值添加到请求头后再dio.unlock()解锁发送出去
-  //     return options;
-  //   }, onResponse: (Response response) {
-  //     // 在返回响应数据之前做一些预处理
-  //     return response; // continue
-  //   }, onError: (DioError e) {
-  //     // 当请求失败时做一些预处理
-  //     return e; //continue
-  //   }));
-  // }
+  static tokenInter() {
+    dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+      options.headers['Authorization'] = token;
+
+      // Do something before request is sent
+      return handler.next(options); //continue
+      // If you want to resolve the request with some custom data，
+      // you can resolve a `Response` object eg: return `dio.resolve(response)`.
+      // If you want to reject the request with a error message,
+      // you can reject a `DioError` object eg: return `dio.reject(dioError)`
+    }, onResponse: (response, handler) {
+      // Do something with response data
+      return handler.next(response); // continue
+      // If you want to reject the request with a error message,
+      // you can reject a `DioError` object eg: return `dio.reject(dioError)`
+    }, onError: (DioError e, handler) {
+      // Do something with response error
+      return handler.next(e); //continue
+      // If you want to resolve the request with some custom data，
+      // you can resolve a `Response` object eg: return `dio.resolve(response)`.
+    }));
+  }
 }

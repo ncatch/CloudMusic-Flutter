@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-04-08 14:19:13
+ * @LastEditTime: 2021-04-16 10:30:26
  * @LastEditors: Walker
  */
 import 'package:flutter/cupertino.dart';
@@ -69,7 +69,7 @@ class DiscoverRecommendSongListState extends State<DiscoverRecommendSongList> {
             ]),
             Positioned(
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(6, 0, 6, 6),
+                  padding: EdgeInsets.fromLTRB(6, 0, 6, 0),
                   decoration: BoxDecoration(
                     color: Colors.black38,
                     borderRadius: BorderRadius.all(Radius.circular(50)),

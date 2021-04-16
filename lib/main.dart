@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-04-08 14:13:58
+ * @LastEditTime: 2021-04-16 09:48:37
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import './pages/home.dart';
 import 'libs/routes.dart';
 import './libs/theme.dart';
+import './utils/http.dart';
 
 void main() async {
   runApp(MyApp());
@@ -18,6 +19,8 @@ void main() async {
   SystemUiOverlayStyle systemUiOverlayStyle =
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+
+  DioUtil.tokenInter();
 }
 
 class MyApp extends StatelessWidget {

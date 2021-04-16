@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-15 19:47:29
+ * @LastEditTime: 2021-04-16 10:25:56
  * @LastEditors: Walker
  */
 
@@ -87,7 +87,11 @@ class PlayState extends State<Play> {
     if (isPlayer) {
       result = await audioPlayer.pause();
     } else {
-      result = await audioPlayer.play(playInfo[0]['url'], volume: volume);
+      result = await audioPlayer.play(
+        playInfo[0]['url'],
+        volume: volume,
+        stayAwake: true,
+      );
     }
 
     if (result == 1) {
