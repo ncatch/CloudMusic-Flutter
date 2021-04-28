@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-28 15:30:20
+ * @LastEditTime: 2021-04-28 16:34:24
  * @LastEditors: Walker
  */
 
@@ -36,7 +36,6 @@ class PlayState extends State<Play> {
   var position;
   bool isPlayer = false;
   var playIndex;
-  var isFirst = true;
   var musicLyric = null;
 
   bool musicLoading = true;
@@ -77,7 +76,7 @@ class PlayState extends State<Play> {
         audioPlayer.stop();
       });
 
-    initPalyInfo(musicInfo['id']);
+    playMusic(musicInfo['id']);
   }
 
   @override
@@ -87,12 +86,9 @@ class PlayState extends State<Play> {
     super.deactivate();
   }
 
-  void play() async {
+  play() async {
     var result;
-    if (isFirst) {
-      isFirst = false;
-      result = await playMusic(musicInfo['id']);
-    } else if (isPlayer) {
+    if (isPlayer) {
       result = await audioPlayer.pause();
     } else {
       result = await audioPlayer.resume();
@@ -106,14 +102,21 @@ class PlayState extends State<Play> {
     }
   }
 
-  Future<List<dynamic>> initPalyInfo(id) async {
+  Future<List<dynamic>> initPalyInfo(id) {
     this.setState(() {
       musicLoading = true;
       lyricLoading = true;
     });
     getMusicLyric(id).then((lyric) {
+      var tmp;
+      if (lyric != null &&
+          lyric['lrc'] != null &&
+          lyric['lrc']['lyric'] != null) {
+        tmp = lyric['lrc']['lyric'];
+      }
+
       this.setState(() {
-        musicLyric = lyric;
+        musicLyric = tmp;
         lyricLoading = false;
       });
     });
@@ -131,11 +134,20 @@ class PlayState extends State<Play> {
   Future<int> playMusic(id) async {
     var res = await initPalyInfo(id);
 
-    return audioPlayer.play(
+    return audioPlayer
+        .play(
       res[0]['url'],
       volume: volume,
       stayAwake: true,
-    );
+    )
+        .then((value) {
+      if (value == 1) {
+        this.setState(() {
+          isPlayer = true;
+        });
+      }
+      return value;
+    });
   }
 
   // 上一首
@@ -246,10 +258,8 @@ class PlayState extends State<Play> {
                       )
                     : Text(
                         musicLyric == null
-                            ? ''
-                            : musicLyric['nolyric'] == true
-                                ? '歌曲暂无歌词'
-                                : musicLyric['lrc']['lyric'],
+                            ? '歌曲暂无歌词'
+                            : musicLyric,
                         style: TextStyle(
                           color: Colors.white,
                         ),
