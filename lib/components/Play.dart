@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-28 16:34:24
+ * @LastEditTime: 2021-04-28 17:01:30
  * @LastEditors: Walker
  */
 
@@ -244,8 +244,8 @@ class PlayState extends State<Play> {
             ),
             Positioned(
               width: width,
-              top: 60,
-              height: height - 200,
+              bottom: 150,
+              height: height - 250,
               child: Container(
                 alignment: Alignment.center,
                 child: lyricLoading
@@ -257,9 +257,7 @@ class PlayState extends State<Play> {
                         textAlign: TextAlign.center,
                       )
                     : Text(
-                        musicLyric == null
-                            ? '歌曲暂无歌词'
-                            : musicLyric,
+                        musicLyric == null ? '歌曲暂无歌词' : musicLyric,
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -268,51 +266,56 @@ class PlayState extends State<Play> {
               ),
             ),
             Positioned(
-                width: width,
-                bottom: 10,
-                child: Column(
-                  children: [
-                    Slider(
-                      onChanged: (newValue) {
-                        if (duration != null) {
-                          int seconds = (duration.inSeconds * newValue).round();
-                          audioPlayer.seek(new Duration(seconds: seconds));
-                        }
-                      },
-                      activeColor: Colors.white,
-                      inactiveColor: Colors.white,
-                      value: sliderValue ?? 0.0,
-                    ),
-                    Wrap(
-                      // alignment: WrapAlignment.center,
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      children: [
-                        IconButton(
-                          onPressed: previous,
-                          icon: Icon(Icons.skip_previous_outlined),
-                          color: playIndex == 0 ? Colors.grey : Colors.white,
-                          iconSize: 30,
-                        ),
-                        IconButton(
-                          onPressed: play,
-                          icon: Icon(isPlayer
-                              ? Icons.pause_circle_outline
-                              : Icons.play_circle_outline),
-                          color: Colors.white,
-                          iconSize: 50,
-                        ),
-                        IconButton(
-                          onPressed: next,
-                          icon: Icon(Icons.skip_next_outlined),
-                          color: playIndex >= musicList.length - 1
-                              ? Colors.grey
-                              : Colors.white,
-                          iconSize: 30,
-                        )
-                      ],
-                    ),
-                  ],
-                ))
+              width: width,
+              bottom: 10,
+              child: Column(
+                children: [
+                  Text(
+                    position != null ? position.toString() : '',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  Slider(
+                    onChanged: (newValue) {
+                      if (duration != null) {
+                        int seconds = (duration.inSeconds * newValue).round();
+                        audioPlayer.seek(new Duration(seconds: seconds));
+                      }
+                    },
+                    activeColor: Colors.white,
+                    inactiveColor: Colors.white,
+                    value: sliderValue ?? 0.0,
+                  ),
+                  Wrap(
+                    // alignment: WrapAlignment.center,
+                    crossAxisAlignment: WrapCrossAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: previous,
+                        icon: Icon(Icons.skip_previous_outlined),
+                        color: playIndex == 0 ? Colors.grey : Colors.white,
+                        iconSize: 30,
+                      ),
+                      IconButton(
+                        onPressed: play,
+                        icon: Icon(isPlayer
+                            ? Icons.pause_circle_outline
+                            : Icons.play_circle_outline),
+                        color: Colors.white,
+                        iconSize: 50,
+                      ),
+                      IconButton(
+                        onPressed: next,
+                        icon: Icon(Icons.skip_next_outlined),
+                        color: playIndex >= musicList.length - 1
+                            ? Colors.grey
+                            : Colors.white,
+                        iconSize: 30,
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
