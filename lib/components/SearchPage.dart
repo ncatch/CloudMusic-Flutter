@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-04-15 14:34:42
+ * @LastEditTime: 2021-04-28 15:00:17
  * @LastEditors: Walker
  */
 
@@ -10,8 +10,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter2_app/components/play.dart';
-import 'package:flutter2_app/libs/theme.dart';
+import 'package:cloudmusic_flutter/components/play.dart';
 
 import '../services/search.dart';
 
@@ -59,12 +58,24 @@ class SearchPageState extends State<SearchPage> {
   }
 
   // 播放
-  void playClick() {}
-
-  void musicClick(context, info) {
+  void playClick() {
+    // 获取歌曲详情播放
+    //
+    // 播放热搜榜 第一首开始
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
       // 页面跳转时传入参数
-      return Play(params: {'info': info});
+      return Play(params: {
+        'info': {...hotList[0], 'id': hotList[0]['score']},
+        'index': 0,
+        'list': hotList
+      });
+    }));
+  }
+
+  void musicClick(context, info, index) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      // 页面跳转时传入参数
+      return Play(params: {'info': info, 'index': index, 'list': searchList});
     }));
   }
 
@@ -93,7 +104,7 @@ class SearchPageState extends State<SearchPage> {
     });
   }
 
-  List<Widget> getHotList(width) {
+  List<Widget> getHotListWidget(width) {
     double width = MediaQuery.of(context).size.width - 30;
     List<Widget> hotTitles = [];
 
@@ -146,7 +157,7 @@ class SearchPageState extends State<SearchPage> {
           height: 50,
           child: InkWell(
             onTap: () {
-              musicClick(context, element);
+              musicClick(context, element, i);
             },
             child: Row(
               children: [
@@ -180,7 +191,7 @@ class SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width - 30;
 
-    List<Widget> hotTitles = getHotList(width);
+    List<Widget> hotTitles = getHotListWidget(width);
 
     List<Widget> searchResult = getSearchList(context, width);
 

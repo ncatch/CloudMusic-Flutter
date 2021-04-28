@@ -1,5 +1,6 @@
-name: flutter2_app
-description: A new Flutter application.
+name: cloudmusic_flutter
+
+description: 网易云音乐 flutter 版本.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.

@@ -1,6 +1,6 @@
-# flutter2_app
+# cloudmusic_flutter
 
-A new Flutter application.
+网易云音乐 flutter 版本.
 
 ## Getting Started
 
