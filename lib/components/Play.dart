@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-28 17:01:30
+ * @LastEditTime: 2021-04-28 17:56:50
  * @LastEditors: Walker
  */
 
@@ -13,6 +13,7 @@ import 'package:flutter/material.dart';
 import '../services/music.dart';
 
 import 'package:audioplayers/audioplayers.dart';
+import '../libs/config.dart';
 
 class Play extends StatefulWidget {
   var params;
@@ -186,6 +187,19 @@ class PlayState extends State<Play> {
     double width = size.width;
     double height = size.height;
 
+    var imgUrl = play_img_url_default;
+    var name = '';
+    if (musicInfo != null &&
+        musicInfo['artists'] != null &&
+        musicInfo['artists'][0] != null) {
+      if (musicInfo['artists'][0]['img1v1Url'] != null) {
+        imgUrl = musicInfo['artists'][0]['img1v1Url'];
+      }
+      if (musicInfo['artists'][0]['name'] != null) {
+        name = musicInfo['artists'][0]['name'];
+      }
+    }
+
     return Scaffold(
       body: Container(
         child: Stack(
@@ -193,7 +207,7 @@ class PlayState extends State<Play> {
             Container(
               decoration: new BoxDecoration(
                 image: new DecorationImage(
-                  image: new NetworkImage(musicInfo['artists'][0]['img1v1Url']),
+                  image: new NetworkImage(imgUrl),
                   fit: BoxFit.cover,
                   colorFilter: new ColorFilter.mode(
                     Colors.black54,
@@ -230,11 +244,11 @@ class PlayState extends State<Play> {
                   child: Column(
                     children: [
                       Text(
-                        musicInfo['name'],
+                        musicInfo['name'] ?? '未知',
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                       Text(
-                        musicInfo['artists'][0]['name'],
+                        name,
                         style: TextStyle(color: Colors.grey, fontSize: 10),
                       ),
                     ],

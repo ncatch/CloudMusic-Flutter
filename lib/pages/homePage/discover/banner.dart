@@ -2,18 +2,19 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-04-07 19:24:09
+ * @LastEditTime: 2021-04-28 17:55:10
  * @LastEditors: Walker
  */
-import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
 import '../../../services/home.dart';
+import '../../../services/music.dart';
 import '../../../libs/enums.dart';
 import '../../../utils/preference.dart';
+import 'package:cloudmusic_flutter/components/play.dart';
 
 class DiscoverBanner extends StatefulWidget {
   DiscoverBanner({Key? key}) : super(key: key);
@@ -40,19 +41,42 @@ class DiscoverBannerState extends State<DiscoverBanner> {
     });
   }
 
+  bannerClick(info) {
+    if (info['targetId'] != 0) {
+      getMusicDetail([info['targetId']]).then((res) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext ctx) {
+          // 页面跳转时传入参数
+          return Play(params: {
+            'info': res,
+            'index': 0,
+            'list': [res]
+          });
+        }));
+      });
+    } else {
+      // info['url']
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 180,
       child: Swiper(
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(10),
-              child: Image.network(
-                images[index]['imageUrl'],
-                fit: BoxFit.fill,
+          return InkWell(
+            onTap: () {
+              bannerClick(images[index]);
+            },
+            child: Container(
+              padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  images[index]['imageUrl'],
+                  fit: BoxFit.fill,
+                ),
               ),
             ),
           );

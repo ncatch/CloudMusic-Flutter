@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-04-28 15:00:17
+ * @LastEditTime: 2021-04-28 17:57:17
  * @LastEditors: Walker
  */
 
@@ -61,15 +61,15 @@ class SearchPageState extends State<SearchPage> {
   void playClick() {
     // 获取歌曲详情播放
     //
-    // 播放热搜榜 第一首开始
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      // 页面跳转时传入参数
-      return Play(params: {
-        'info': {...hotList[0], 'id': hotList[0]['score']},
-        'index': 0,
-        'list': hotList
-      });
-    }));
+    // // 播放热搜榜 第一首开始
+    // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+    //   // 页面跳转时传入参数
+    //   return Play(params: {
+    //     'info': {...hotList[0], 'id': hotList[0]['score']},
+    //     'index': 0,
+    //     'list': hotList
+    //   });
+    // }));
   }
 
   void musicClick(context, info, index) {
