@@ -2,16 +2,19 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-04-28 17:57:17
+ * @LastEditTime: 2021-04-29 17:55:17
  * @LastEditors: Walker
  */
 
 import 'dart:async';
 
+import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/components/play.dart';
+import 'package:provider/provider.dart';
 
+import '../model/PlayInfo.dart';
 import '../services/search.dart';
 
 class SearchPage extends StatefulWidget {
@@ -28,7 +31,7 @@ class SearchPageState extends State<SearchPage> {
   var hotList = [];
   // 显示全部热搜
   bool showAll = false;
-  var searchList = [];
+  List<MusicInfo> searchList = [];
 
   var time;
 
@@ -72,15 +75,16 @@ class SearchPageState extends State<SearchPage> {
     // }));
   }
 
-  void musicClick(context, info, index) {
+  void musicClick(BuildContext context, MusicInfo info, int index) {
+    Provider.of<PlayInfoStore>(context).setPlayList(searchList, index);
+
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      // 页面跳转时传入参数
-      return Play(params: {'info': info, 'index': index, 'list': searchList});
+      return Play();
     }));
   }
 
   // 搜索
-  void searchChange(search) {
+  searchChange(String search) {
     if (search == '') {
       this.setState(() {
         searchList = [];
@@ -104,7 +108,7 @@ class SearchPageState extends State<SearchPage> {
     });
   }
 
-  List<Widget> getHotListWidget(width) {
+  List<Widget> getHotListWidget(double width) {
     double width = MediaQuery.of(context).size.width - 30;
     List<Widget> hotTitles = [];
 
@@ -146,7 +150,7 @@ class SearchPageState extends State<SearchPage> {
     return hotTitles;
   }
 
-  List<Widget> getSearchList(context, width) {
+  List<Widget> getSearchList(BuildContext context, double width) {
     List<Widget> searchResult = [];
 
     if (searchList.length > 0) {
@@ -172,11 +176,14 @@ class SearchPageState extends State<SearchPage> {
                   height: 30,
                   width: width - 70,
                   decoration: BoxDecoration(
-                      border: Border(
-                          bottom:
-                              BorderSide(width: 1, color: Color(0xffe5e5e5)))),
-                  child: Text(
-                      element['name'] + ' ' + element['artists'][0]['name']),
+                    border: Border(
+                      bottom: BorderSide(
+                        width: 1,
+                        color: Color(0xffe5e5e5),
+                      ),
+                    ),
+                  ),
+                  child: Text(element.musicName + ' ' + element.singerName),
                 )
               ],
             ),

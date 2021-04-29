@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 14:16:20
- * @LastEditTime: 2021-04-28 14:53:49
+ * @LastEditTime: 2021-04-29 10:02:30
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -11,6 +11,8 @@ import 'package:dio/dio.dart';
 import '../utils/http.dart';
 import '../libs/config.dart';
 import '../libs/enums.dart';
+
+import '../model/PlayInfo.dart';
 
 Future<dynamic> getDefaultSearchKey() {
   return DioUtil.dio.post(server + '/search/default').then((value) {
@@ -43,8 +45,29 @@ Future<List<dynamic>> searchByKeywords(keywords, [type = 'mobile']) {
 }
 
 // 搜索
-Future<List<dynamic>> searchSong(keywords, [type = 'mobile']) {
+Future<List<MusicInfo>> searchSong(keywords, [type = 'mobile']) {
   return DioUtil.dio.get(server + '/search?keywords=' + keywords).then((value) {
-    return value.data['result']['songs'];
+    List<MusicInfo> result = [];
+
+    for (var i = 0; i < value.data['result']['songs'].length; i++) {
+      var info = value.data['result']['songs'][i];
+
+      MusicInfo tmp = new MusicInfo(id: info['id'], musicName: info['name']);
+
+      if (info != null &&
+          info['artists'] != null &&
+          info['artists'][0] != null) {
+        if (info['artists'][0]['img1v1Url'] != null) {
+          tmp.bgImgUrl = info['artists'][0]['img1v1Url'];
+        }
+        if (info['artists'][0]['name'] != null) {
+          tmp.singerName = info['artists'][0]['name'];
+        }
+      }
+
+      result.add(tmp);
+    }
+
+    return result;
   });
 }

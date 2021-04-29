@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cloudmusic_flutter">
+    package="com.example.cloudmusic_flutter"
+>
    <application
         android:label="网抑云"
         android:icon="@mipmap/ic_launcher"

@@ -2,7 +2,7 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-04-28 17:55:10
+ * @LastEditTime: 2021-04-29 10:10:35
  * @LastEditors: Walker
  */
 
@@ -43,17 +43,17 @@ class DiscoverBannerState extends State<DiscoverBanner> {
 
   bannerClick(info) {
     if (info['targetId'] != 0) {
-      getMusicDetail([info['targetId']]).then((res) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext ctx) {
-          // 页面跳转时传入参数
-          return Play(params: {
-            'info': res,
-            'index': 0,
-            'list': [res]
-          });
-        }));
-      });
+      // getMusicDetail([info['targetId']]).then((res) {
+      //   Navigator.of(context)
+      //       .push(MaterialPageRoute(builder: (BuildContext ctx) {
+      //     // 页面跳转时传入参数
+      //     return Play(params: {
+      //       'info': res,
+      //       'index': 0,
+      //       'list': [res]
+      //     });
+      //   }));
+      // });
     } else {
       // info['url']
     }

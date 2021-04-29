@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-04-02 16:48:59
+ * @LastEditTime: 2021-04-29 17:33:10
  * @LastEditors: Walker
  */
 import 'package:flutter/cupertino.dart';
@@ -21,6 +21,8 @@ class Discover extends StatefulWidget {
 }
 
 class DiscoverState extends State<Discover> {
+  var currentVolume;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,7 +34,7 @@ class DiscoverState extends State<Discover> {
             // 轮播图下菜单
             DiscoverMenu(),
             // 推荐歌单
-            DiscoverRecommendSongList()
+            DiscoverRecommendSongList(),
           ],
         ),
       ),

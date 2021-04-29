@@ -1,8 +1,8 @@
 /*
- * @Description: 
+ * @Description: 播放页面
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-28 17:56:50
+ * @LastEditTime: 2021-04-29 16:19:14
  * @LastEditors: Walker
  */
 
@@ -10,195 +10,25 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import '../services/music.dart';
+import 'package:provider/provider.dart';
 
-import 'package:audioplayers/audioplayers.dart';
-import '../libs/config.dart';
+import '../store/PlayInfo.dart';
 
 class Play extends StatefulWidget {
-  var params;
-
-  Play({Map? params}) {
-    this.params = params;
-  }
+  Play({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => PlayState(params);
+  State<StatefulWidget> createState() => PlayState();
 }
 
 class PlayState extends State<Play> {
-  var musicInfo;
-  var musicList;
-
-  var playInfo;
-  AudioPlayer audioPlayer = new AudioPlayer();
-  var sliderValue;
-  var duration;
-  var position;
-  bool isPlayer = false;
-  var playIndex;
-  var musicLyric = null;
-
-  bool musicLoading = true;
-  bool lyricLoading = true;
-
-  double volume = 0.2;
-
-  PlayState(Map params) {
-    this.musicInfo = params['info'];
-    this.musicList = params['list'];
-    this.playIndex = params['index'];
-  }
-
-  @override
-  void initState() {
-    super.initState();
-
-    audioPlayer
-      ..onDurationChanged.listen((e) {
-        setState(() {
-          duration = e;
-
-          if (position != null) {
-            sliderValue = (position.inSeconds / duration.inSeconds);
-          }
-        });
-      })
-      ..onAudioPositionChanged.listen((e) {
-        setState(() {
-          position = e;
-
-          if (duration != null) {
-            sliderValue = (position.inSeconds / duration.inSeconds);
-          }
-        });
-      })
-      ..onPlayerCompletion.listen((event) {
-        audioPlayer.stop();
-      });
-
-    playMusic(musicInfo['id']);
-  }
-
-  @override
-  deactivate() {
-    audioPlayer.dispose();
-
-    super.deactivate();
-  }
-
-  play() async {
-    var result;
-    if (isPlayer) {
-      result = await audioPlayer.pause();
-    } else {
-      result = await audioPlayer.resume();
-    }
-
-    if (result == 1) {
-      // success
-      setState(() {
-        isPlayer = !isPlayer;
-      });
-    }
-  }
-
-  Future<List<dynamic>> initPalyInfo(id) {
-    this.setState(() {
-      musicLoading = true;
-      lyricLoading = true;
-    });
-    getMusicLyric(id).then((lyric) {
-      var tmp;
-      if (lyric != null &&
-          lyric['lrc'] != null &&
-          lyric['lrc']['lyric'] != null) {
-        tmp = lyric['lrc']['lyric'];
-      }
-
-      this.setState(() {
-        musicLyric = tmp;
-        lyricLoading = false;
-      });
-    });
-
-    return getMusicUrl(id).then((result) {
-      this.setState(() {
-        playInfo = result;
-        musicLoading = false;
-      });
-
-      return result;
-    });
-  }
-
-  Future<int> playMusic(id) async {
-    var res = await initPalyInfo(id);
-
-    return audioPlayer
-        .play(
-      res[0]['url'],
-      volume: volume,
-      stayAwake: true,
-    )
-        .then((value) {
-      if (value == 1) {
-        this.setState(() {
-          isPlayer = true;
-        });
-      }
-      return value;
-    });
-  }
-
-  // 上一首
-  previous() {
-    if (playIndex > 0) {
-      var index = playIndex - 1;
-      var tmp = musicList[index];
-
-      playMusic(tmp['id']);
-
-      this.setState(() {
-        playIndex = index;
-        musicInfo = tmp;
-      });
-    }
-  }
-
-  // 下一首
-  next() {
-    if (playIndex < musicList.length - 1) {
-      var index = playIndex + 1;
-      var tmp = musicList[index];
-
-      playMusic(tmp['id']);
-
-      this.setState(() {
-        playIndex = index;
-        musicInfo = tmp;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
 
-    var imgUrl = play_img_url_default;
-    var name = '';
-    if (musicInfo != null &&
-        musicInfo['artists'] != null &&
-        musicInfo['artists'][0] != null) {
-      if (musicInfo['artists'][0]['img1v1Url'] != null) {
-        imgUrl = musicInfo['artists'][0]['img1v1Url'];
-      }
-      if (musicInfo['artists'][0]['name'] != null) {
-        name = musicInfo['artists'][0]['name'];
-      }
-    }
+    PlayInfoStore playInfoStore = Provider.of<PlayInfoStore>(context);
 
     return Scaffold(
       body: Container(
@@ -207,7 +37,7 @@ class PlayState extends State<Play> {
             Container(
               decoration: new BoxDecoration(
                 image: new DecorationImage(
-                  image: new NetworkImage(imgUrl),
+                  image: new NetworkImage(playInfoStore.musicInfo.bgImgUrl),
                   fit: BoxFit.cover,
                   colorFilter: new ColorFilter.mode(
                     Colors.black54,
@@ -244,11 +74,11 @@ class PlayState extends State<Play> {
                   child: Column(
                     children: [
                       Text(
-                        musicInfo['name'] ?? '未知',
+                        playInfoStore.musicInfo.musicName,
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
                       Text(
-                        name,
+                        playInfoStore.musicInfo.singerName,
                         style: TextStyle(color: Colors.grey, fontSize: 10),
                       ),
                     ],
@@ -262,7 +92,7 @@ class PlayState extends State<Play> {
               height: height - 250,
               child: Container(
                 alignment: Alignment.center,
-                child: lyricLoading
+                child: playInfoStore.lyricLoading
                     ? Text(
                         '歌词加载中...',
                         style: TextStyle(
@@ -271,7 +101,7 @@ class PlayState extends State<Play> {
                         textAlign: TextAlign.center,
                       )
                     : Text(
-                        musicLyric == null ? '歌曲暂无歌词' : musicLyric,
+                        playInfoStore.musicLyric,
                         style: TextStyle(
                           color: Colors.white,
                         ),
@@ -285,42 +115,48 @@ class PlayState extends State<Play> {
               child: Column(
                 children: [
                   Text(
-                    position != null ? position.toString() : '',
+                    playInfoStore.position.toString(),
                     style: TextStyle(color: Colors.white),
                   ),
                   Slider(
                     onChanged: (newValue) {
-                      if (duration != null) {
-                        int seconds = (duration.inSeconds * newValue).round();
-                        audioPlayer.seek(new Duration(seconds: seconds));
+                      if (playInfoStore.duration != null) {
+                        int seconds =
+                            (playInfoStore.duration.inSeconds * newValue)
+                                .round();
+                        playInfoStore.audioPlayer
+                            .seek(new Duration(seconds: seconds));
                       }
                     },
                     activeColor: Colors.white,
                     inactiveColor: Colors.white,
-                    value: sliderValue ?? 0.0,
+                    value: playInfoStore.sliderValue,
                   ),
                   Wrap(
                     // alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: previous,
+                        onPressed: playInfoStore.previous,
                         icon: Icon(Icons.skip_previous_outlined),
-                        color: playIndex == 0 ? Colors.grey : Colors.white,
+                        color: playInfoStore.playIndex == 0
+                            ? Colors.grey
+                            : Colors.white,
                         iconSize: 30,
                       ),
                       IconButton(
-                        onPressed: play,
-                        icon: Icon(isPlayer
+                        onPressed: playInfoStore.play,
+                        icon: Icon(playInfoStore.isPlayer
                             ? Icons.pause_circle_outline
                             : Icons.play_circle_outline),
                         color: Colors.white,
                         iconSize: 50,
                       ),
                       IconButton(
-                        onPressed: next,
+                        onPressed: playInfoStore.next,
                         icon: Icon(Icons.skip_next_outlined),
-                        color: playIndex >= musicList.length - 1
+                        color: playInfoStore.playIndex >=
+                                playInfoStore.musicList.length - 1
                             ? Colors.grey
                             : Colors.white,
                         iconSize: 30,
