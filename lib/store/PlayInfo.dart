@@ -2,9 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-04-29 17:18:03
+ * @LastEditTime: 2021-04-30 14:31:29
  * @LastEditors: Walker
  */
+
+import 'dart:convert';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +15,7 @@ import 'package:volume_controller/volume_controller.dart';
 import '../model/PlayInfo.dart';
 
 import '../libs/config.dart';
+import '../utils/preference.dart';
 
 import '../services/music.dart';
 
@@ -31,16 +34,14 @@ class PlayInfoStore with ChangeNotifier {
   bool lyricLoading = true;
 
   List<MusicInfo> musicList = [];
-  int playIndex = -1;
-
   MusicInfo musicInfo = new MusicInfo();
   String musicLyric = "";
+  int playIndex = -1;
 
   PlayInfoStore() {
     // 监听系统声音变化 调整播放声音
     VolumeController.volumeListener.listen((volume) {
-      // TODO 调试 合适的音量变化
-      audioPlayer.setVolume(volume / 2);
+      audioPlayer.setVolume(volume);
       _volume = volume;
     });
     VolumeController.getVolume().then((volume) => _volume = volume);
@@ -64,6 +65,38 @@ class PlayInfoStore with ChangeNotifier {
           audioPlayer.stop();
         }
       });
+
+    getCacheData();
+  }
+
+  // 获取缓存数据
+  getCacheData() async {
+    var cache = await PreferenceUtils.getString(PreferencesKey.PLAY_INFO);
+
+    if (cache != '') {
+      var tmp = jsonDecode(cache);
+
+      playIndex = tmp['playIndex'];
+      musicLyric = tmp['musicLyric'];
+      musicInfo = MusicInfo.fromJson(tmp['musicInfo']);
+
+      musicList = List<MusicInfo>.from(
+          tmp['musicList'].map((ele) => MusicInfo.fromJson(ele)));
+
+      initPalyInfo(musicInfo.id);
+    }
+  }
+
+  // 缓存数据
+  cacheData() {
+    PreferenceUtils.saveString(
+        PreferencesKey.PLAY_INFO,
+        jsonEncode({
+          "playIndex": playIndex,
+          "musicLyric": musicLyric,
+          "musicInfo": musicInfo,
+          "musicList": musicList,
+        }));
   }
 
   // 初始化播放信息 歌词 播放链接
@@ -85,29 +118,37 @@ class PlayInfoStore with ChangeNotifier {
       notifyListeners();
     });
 
+    getMusicDetail([id]).then((res) {
+      if (res.length > 0) {
+        musicInfo.iconUrl = res[0]['al']['picUrl'];
+        notifyListeners();
+      }
+    });
+
     return getMusicUrl(id).then((result) {
       musicLoading = false;
+      setPlayMusic(result[0]['url']);
       notifyListeners();
 
       return result;
     });
   }
 
-  Future<int> playMusic(id) async {
-    var res = await initPalyInfo(id);
+  setPlayMusic(String url) {
+    audioPlayer.setUrl(url);
+    audioPlayer.setVolume(_volume);
+  }
 
-    return audioPlayer
-        .play(
-      res[0]['url'],
-      volume: _volume,
-      stayAwake: true,
-    )
-        .then((value) {
+  Future<int> playMusic(id) async {
+    await initPalyInfo(id);
+
+    return audioPlayer.resume().then((value) {
+      sliderValue = 0.0;
       if (value != 1) {
         // 播放歌曲失败
         isPlayer = false;
-        notifyListeners();
       }
+      notifyListeners();
       return value;
     });
   }
@@ -117,7 +158,10 @@ class PlayInfoStore with ChangeNotifier {
     if (musicList.length == 0 ||
         (list.length > 0 && list[0].id != musicList[0].id)) {
       musicList = list;
+      this.setPlayIndex(index);
 
+      cacheData();
+    } else if (index != playIndex) {
       this.setPlayIndex(index);
     }
   }
@@ -128,13 +172,11 @@ class PlayInfoStore with ChangeNotifier {
 
     if (musicInfo.id != tmp.id) {
       playIndex = index;
-      sliderValue = 0.0;
       isPlayer = true;
 
       musicInfo = musicList[index];
       playMusic(musicInfo.id);
-
-      notifyListeners();
+      cacheData();
     }
   }
 

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-04-29 17:55:17
+ * @LastEditTime: 2021-04-30 10:14:26
  * @LastEditors: Walker
  */
 
@@ -76,9 +76,8 @@ class SearchPageState extends State<SearchPage> {
   }
 
   void musicClick(BuildContext context, MusicInfo info, int index) {
-    Provider.of<PlayInfoStore>(context).setPlayList(searchList, index);
-
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      Provider.of<PlayInfoStore>(context).setPlayList(searchList, index);
       return Play();
     }));
   }

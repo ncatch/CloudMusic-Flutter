@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-06 17:39:01
- * @LastEditTime: 2021-04-07 15:20:50
+ * @LastEditTime: 2021-04-30 11:49:48
  * @LastEditors: Walker
  */
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +10,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class PreferencesKey {
   static const HOME_BANNER = 'home_banner'; // 当前主题 index
   static const HOME_SONGLIST = 'home_songlist'; // 刷新头部跟随
+  static const PLAY_INFO = 'play_music_list'; // 播放信息
 }
 
 /// shared_preferences 管理类
