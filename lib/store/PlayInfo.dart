@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-04-30 14:31:29
+ * @LastEditTime: 2021-04-30 19:34:37
  * @LastEditors: Walker
  */
 
@@ -120,7 +120,10 @@ class PlayInfoStore with ChangeNotifier {
 
     getMusicDetail([id]).then((res) {
       if (res.length > 0) {
+        musicInfo.id = id;
         musicInfo.iconUrl = res[0]['al']['picUrl'];
+        musicInfo.musicName = res[0]['name'];
+        musicInfo.singerName = res[0]['ar'][0]['name'];
         notifyListeners();
       }
     });
@@ -174,8 +177,9 @@ class PlayInfoStore with ChangeNotifier {
       playIndex = index;
       isPlayer = true;
 
-      musicInfo = musicList[index];
-      playMusic(musicInfo.id);
+      // musicInfo = musicList[index];
+      musicInfo.bgImgUrl = tmp.bgImgUrl;
+      playMusic(tmp.id);
       cacheData();
     }
   }

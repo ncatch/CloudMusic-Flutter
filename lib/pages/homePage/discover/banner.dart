@@ -6,9 +6,11 @@
  * @LastEditors: Walker
  */
 
+import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:provider/provider.dart';
 
 import '../../../services/home.dart';
 import '../../../services/music.dart';
@@ -43,17 +45,15 @@ class DiscoverBannerState extends State<DiscoverBanner> {
 
   bannerClick(info) {
     if (info['targetId'] != 0) {
-      // getMusicDetail([info['targetId']]).then((res) {
-      //   Navigator.of(context)
-      //       .push(MaterialPageRoute(builder: (BuildContext ctx) {
-      //     // 页面跳转时传入参数
-      //     return Play(params: {
-      //       'info': res,
-      //       'index': 0,
-      //       'list': [res]
-      //     });
-      //   }));
-      // });
+      getMusicDetail([info['targetId']]).then((res) {
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext ctx) {
+          Provider.of<PlayInfoStore>(context).playMusic(info['targetId']);
+
+          // 页面跳转时传入参数
+          return Play();
+        }));
+      });
     } else {
       // info['url']
     }
