@@ -2,11 +2,9 @@
  * @Description: 歌词组件
  * @Author: Walker
  * @Date: 2021-04-30 15:26:08
- * @LastEditTime: 2021-04-30 18:08:38
+ * @LastEditTime: 2021-04-30 19:08:52
  * @LastEditors: Walker
  */
-
-import 'dart:ffi';
 
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';

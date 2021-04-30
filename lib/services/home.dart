@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-04-08 14:46:58
+ * @LastEditTime: 2021-04-30 19:08:20
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -14,7 +14,7 @@ import '../libs/config.dart';
 
 import '../utils/preference.dart';
 
-Future<List<dynamic>> getBanner(type, [bool disableCache = false]) async {
+Future<List<dynamic>> getBanner(type, [bool disableCache = true]) async {
   // 取缓存
   if (!disableCache) {
     var cache = await PreferenceUtils.getString(PreferencesKey.HOME_BANNER);
@@ -36,7 +36,7 @@ Future<List<dynamic>> getBanner(type, [bool disableCache = false]) async {
 }
 
 Future<List<dynamic>> getRecommendSongList(int limit,
-    [bool disableCache = false]) async {
+    [bool disableCache = true]) async {
   // 取缓存
   if (!disableCache) {
     var cache = await PreferenceUtils.getString(PreferencesKey.HOME_SONGLIST);

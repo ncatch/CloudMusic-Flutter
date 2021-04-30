@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-04-29 14:12:11
+ * @LastEditTime: 2021-04-30 19:05:31
  * @LastEditors: Walker
  */
 // @dart=2.9
+import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -30,6 +31,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: new PlayInfoStore()),
+      ChangeNotifierProvider.value(value: new SystemInfo()),
     ],
     child: MyApp(),
   ));
