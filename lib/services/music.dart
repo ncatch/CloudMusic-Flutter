@@ -1,8 +1,8 @@
 /*
- * @Description: 
+ * @Description: 歌曲相关接口
  * @Author: nocatch
  * @Date: 2021-04-09 14:28:07
- * @LastEditTime: 2021-04-28 18:02:28
+ * @LastEditTime: 2021-04-30 19:18:45
  * @LastEditors: Walker
  */
 import 'dart:convert';
