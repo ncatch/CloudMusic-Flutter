@@ -2,7 +2,7 @@
  * @Description: 播放页面
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-29 16:19:14
+ * @LastEditTime: 2021-04-30 17:09:32
  * @LastEditors: Walker
  */
 
@@ -12,6 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './Lyric.dart';
 import '../store/PlayInfo.dart';
 
 class Play extends StatefulWidget {
@@ -92,21 +93,7 @@ class PlayState extends State<Play> {
               height: height - 250,
               child: Container(
                 alignment: Alignment.center,
-                child: playInfoStore.lyricLoading
-                    ? Text(
-                        '歌词加载中...',
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      )
-                    : Text(
-                        playInfoStore.musicLyric,
-                        style: TextStyle(
-                          color: Colors.white,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
+                child: Lyric(),
               ),
             ),
             Positioned(
@@ -114,10 +101,6 @@ class PlayState extends State<Play> {
               bottom: 10,
               child: Column(
                 children: [
-                  Text(
-                    playInfoStore.position.toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
                   Slider(
                     onChanged: (newValue) {
                       if (playInfoStore.duration != null) {
