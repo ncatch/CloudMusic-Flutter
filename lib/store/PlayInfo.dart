@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-04-30 19:34:37
+ * @LastEditTime: 2021-05-06 10:48:58
  * @LastEditors: Walker
  */
 
@@ -36,6 +36,7 @@ class PlayInfoStore with ChangeNotifier {
   List<MusicInfo> musicList = [];
   MusicInfo musicInfo = new MusicInfo();
   String musicLyric = "";
+  List<String> lyricArr = [];
   int playIndex = -1;
 
   PlayInfoStore() {
@@ -114,6 +115,7 @@ class PlayInfoStore with ChangeNotifier {
       }
 
       musicLyric = tmp;
+      lyricArr = tmp.split('\n');
       lyricLoading = false;
       notifyListeners();
     });

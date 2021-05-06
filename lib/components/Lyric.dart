@@ -2,7 +2,7 @@
  * @Description: 歌词组件
  * @Author: Walker
  * @Date: 2021-04-30 15:26:08
- * @LastEditTime: 2021-04-30 19:08:52
+ * @LastEditTime: 2021-05-06 10:55:07
  * @LastEditors: Walker
  */
 
@@ -19,14 +19,14 @@ class Lyric extends StatefulWidget {
 }
 
 class LyricState extends State<Lyric> {
-  ScrollController? _scrollController;
+  ScrollController _scrollController = new ScrollController();
 
-  @override
-  initState() {
-    super.initState();
+  TextStyle whiteStyle =
+      new TextStyle(color: Colors.white, fontSize: 15, height: 2);
+  TextStyle greyStyle =
+      new TextStyle(color: Colors.grey, fontSize: 15, height: 2);
 
-    _scrollController = new ScrollController();
-  }
+  int currIndex = 0;
 
   Duration getDuration(String time) {
     var times = time.split(':');
@@ -51,66 +51,106 @@ class LyricState extends State<Lyric> {
     );
   }
 
+  int getCurrIndex() {
+    PlayInfoStore playInfoStore = Provider.of<PlayInfoStore>(context);
+
+    // String currTime = playInfoStore.position.toString();
+    // Duration currDuration = getDuration(currTime);
+    Duration currDuration = playInfoStore.position;
+
+    List<String> lyricArr = playInfoStore.lyricArr;
+
+    for (var i = 0; i < lyricArr.length; i++) {
+      if (lyricArr[i].startsWith('[')) {
+        var ly = lyricArr[i];
+        var lySplit = ly.split(']');
+
+        var tmpTime = lySplit[0].split('[')[1];
+        var tmpDuration = getDuration(tmpTime);
+
+        if (tmpDuration > currDuration) {
+          return i;
+        }
+      }
+    }
+
+    return 0;
+  }
+
+  List<Widget> getLyric() {
+    List<Widget> result = [];
+    PlayInfoStore playInfoStore = Provider.of<PlayInfoStore>(context);
+
+    List<String> lyricArr = playInfoStore.lyricArr;
+
+    var child;
+
+    for (var i = 0; i < lyricArr.length; i++) {
+      if (lyricArr[i].startsWith('[')) {
+        var ly = lyricArr[i];
+        var lySplit = ly.split(']');
+        var style = greyStyle;
+
+        if (i == currIndex) {
+          style = whiteStyle;
+        }
+
+        child = Text(
+          lySplit[1],
+          style: style,
+          textAlign: TextAlign.center,
+        );
+
+        continue;
+      }
+
+      child = Text(
+        lyricArr[i],
+        style: whiteStyle,
+        textAlign: TextAlign.center,
+      );
+
+      result.add(Container(
+        child: child,
+        height: 50,
+      ));
+    }
+
+    return result;
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    int tmpIndex = getCurrIndex();
+
+    if (tmpIndex != currIndex) {
+      currIndex = tmpIndex;
+
+      _scrollController.animateTo(
+        currIndex * 50, // 具体高度待调试
+        duration: new Duration(milliseconds: 400),
+        curve: Curves.linear,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
-    PlayInfoStore playInfoStore = Provider.of<PlayInfoStore>(context);
-
-    List<String> lyricArr = playInfoStore.musicLyric.split('\n');
-
-    String currTime = playInfoStore.position.toString();
-    Duration currDuration = getDuration(currTime);
-
-    TextStyle whiteStyle =
-        new TextStyle(color: Colors.white, fontSize: 15, height: 2);
-    TextStyle greyStyle =
-        new TextStyle(color: Colors.grey, fontSize: 15, height: 2);
-
-    int currIndex = -1;
+    var lyricList = getLyric();
 
     return Container(
       alignment: Alignment.center,
-      child: ListView.builder(
+      child: ListView(
         controller: _scrollController,
-        itemCount: lyricArr.length,
-        itemBuilder: (context, index) {
-          if (lyricArr[index].startsWith('[')) {
-            var ly = lyricArr[index];
-            var lySplit = ly.split(']');
-
-            var tmpTime = lySplit[0].split('[')[1];
-            var tmpDuration = getDuration(tmpTime);
-            var style = greyStyle;
-
-            if (tmpDuration > currDuration && currIndex < 0) {
-              currIndex = index;
-              style = whiteStyle;
-
-              var scroll = index * 30 - size.height / 2 + 140;
-              if (scroll < 0) {
-                scroll = 0;
-              }
-
-              _scrollController?.animateTo(
-                index * 30 - size.height / 2 + 150,
-                duration: new Duration(milliseconds: 500),
-                curve: Curves.linear,
-              );
-            }
-
-            return Text(
-              lySplit[1],
-              style: style,
-              textAlign: TextAlign.center,
-            );
-          }
-          return Text(
-            lyricArr[index],
-            style: whiteStyle,
-            textAlign: TextAlign.center,
-          );
-        },
+        children: [
+          Container(
+            height: size.height / 2,
+          ),
+          ...lyricList,
+        ],
       ),
     );
   }
