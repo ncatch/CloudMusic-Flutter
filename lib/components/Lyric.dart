@@ -2,7 +2,7 @@
  * @Description: 歌词组件
  * @Author: Walker
  * @Date: 2021-04-30 15:26:08
- * @LastEditTime: 2021-05-06 11:08:06
+ * @LastEditTime: 2021-05-06 11:14:06
  * @LastEditors: Walker
  */
 
@@ -120,7 +120,7 @@ class LyricState extends State<Lyric> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    int tmpIndex = getCurrIndex();
+    int tmpIndex = getCurrIndex() - 1;
 
     if (tmpIndex != currIndex) {
       currIndex = tmpIndex;
@@ -144,7 +144,7 @@ class LyricState extends State<Lyric> {
         controller: _scrollController,
         children: [
           Container(
-            height: size.height / 2,
+            height: size.height / 2 - 150,
           ),
           ...lyricList,
         ],
