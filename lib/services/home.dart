@@ -2,17 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-04-30 19:19:16
+ * @LastEditTime: 2021-05-06 13:52:21
  * @LastEditors: Walker
  */
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 
 import '../utils/http.dart';
 import '../libs/config.dart';
 
-import '../utils/preference.dart';
+// import '../utils/preference.dart';
 
 Future<List<dynamic>> getBanner(type, [bool disableCache = true]) async {
   // 取缓存

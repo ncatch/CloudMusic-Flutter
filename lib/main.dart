@@ -2,11 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-04-30 19:05:31
+ * @LastEditTime: 2021-05-06 14:32:04
  * @LastEditors: Walker
  */
 // @dart=2.9
-import 'package:cloudmusic_flutter/store/SystemInfo.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -18,7 +18,9 @@ import 'libs/routes.dart';
 import './libs/theme.dart';
 import './utils/http.dart';
 
+import './store/SystemInfo.dart';
 import './store/PlayInfo.dart';
+import './store/User.dart';
 
 void main() async {
   // GestureBinding.instance.resamplingEnabled = true;
@@ -32,6 +34,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider.value(value: new PlayInfoStore()),
       ChangeNotifierProvider.value(value: new SystemInfo()),
+      ChangeNotifierProvider.value(value: new User()),
     ],
     child: MyApp(),
   ));

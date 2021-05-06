@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-04-30 10:14:26
+ * @LastEditTime: 2021-05-06 11:19:50
  * @LastEditors: Walker
  */
 
@@ -210,7 +210,7 @@ class SearchPageState extends State<SearchPage> {
           backgroundColor: Colors.white,
           elevation: 0,
           title: Container(
-            height: 38,
+            height: 30,
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
             decoration: BoxDecoration(
               color: Colors.white,
@@ -218,6 +218,7 @@ class SearchPageState extends State<SearchPage> {
             ),
             child: TextField(
               controller: searchText,
+              autofocus: true,
               decoration: InputDecoration(hintText: defaultSearchKey),
               style: TextStyle(fontSize: 20),
               onChanged: searchChange,

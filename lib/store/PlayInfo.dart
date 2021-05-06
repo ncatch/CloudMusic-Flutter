@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-06 10:48:58
+ * @LastEditTime: 2021-05-06 14:11:28
  * @LastEditors: Walker
  */
 
@@ -72,17 +72,15 @@ class PlayInfoStore with ChangeNotifier {
 
   // 获取缓存数据
   getCacheData() async {
-    var cache = await PreferenceUtils.getString(PreferencesKey.PLAY_INFO);
+    var cache = await PreferenceUtils.getJSON(PreferencesKey.PLAY_INFO);
 
-    if (cache != '') {
-      var tmp = jsonDecode(cache);
-
-      playIndex = tmp['playIndex'];
-      musicLyric = tmp['musicLyric'];
-      musicInfo = MusicInfo.fromJson(tmp['musicInfo']);
+    if (cache != null) {
+      playIndex = cache['playIndex'];
+      musicLyric = cache['musicLyric'];
+      musicInfo = MusicInfo.fromJson(cache['musicInfo']);
 
       musicList = List<MusicInfo>.from(
-          tmp['musicList'].map((ele) => MusicInfo.fromJson(ele)));
+          cache['musicList'].map((ele) => MusicInfo.fromJson(ele)));
 
       initPalyInfo(musicInfo.id);
     }
@@ -90,14 +88,12 @@ class PlayInfoStore with ChangeNotifier {
 
   // 缓存数据
   cacheData() {
-    PreferenceUtils.saveString(
-        PreferencesKey.PLAY_INFO,
-        jsonEncode({
-          "playIndex": playIndex,
-          "musicLyric": musicLyric,
-          "musicInfo": musicInfo,
-          "musicList": musicList,
-        }));
+    PreferenceUtils.saveJSON(PreferencesKey.PLAY_INFO, {
+      "playIndex": playIndex,
+      "musicLyric": musicLyric,
+      "musicInfo": musicInfo,
+      "musicList": musicList,
+    });
   }
 
   // 初始化播放信息 歌词 播放链接

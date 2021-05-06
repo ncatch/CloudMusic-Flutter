@@ -9,7 +9,9 @@
 import 'package:flutter/cupertino.dart';
 
 import '../components/SearchPage.dart';
+import '../pages/login.dart';
 
 var routes = <String, WidgetBuilder>{
-  '/search': (BuildContext context) => SearchPage()
+  '/search': (BuildContext context) => SearchPage(),
+  '/login': (BuildContext context) => Login(),
 };
