@@ -2,9 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-05-06 17:11:58
+ * @LastEditTime: 2021-05-06 19:41:50
  * @LastEditors: Walker
  */
+
+import 'dart:html';
 
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -47,46 +49,50 @@ class LoginState extends State<Login> {
   Widget build(BuildContext context) {
     var userStore = Provider.of<User>(context);
     return Scaffold(
-      body: Wrap(
-        alignment: WrapAlignment.center,
-        children: [
-          TextField(
-            controller: phoneText,
-            keyboardType: TextInputType.phone,
-            decoration: InputDecoration(
-              labelText: '手机号',
-              hintText: '请输手机号',
-            ),
-          ),
-          TextField(
-            controller: passwordText,
-            keyboardType: TextInputType.text,
-            obscureText: false,
-            decoration: InputDecoration(
-              labelText: '密码',
-              hintText: '请输入密码',
-              //下面是重点
-              suffixIcon: IconButton(
-                icon: Icon(
-                  //根据passwordVisible状态显示不同的图标
-                  passwordVisible ? Icons.visibility : Icons.visibility_off,
-                  color: Theme.of(context).primaryColorDark,
-                ),
-                onPressed: () {
-                  //更新状态控制密码显示或隐藏
-                  setState(() {
-                    passwordVisible = !passwordVisible;
-                  });
-                },
+      body: Container(
+        alignment: Alignment.center,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          children: [
+            TextField(
+              controller: phoneText,
+              keyboardType: TextInputType.phone,
+              decoration: InputDecoration(
+                labelText: '手机号',
+                hintText: '请输手机号',
               ),
             ),
-          ),
-          IconButton(
+            TextField(
+              controller: passwordText,
+              keyboardType: TextInputType.text,
+              obscureText: !passwordVisible,
+              decoration: InputDecoration(
+                labelText: '密码',
+                hintText: '请输入密码',
+                //下面是重点
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    //根据passwordVisible状态显示不同的图标
+                    passwordVisible ? Icons.visibility : Icons.visibility_off,
+                    color: Theme.of(context).primaryColorDark,
+                  ),
+                  onPressed: () {
+                    //更新状态控制密码显示或隐藏
+                    setState(() {
+                      passwordVisible = !passwordVisible;
+                    });
+                  },
+                ),
+              ),
+            ),
+            TextButton(
               onPressed: () {
                 login(userStore);
               },
-              icon: Icon(Icons.navigate_next_outlined))
-        ],
+              child: Text('登录'),
+            ),
+          ],
+        ),
       ),
     );
   }
