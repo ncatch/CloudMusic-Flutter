@@ -2,7 +2,7 @@
  * @Description: 歌词组件
  * @Author: Walker
  * @Date: 2021-04-30 15:26:08
- * @LastEditTime: 2021-05-06 10:55:07
+ * @LastEditTime: 2021-05-06 11:08:06
  * @LastEditors: Walker
  */
 
@@ -26,7 +26,7 @@ class LyricState extends State<Lyric> {
   TextStyle greyStyle =
       new TextStyle(color: Colors.grey, fontSize: 15, height: 2);
 
-  int currIndex = 0;
+  int currIndex = -1;
 
   Duration getDuration(String time) {
     var times = time.split(':');
@@ -100,19 +100,16 @@ class LyricState extends State<Lyric> {
           style: style,
           textAlign: TextAlign.center,
         );
-
-        continue;
+      } else {
+        child = Text(
+          lyricArr[i],
+          style: whiteStyle,
+          textAlign: TextAlign.center,
+        );
       }
-
-      child = Text(
-        lyricArr[i],
-        style: whiteStyle,
-        textAlign: TextAlign.center,
-      );
-
       result.add(Container(
         child: child,
-        height: 50,
+        height: 40,
       ));
     }
 
@@ -129,7 +126,7 @@ class LyricState extends State<Lyric> {
       currIndex = tmpIndex;
 
       _scrollController.animateTo(
-        currIndex * 50, // 具体高度待调试
+        currIndex * 40, // 具体高度待调试
         duration: new Duration(milliseconds: 400),
         curve: Curves.linear,
       );
