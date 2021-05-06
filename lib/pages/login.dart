@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-05-06 15:12:28
+ * @LastEditTime: 2021-05-06 17:11:58
  * @LastEditors: Walker
  */
 
@@ -27,10 +27,10 @@ class LoginState extends State<Login> {
   TextEditingController phoneText = new TextEditingController();
   TextEditingController passwordText = new TextEditingController();
 
-  login(userStore) {
+  login(User userStore) {
     loginByPhone(phoneText.text, passwordText.text).then((data) {
       if (data['code'] == 200) {
-        userStore.setUserInfo(data['profile']);
+        userStore.initUserInfo(data);
         Navigator.pop(context);
       } else {
         Fluttertoast.showToast(

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-06 16:05:56
+ * @LastEditTime: 2021-05-06 19:19:03
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/store/User.dart';
@@ -24,7 +24,10 @@ class DrawerMenuState extends State<DrawerMenu> {
     Navigator.pushNamed(context, '/login');
   }
 
-  exitLogin() {}
+  exitLogin(User userStore) {
+    userStore.clearUserInfo();
+    toLogin();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,11 +79,23 @@ class DrawerMenuState extends State<DrawerMenu> {
               ),
             ),
           ),
+          isLogin
+              ? ListTile(
+                  leading: Icon(Icons.power_settings_new),
+                  title: Text('退出登录'),
+                  onTap: () {
+                    exitLogin(userStore);
+                  },
+                )
+              : Text(''),
           ListTile(
-            leading: Icon(Icons.power_settings_new),
-            title: Text('退出登录'),
-            onTap: exitLogin,
-          ),
+            leading: Icon(Icons.ac_unit),
+            title: Text(
+              userStore.levelInfo != null
+                  ? userStore.levelInfo.toString()
+                  : '无等级数据',
+            ),
+          )
         ],
       ),
     );

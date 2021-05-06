@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-06 17:39:01
- * @LastEditTime: 2021-05-06 14:12:12
+ * @LastEditTime: 2021-05-06 17:23:12
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -15,11 +15,13 @@ class PreferencesKey {
   static const PLAY_INFO = 'play_music_list'; // 播放信息
 
   static const USER_INFO = 'user_info'; // 用户信息
+  static const USER_TOKEN = 'user_token'; // 用户信息
+  static const USER_COOKIE = 'user_cookie'; // 用户信息
 }
 
 /// shared_preferences 管理类
 class PreferenceUtils {
-  static var _instance = null;
+  static var _instance;
 
   static Future<SharedPreferences> get instance async {
     if (_instance != null) return _instance;

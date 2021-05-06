@@ -2,18 +2,31 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-04-16 10:21:19
+ * @LastEditTime: 2021-05-06 19:16:36
  * @LastEditors: Walker
  */
+
+import 'dart:io';
+
 import 'package:dio/dio.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+import 'package:path_provider/path_provider.dart';
 import '../libs/config.dart';
+import './preference.dart';
 
 class DioUtil {
   static Dio dio = new Dio();
+  static var cookieJar = CookieJar();
 
   //拦截器部分
-  static tokenInter() {
-    dio.interceptors.add(InterceptorsWrapper(onRequest: (options, handler) {
+  static tokenInter() async {
+    // var cookie = await PreferenceUtils.getString(PreferencesKey.USER_COOKIE);
+
+    // List<Cookie> cookies = [Cookie.fromSetCookieValue(cookie)];
+
+    dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
       options.headers['Authorization'] = token;
 
       // Do something before request is sent
@@ -33,5 +46,12 @@ class DioUtil {
       // If you want to resolve the request with some custom data，
       // you can resolve a `Response` object eg: return `dio.resolve(response)`.
     }));
+
+    Directory appDocDir = await getApplicationDocumentsDirectory();
+    String appDocPath = appDocDir.path;
+
+    var cj = PersistCookieJar(
+        ignoreExpires: true, storage: FileStorage(appDocPath + "/.cookies/"));
+    dio.interceptors.add(CookieManager(cj));
   }
 }

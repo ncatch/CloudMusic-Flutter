@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-06 14:32:04
+ * @LastEditTime: 2021-05-06 18:01:24
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -30,6 +30,9 @@ void main() async {
       SystemUiOverlayStyle(statusBarColor: Colors.transparent);
   SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
 
+  // http请求拦截器
+  DioUtil.tokenInter();
+
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider.value(value: new PlayInfoStore()),
@@ -38,9 +41,6 @@ void main() async {
     ],
     child: MyApp(),
   ));
-
-  // http请求拦截器
-  DioUtil.tokenInter();
 }
 
 class MyApp extends StatefulWidget {
