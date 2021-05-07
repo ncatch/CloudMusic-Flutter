@@ -2,7 +2,7 @@
  * @Description: 播放控件
  * @Author: Walker
  * @Date: 2021-04-29 16:19:03
- * @LastEditTime: 2021-04-30 15:20:35
+ * @LastEditTime: 2021-05-07 15:33:28
  * @LastEditors: Walker
  */
 
@@ -111,7 +111,8 @@ class PlayMini extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Container(
-        height: playInfoStore.playIndex >= 0 ? 50 : 0,
+        height:
+            playInfoStore.isPlayer || playInfoStore.musicInfo.id > 0 ? 50 : 0,
         width: width,
         decoration: BoxDecoration(
           color: Colors.white,

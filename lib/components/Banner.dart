@@ -2,61 +2,36 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-04-29 10:10:35
+ * @LastEditTime: 2021-05-07 15:17:21
  * @LastEditors: Walker
  */
 
+import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:provider/provider.dart';
 
-import '../../../services/home.dart';
-import '../../../services/music.dart';
-import '../../../libs/enums.dart';
-import '../../../utils/preference.dart';
 import 'package:cloudmusic_flutter/components/play.dart';
 
-class DiscoverBanner extends StatefulWidget {
-  DiscoverBanner({Key? key}) : super(key: key);
+class Banner extends StatefulWidget {
+  List<BannerModel> banners;
+
+  Banner({Key? key, required this.banners}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => DiscoverBannerState();
+  State<StatefulWidget> createState() => BannerState();
 }
 
-class DiscoverBannerState extends State<DiscoverBanner> {
-  var images = [];
+class BannerState extends State<Banner> {
+  bannerClick(BannerModel info) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      Provider.of<PlayInfoStore>(context).playMusic(info.musicId);
 
-  @override
-  initState() {
-    super.initState();
-
-    getBannerInfo();
-  }
-
-  getBannerInfo() async {
-    getBanner(clientType['android']).then((value) {
-      this.setState(() {
-        images = value;
-      });
-    });
-  }
-
-  bannerClick(info) {
-    if (info['targetId'] != 0) {
-      getMusicDetail([info['targetId']]).then((res) {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext ctx) {
-          Provider.of<PlayInfoStore>(context).playMusic(info['targetId']);
-
-          // 页面跳转时传入参数
-          return Play();
-        }));
-      });
-    } else {
-      // info['url']
-    }
+      // 页面跳转时传入参数
+      return Play();
+    }));
   }
 
   @override
@@ -67,14 +42,14 @@ class DiscoverBannerState extends State<DiscoverBanner> {
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
-              bannerClick(images[index]);
+              bannerClick(widget.banners[index]);
             },
             child: Container(
               padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  images[index]['imageUrl'],
+                  widget.banners[index].imageUrl,
                   fit: BoxFit.fill,
                 ),
               ),
@@ -85,7 +60,7 @@ class DiscoverBannerState extends State<DiscoverBanner> {
         autoplay: true,
         autoplayDelay: 10000,
         loop: false,
-        itemCount: images.length,
+        itemCount: widget.banners.length,
         pagination: SwiperPagination(
           //指示器显示的位置
           alignment: Alignment.bottomCenter, // 位置 Alignment.bottomCenter 底部中间

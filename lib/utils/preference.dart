@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-06 17:39:01
- * @LastEditTime: 2021-05-06 17:23:12
+ * @LastEditTime: 2021-05-07 13:39:33
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -10,7 +10,8 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesKey {
-  static const HOME_BANNER = 'home_banner'; // 当前主题 index
+  static const HOME_DATA = 'home_data'; // 主页数据
+  static const HOME_BANNER = 'home_banner'; // banner 图
   static const HOME_SONGLIST = 'home_songlist'; // 刷新头部跟随
   static const PLAY_INFO = 'play_music_list'; // 播放信息
 

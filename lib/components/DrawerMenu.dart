@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-06 19:19:03
+ * @LastEditTime: 2021-05-07 10:09:57
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/store/User.dart';
@@ -49,20 +49,22 @@ class DrawerMenuState extends State<DrawerMenu> {
               child: Flex(
                 direction: Axis.horizontal,
                 children: [
-                  Container(
-                    height: 80,
-                    width: 80,
-                    margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(40),
-                      child: isLogin
-                          ? Image.network(
-                              userStore.userInfo.avatarUrl,
-                              fit: BoxFit.fill,
-                            )
-                          : Text(''),
-                    ),
-                  ),
+                  isLogin
+                      ? Container(
+                          height: 80,
+                          width: 80,
+                          margin: EdgeInsets.fromLTRB(0, 0, 15, 0),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(40),
+                            child: isLogin
+                                ? Image.network(
+                                    userStore.userInfo.avatarUrl,
+                                    fit: BoxFit.fill,
+                                  )
+                                : Text(''),
+                          ),
+                        )
+                      : Text(''),
                   isLogin
                       ? Text(
                           userStore.userInfo.nickname,

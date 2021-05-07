@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-28 18:03:38
- * @LastEditTime: 2021-04-30 13:51:03
+ * @LastEditTime: 2021-05-07 14:31:16
  * @LastEditors: Walker
  */
 
@@ -48,6 +48,13 @@ class MusicInfo {
     this.singerName = jsonstr["singerName"];
     this.bgImgUrl = jsonstr["bgImgUrl"];
     this.iconUrl = jsonstr["iconUrl"];
+  }
+
+  MusicInfo.fromData(Map<String, dynamic> data) {
+    this.id = data['id'];
+    this.iconUrl = data['al']['picUrl'];
+    this.musicName = data['name'];
+    this.singerName = data['ar'][0]['name'];
   }
 
   Map toJson() {

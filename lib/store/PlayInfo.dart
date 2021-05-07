@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-06 14:11:28
+ * @LastEditTime: 2021-05-07 15:47:54
  * @LastEditors: Walker
  */
 
@@ -118,10 +118,17 @@ class PlayInfoStore with ChangeNotifier {
 
     getMusicDetail([id]).then((res) {
       if (res.length > 0) {
-        musicInfo.id = id;
-        musicInfo.iconUrl = res[0]['al']['picUrl'];
-        musicInfo.musicName = res[0]['name'];
-        musicInfo.singerName = res[0]['ar'][0]['name'];
+        // musicInfo.id = id;
+        // musicInfo.iconUrl = res[0]['al']['picUrl'];
+        // musicInfo.musicName = res[0]['name'];
+        // musicInfo.singerName = res[0]['ar'][0]['name'];
+
+        musicInfo = MusicInfo.fromData(res[0]);
+
+        if (this.musicList.indexWhere((ele) => ele.id == id) < 0) {
+          this.musicList.add(musicInfo);
+        }
+
         notifyListeners();
       }
     });
@@ -145,10 +152,7 @@ class PlayInfoStore with ChangeNotifier {
 
     return audioPlayer.resume().then((value) {
       sliderValue = 0.0;
-      if (value != 1) {
-        // 播放歌曲失败
-        isPlayer = false;
-      }
+      isPlayer = value == 1;
       notifyListeners();
       return value;
     });

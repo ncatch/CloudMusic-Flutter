@@ -2,22 +2,22 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-07 15:40:01
- * @LastEditTime: 2021-04-07 15:51:07
+ * @LastEditTime: 2021-05-07 15:25:37
  * @LastEditors: Walker
  */
 class BannerModel {
   String imageUrl = "";
-  String titleColor = "";
-  String typeTitle = "";
-  String url = "";
-  String scm = "";
+  int musicId = 0;
+  int type = 0;
 
-  BannerModel(String imageUrl, String titleColor, String typeTitle, String url,
-      String scm) {
+  BannerModel(String imageUrl, int musicId) {
     this.imageUrl = imageUrl;
-    this.titleColor = titleColor;
-    this.typeTitle = typeTitle;
-    this.url = url;
-    this.scm = scm;
+    this.musicId = musicId;
+  }
+
+  BannerModel.fromJson(Map<String, dynamic> jsonstr) {
+    this.musicId = jsonstr["targetId"];
+    this.imageUrl = jsonstr["pic"];
+    this.type = jsonstr["targetType"];
   }
 }
