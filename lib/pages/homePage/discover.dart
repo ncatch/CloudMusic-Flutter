@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-08 15:19:07
+ * @LastEditTime: 2021-05-08 16:42:00
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/SongList.dart';
@@ -49,6 +49,8 @@ class DiscoverState extends State<Discover> {
       } else {
         EasyLoading.showToast(value['message'] ?? '网络异常');
       }
+    }).catchError(() {
+      EasyLoading.showToast('网络异常');
     });
   }
 

@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-05-08 16:04:51
+ * @LastEditTime: 2021-05-08 16:32:52
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Play.dart';
+import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,21 +25,39 @@ class SongMusicList extends StatefulWidget {
 }
 
 class SongListMusicState extends State<SongMusicList> {
+  List<SongMusic> musicList = [];
+
+  @override
+  initState() {
+    super.initState();
+
+    widget.model.musicList.forEach((element) {
+      musicList.addAll(element);
+    });
+  }
+
   String handleSongName(String val) {
     if (val.length <= 10) return val;
 
     return val.substring(0, 9) + '...';
   }
 
-  musicClick(context, id) {
+  musicClick(context, [int? id]) {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      Provider.of<PlayInfoStore>(context).playMusic(id);
+      int index = 0;
+      if (id != null) {
+        index = musicList.indexWhere((element) => element.id == id);
+      }
+      Provider.of<PlayInfoStore>(context).setPlayList(musicList, index);
+
       // 页面跳转时传入参数
       return Play();
     }));
   }
 
-  void moreSongList() {}
+  void btnClick(context) {
+    musicClick(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +76,9 @@ class SongListMusicState extends State<SongMusicList> {
                 widget.model.btnText,
                 style: TextStyle(color: Colors.black),
               ),
-              onPressed: moreSongList,
+              onPressed: () {
+                btnClick(context);
+              },
             ),
             top: -3,
             right: 0,
@@ -68,7 +89,7 @@ class SongListMusicState extends State<SongMusicList> {
               margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: Swiper(
                 itemBuilder: (BuildContext context, int page) {
-                  var pageData = widget.model.musicLists[page];
+                  var pageData = widget.model.musicList[page];
                   return ListView.builder(
                     itemBuilder: (BuildContext context, int index) {
                       var tmp = pageData[index];
@@ -119,7 +140,7 @@ class SongListMusicState extends State<SongMusicList> {
                 index: 0,
                 autoplay: false,
                 loop: false,
-                itemCount: widget.model.musicLists.length,
+                itemCount: widget.model.musicList.length,
               ),
             ),
           ),

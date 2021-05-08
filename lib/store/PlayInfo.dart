@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-08 10:22:15
+ * @LastEditTime: 2021-05-08 16:38:48
  * @LastEditors: Walker
  */
 
@@ -125,8 +125,8 @@ class PlayInfoStore with ChangeNotifier {
 
         musicInfo = MusicInfo.fromData(res[0]);
 
-        if (this.musicList.indexWhere((ele) => ele.id == id) < 0) {
-          this.musicList.add(musicInfo);
+        if (musicList.indexWhere((ele) => ele.id == id) < 0) {
+          musicList.add(musicInfo);
         }
 
         notifyListeners();
