@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-07 15:47:54
+ * @LastEditTime: 2021-05-08 10:22:15
  * @LastEditors: Walker
  */
 
@@ -184,6 +184,19 @@ class PlayInfoStore with ChangeNotifier {
       playMusic(tmp.id);
       cacheData();
     }
+  }
+
+  removeByIndex(index) {
+    musicList.removeAt(index);
+
+    if (playIndex >= index) {
+      playIndex--;
+    }
+    if (playIndex < 0) {
+      playIndex = 0;
+    }
+
+    notifyListeners();
   }
 
   // 播放/暂停

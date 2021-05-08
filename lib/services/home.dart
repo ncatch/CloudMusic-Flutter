@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-07 14:00:28
+ * @LastEditTime: 2021-05-08 14:15:12
  * @LastEditors: Walker
  */
 
@@ -11,24 +11,10 @@ import 'dart:convert';
 import '../utils/http.dart';
 import '../libs/config.dart';
 
-import '../utils/preference.dart';
+// import '../utils/preference.dart';
 
-Future<dynamic> getHomeData([bool disableCache = false]) async {
-  // 取缓存
-  if (!disableCache) {
-    var cache = await PreferenceUtils.getString(PreferencesKey.HOME_DATA);
-
-    if (cache != '') {
-      return jsonDecode(cache);
-    }
-  }
-
+Future<dynamic> getHomeData() async {
   return await DioUtil.dio.post(server + '/homepage/block/page').then((value) {
-    if (value.data['code'] == 200) {
-      PreferenceUtils.saveString(
-          PreferencesKey.HOME_DATA, jsonEncode(value.data));
-    }
-
     return value.data;
   });
 }

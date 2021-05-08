@@ -2,20 +2,24 @@
  * @Description: 播放控件
  * @Author: Walker
  * @Date: 2021-04-29 16:19:03
- * @LastEditTime: 2021-05-07 15:33:28
+ * @LastEditTime: 2021-05-08 10:38:38
  * @LastEditors: Walker
  */
 
 import 'package:cloudmusic_flutter/components/Play.dart';
-import 'package:cloudmusic_flutter/model/PlayInfo.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class PlayMini extends StatelessWidget {
-  removeMusic(int Index) {}
+class PlayMini extends StatefulWidget {
+  PlayMini({Key? key}) : super(key: key);
 
+  @override
+  State<StatefulWidget> createState() => PlayMiniState();
+}
+
+class PlayMiniState extends State<PlayMini> {
   getListItem(playInfoStore) {
     int playCount = playInfoStore.musicList.length;
 
@@ -47,16 +51,10 @@ class PlayMini extends StatelessWidget {
                             color: Colors.grey,
                             fontSize: 12,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                  // IconButton(
-                  //   onPressed: () {
-                  //     removeMusic(index);
-                  //   },
-                  //   icon: Icon(Icons.close),
-                  // )
                 ],
               ),
             ));

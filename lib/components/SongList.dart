@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-05-07 14:20:48
+ * @LastEditTime: 2021-05-08 11:40:50
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,9 +13,9 @@ import '../../../services/home.dart';
 
 // ignore: must_be_immutable
 class SongList extends StatefulWidget {
-  var songList;
+  SongListModel songList;
 
-  SongList({Key? key, this.songList}) : super(key: key);
+  SongList({Key? key, required this.songList}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => SongListState();
@@ -32,9 +33,10 @@ class SongListState extends State<SongList> {
   @override
   Widget build(BuildContext context) {
     var list = <Widget>[];
+    var songList = widget.songList.songList;
 
-    for (var i = 0; i < widget.songList.length; i++) {
-      var ele = widget.songList[i];
+    for (var i = 0; i < songList.length; i++) {
+      var ele = songList[i];
 
       list.add(Container(
         height: 180,
@@ -48,14 +50,14 @@ class SongListState extends State<SongList> {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.network(
-                    ele['picUrl'],
+                    ele.imageUrl,
                     fit: BoxFit.fill,
                     width: 100,
                     height: 100,
                   ),
                 ),
               ),
-              Text(handleSongName(ele['name']), style: TextStyle(fontSize: 12)),
+              Text(handleSongName(ele.name), style: TextStyle(fontSize: 12)),
             ]),
             Positioned(
                 child: Container(
@@ -69,7 +71,7 @@ class SongListState extends State<SongList> {
                       Icon(Icons.play_arrow_outlined,
                           color: Colors.white, size: 18),
                       Text(
-                        (ele['playCount'] / 10000).round().toString() + '万',
+                        (ele.playCount / 10000).round().toString() + '万',
                         style: TextStyle(color: Colors.white, fontSize: 12),
                       ),
                     ],
@@ -89,13 +91,13 @@ class SongListState extends State<SongList> {
       child: Stack(
         children: [
           Text(
-            '推荐歌单',
+            widget.songList.title,
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Positioned(
             child: TextButton(
               child: Text(
-                '更多 >',
+                widget.songList.btnText,
                 style: TextStyle(color: Colors.black),
               ),
               onPressed: moreSongList,

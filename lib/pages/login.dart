@@ -2,14 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-05-07 10:04:30
+ * @LastEditTime: 2021-05-08 14:27:03
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 import '../store/User.dart';
 
@@ -32,12 +32,7 @@ class LoginState extends State<Login> {
         userStore.initUserInfo(data);
         Navigator.pop(context);
       } else {
-        Fluttertoast.showToast(
-          msg: data['msg'] ?? '未知的错误',
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          fontSize: 16.0,
-        );
+        EasyLoading.showToast(data['msg'] ?? '未知的错误');
       }
     });
   }

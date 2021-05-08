@@ -2,11 +2,12 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-05-07 15:17:21
+ * @LastEditTime: 2021-05-08 10:58:08
  * @LastEditors: Walker
  */
 
 import 'package:cloudmusic_flutter/model/Banner.dart';
+import 'package:cloudmusic_flutter/pages/webView.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ import 'package:provider/provider.dart';
 import 'package:cloudmusic_flutter/components/play.dart';
 
 class Banner extends StatefulWidget {
-  List<BannerModel> banners;
+  final List<BannerModel> banners;
 
   Banner({Key? key, required this.banners}) : super(key: key);
 
@@ -27,10 +28,16 @@ class Banner extends StatefulWidget {
 class BannerState extends State<Banner> {
   bannerClick(BannerModel info) {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      Provider.of<PlayInfoStore>(context).playMusic(info.musicId);
-
-      // 页面跳转时传入参数
-      return Play();
+      switch (info.type) {
+        case 3000:
+          return WebViewComponent(url: info.url);
+        case 10:
+        case 1:
+        default:
+          Provider.of<PlayInfoStore>(context).playMusic(info.musicId);
+          // 页面跳转时传入参数
+          return Play();
+      }
     }));
   }
 
