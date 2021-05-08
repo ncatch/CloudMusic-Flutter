@@ -2,13 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-08 16:38:48
+ * @LastEditTime: 2021-05-08 19:32:17
  * @LastEditors: Walker
  */
 
 import 'dart:convert';
 
 import 'package:audioplayers/audioplayers.dart';
+import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:volume_controller/volume_controller.dart';
@@ -39,6 +40,8 @@ class PlayInfoStore with ChangeNotifier {
   List<String> lyricArr = [];
   int playIndex = -1;
 
+  var playMode = playModes.repeat;
+
   PlayInfoStore() {
     // 监听系统声音变化 调整播放声音
     VolumeController.volumeListener.listen((volume) {
@@ -59,7 +62,7 @@ class PlayInfoStore with ChangeNotifier {
         notifyListeners();
       })
       ..onPlayerCompletion.listen((event) {
-        // TODO 根据播放模式进行下一步操作 目前没有效果
+        // TODO 根据播放模式进行下一步操作
         if (playIndex < musicList.length - 1) {
           next();
         } else {
@@ -77,6 +80,7 @@ class PlayInfoStore with ChangeNotifier {
     if (cache != null) {
       playIndex = cache['playIndex'];
       musicLyric = cache['musicLyric'];
+      playMode = cache['playModeval'];
       musicInfo = MusicInfo.fromJson(cache['musicInfo']);
 
       musicList = List<MusicInfo>.from(
@@ -93,6 +97,7 @@ class PlayInfoStore with ChangeNotifier {
       "musicLyric": musicLyric,
       "musicInfo": musicInfo,
       "musicList": musicList,
+      "playModeval": playMode,
     });
   }
 
@@ -196,6 +201,12 @@ class PlayInfoStore with ChangeNotifier {
       playIndex = 0;
     }
 
+    notifyListeners();
+  }
+
+  // 修改播放模式
+  changePlayMode(playModes mode) {
+    playMode = mode;
     notifyListeners();
   }
 

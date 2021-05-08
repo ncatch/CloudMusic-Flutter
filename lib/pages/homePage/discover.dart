@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-08 16:42:00
+ * @LastEditTime: 2021-05-08 17:38:39
  * @LastEditors: Walker
  */
+import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
 import 'package:cloudmusic_flutter/model/Banner.dart';
@@ -14,7 +15,6 @@ import 'package:cloudmusic_flutter/services/home.dart';
 import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 // 当前页面组件
 import '../../../components/Banner.dart' as BannerComponent;
@@ -47,10 +47,10 @@ class DiscoverState extends State<Discover> {
         PreferenceUtils.saveJSON(PreferencesKey.HOME_DATA, value['data']);
         initHomeComponents(value['data']);
       } else {
-        EasyLoading.showToast(value['message'] ?? '网络异常');
+        BotToast.showText(text: value['message'] ?? '网络异常');
       }
     }).catchError(() {
-      EasyLoading.showToast('网络异常');
+      BotToast.showText(text: '网络异常');
     });
   }
 

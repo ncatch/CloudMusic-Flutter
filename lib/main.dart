@@ -2,16 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-08 14:26:07
+ * @LastEditTime: 2021-05-08 17:35:22
  * @LastEditors: Walker
  */
 // @dart=2.9
 
-import 'package:flutter/gestures.dart';
+import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 import './pages/home.dart';
@@ -60,7 +58,8 @@ class _MyAppState extends State<MyApp> {
           scaffoldBackgroundColor: Colors.white),
       home: HomeStatefulWidget(),
       routes: routes,
-      builder: EasyLoading.init(),
+      navigatorObservers: [BotToastNavigatorObserver()],
+      builder: BotToastInit(),
     );
   }
 }

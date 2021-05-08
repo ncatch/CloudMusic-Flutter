@@ -2,7 +2,7 @@
  * @Description: 播放控件
  * @Author: Walker
  * @Date: 2021-04-29 16:19:03
- * @LastEditTime: 2021-05-08 10:38:38
+ * @LastEditTime: 2021-05-08 17:54:15
  * @LastEditors: Walker
  */
 
@@ -12,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Base/ShowCurrMusicList.dart';
+
 class PlayMini extends StatefulWidget {
   PlayMini({Key? key}) : super(key: key);
 
@@ -19,90 +21,7 @@ class PlayMini extends StatefulWidget {
   State<StatefulWidget> createState() => PlayMiniState();
 }
 
-class PlayMiniState extends State<PlayMini> {
-  getListItem(playInfoStore) {
-    int playCount = playInfoStore.musicList.length;
-
-    return ListView.builder(
-      itemCount: playCount,
-      itemBuilder: (context, index) {
-        var tmpInfo = playInfoStore.musicList[index];
-
-        return InkWell(
-            onTap: () {
-              playInfoStore.setPlayIndex(index);
-              Navigator.pop(context);
-            },
-            child: Container(
-              height: 30,
-              child: Flex(
-                direction: Axis.horizontal,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Row(
-                      children: [
-                        Text(
-                          tmpInfo.musicName,
-                        ),
-                        Text(
-                          '-' + tmpInfo.singerName,
-                          style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ));
-      },
-    );
-  }
-
-  showMusicList(context, playInfoStore) {
-    int playCount = playInfoStore.musicList.length;
-
-    showModalBottomSheet(
-      context: context,
-      isDismissible: true,
-      isScrollControlled: false,
-      backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(15),
-          topRight: Radius.circular(15),
-        ),
-      ),
-      builder: (BuildContext context) {
-        return Container(
-          margin: EdgeInsets.fromLTRB(15, 0, 15, 15),
-          padding: EdgeInsets.fromLTRB(15, 0, 15, 15),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          child: Flex(
-            direction: Axis.vertical,
-            children: [
-              Container(
-                height: 50,
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  '当前播放（$playCount）',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                ),
-              ),
-              Expanded(flex: 1, child: getListItem(playInfoStore))
-            ],
-          ),
-        );
-      },
-    );
-  }
-
+class PlayMiniState extends State<PlayMini> with ShowCurrMusicList {
   @override
   Widget build(BuildContext context) {
     var playInfoStore = Provider.of<PlayInfoStore>(context);
@@ -159,7 +78,7 @@ class PlayMiniState extends State<PlayMini> {
                   onPressed: () {
                     showMusicList(context, playInfoStore);
                   },
-                  icon: Icon(Icons.list),
+                  icon: Icon(Icons.playlist_play_rounded),
                   iconSize: 30,
                 ),
               ),

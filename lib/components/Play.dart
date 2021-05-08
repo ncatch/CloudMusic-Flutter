@@ -2,7 +2,7 @@
  * @Description: 播放页面
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-04-30 17:09:32
+ * @LastEditTime: 2021-05-08 19:24:32
  * @LastEditors: Walker
  */
 
@@ -14,6 +14,8 @@ import 'package:provider/provider.dart';
 
 import './Lyric.dart';
 import '../store/PlayInfo.dart';
+import 'Base/ShowCurrMusicList.dart';
+import 'PlayMode.dart';
 
 class Play extends StatefulWidget {
   Play({Key? key}) : super(key: key);
@@ -22,14 +24,14 @@ class Play extends StatefulWidget {
   State<StatefulWidget> createState() => PlayState();
 }
 
-class PlayState extends State<Play> {
+class PlayState extends State<Play> with ShowCurrMusicList {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     double width = size.width;
     double height = size.height;
 
-    PlayInfoStore playInfoStore = Provider.of<PlayInfoStore>(context);
+    var playInfoStore = Provider.of<PlayInfoStore>(context);
 
     return Scaffold(
       body: Container(
@@ -119,6 +121,7 @@ class PlayState extends State<Play> {
                     // alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
+                      PlayMode(),
                       IconButton(
                         onPressed: playInfoStore.previous,
                         icon: Icon(Icons.skip_previous_outlined),
@@ -142,6 +145,14 @@ class PlayState extends State<Play> {
                                 playInfoStore.musicList.length - 1
                             ? Colors.grey
                             : Colors.white,
+                        iconSize: 30,
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          showMusicList(context, playInfoStore);
+                        },
+                        icon: Icon(Icons.playlist_play_rounded),
+                        color: Colors.white,
                         iconSize: 30,
                       )
                     ],
