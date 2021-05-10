@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-10 19:29:51
+ * @LastEditTime: 2021-05-10 21:33:59
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -80,10 +80,14 @@ class DiscoverState extends State<Discover> {
   Widget build(BuildContext context) {
     List<Widget> tmp = [];
 
-    for (var i = 0; i < homeData.length; i++) {
-      var ele = homeData[i];
+    if (homeData.length > 0) {
+      for (var i = 0; i < homeData.length; i++) {
+        var ele = homeData[i];
 
-      tmp.add(getWidgetByType(ele));
+        tmp.add(getWidgetByType(ele));
+      }
+
+      tmp.insert(1, DiscoverMenu());
     }
 
     return Container(

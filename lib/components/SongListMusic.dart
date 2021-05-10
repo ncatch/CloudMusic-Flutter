@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-05-08 16:32:52
+ * @LastEditTime: 2021-05-10 21:43:33
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Play.dart';
@@ -65,6 +65,7 @@ class SongListMusicState extends State<SongMusicList> {
       height: 200,
       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
       child: Stack(
+        fit: StackFit.expand,
         children: [
           Text(
             widget.model.title,
@@ -88,6 +89,7 @@ class SongListMusicState extends State<SongMusicList> {
               height: 180,
               margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
               child: Swiper(
+                key: UniqueKey(),
                 itemBuilder: (BuildContext context, int page) {
                   var pageData = widget.model.musicList[page];
                   return ListView.builder(
@@ -138,8 +140,6 @@ class SongListMusicState extends State<SongMusicList> {
                   );
                 },
                 index: 0,
-                autoplay: false,
-                loop: false,
                 itemCount: widget.model.musicList.length,
               ),
             ),

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-10 17:58:15
+ * @LastEditTime: 2021-05-10 21:47:25
  * @LastEditors: Walker
  */
 
@@ -103,7 +103,7 @@ class PlayInfoStore with ChangeNotifier {
     if (cache != null) {
       playIndex = cache['playIndex'];
       musicLyric = cache['musicLyric'];
-      playMode = cache['playModeval'];
+      playMode = playModes.values[cache['playModeval']];
       musicInfo = MusicInfo.fromJson(cache['musicInfo']);
 
       musicList = List<MusicInfo>.from(
@@ -115,12 +115,14 @@ class PlayInfoStore with ChangeNotifier {
 
   // 缓存数据
   cacheData() {
+    var playModeIndex = playModes.values.indexOf(playMode);
+
     PreferenceUtils.saveJSON(PreferencesKey.PLAY_INFO, {
       "playIndex": playIndex,
       "musicLyric": musicLyric,
       "musicInfo": musicInfo,
       "musicList": musicList,
-      "playModeval": playMode,
+      "playModeval": playModeIndex,
     });
   }
 
