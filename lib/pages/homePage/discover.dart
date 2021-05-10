@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-10 17:58:23
+ * @LastEditTime: 2021-05-10 19:29:51
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -56,7 +56,7 @@ class DiscoverState extends State<Discover> {
     });
   }
 
-  getWidgetByType(ele) {
+  Widget getWidgetByType(ele) {
     switch (ele["showType"]) {
       case "BANNER":
         var data = List<BannerModel>.from(
@@ -78,12 +78,17 @@ class DiscoverState extends State<Discover> {
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> tmp = [];
+
+    for (var i = 0; i < homeData.length; i++) {
+      var ele = homeData[i];
+
+      tmp.add(getWidgetByType(ele));
+    }
+
     return Container(
-      child: ListView.builder(
-        itemCount: homeData.length,
-        itemBuilder: (context, index) {
-          return getWidgetByType(homeData[index]);
-        },
+      child: Column(
+        children: tmp,
       ),
     );
   }
