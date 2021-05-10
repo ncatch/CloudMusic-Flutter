@@ -2,11 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-08 19:32:17
+ * @LastEditTime: 2021-05-10 10:19:04
  * @LastEditors: Walker
  */
 
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
@@ -62,11 +63,33 @@ class PlayInfoStore with ChangeNotifier {
         notifyListeners();
       })
       ..onPlayerCompletion.listen((event) {
-        // TODO 根据播放模式进行下一步操作
-        if (playIndex < musicList.length - 1) {
-          next();
-        } else {
-          audioPlayer.stop();
+        switch (playMode) {
+          case playModes.order:
+            if (playIndex < musicList.length - 1) {
+              next();
+            } else {
+              audioPlayer.stop();
+            }
+            break;
+          case playModes.random:
+            var tmpIndex;
+            do {
+              tmpIndex = Random().nextInt(musicList.length);
+            } while (tmpIndex == playIndex);
+
+            setPlayIndex(tmpIndex);
+            break;
+          case playModes.repeat:
+            if (playIndex < musicList.length - 1) {
+              next();
+            } else {
+              setPlayIndex(0);
+            }
+            break;
+          case playModes.repeatOne:
+            position = new Duration(seconds: 0);
+            audioPlayer.seek(position);
+            break;
         }
       });
 
