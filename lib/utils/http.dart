@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-07 10:21:01
+ * @LastEditTime: 2021-05-10 17:41:53
  * @LastEditors: Walker
  */
 
@@ -47,11 +47,11 @@ class DioUtil {
       // you can resolve a `Response` object eg: return `dio.resolve(response)`.
     }));
 
-    Directory appDocDir = await getApplicationDocumentsDirectory();
-    String appDocPath = appDocDir.path;
+    // Directory appDocDir = await getApplicationDocumentsDirectory();
+    // String appDocPath = appDocDir.path;
 
-    var cj = PersistCookieJar(
-        ignoreExpires: true, storage: FileStorage(appDocPath + "/.cookies/"));
-    dio.interceptors.add(CookieManager(cj));
+    // var cj = PersistCookieJar(
+    //     ignoreExpires: true, storage: FileStorage(appDocPath + "/.cookies/"));
+    // dio.interceptors.add(CookieManager(cj));
   }
 }

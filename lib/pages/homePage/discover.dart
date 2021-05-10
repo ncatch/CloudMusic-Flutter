@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-08 17:38:39
+ * @LastEditTime: 2021-05-10 17:58:23
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -29,13 +29,15 @@ class Discover extends StatefulWidget {
 
 class DiscoverState extends State<Discover> {
   List<Widget> homeModel = [];
-
+  List<dynamic> homeData = [];
   @override
   void initState() {
     super.initState();
 
     PreferenceUtils.getJSON(PreferencesKey.HOME_DATA).then((value) {
-      initHomeComponents(value);
+      this.setState(() {
+        homeData = value['blocks'];
+      });
     });
 
     refreshHomeData();
@@ -45,56 +47,43 @@ class DiscoverState extends State<Discover> {
     getHomeData().then((value) {
       if (value['code'] == 200) {
         PreferenceUtils.saveJSON(PreferencesKey.HOME_DATA, value['data']);
-        initHomeComponents(value['data']);
+        setState(() {
+          homeData = value['data']['blocks'];
+        });
       } else {
         BotToast.showText(text: value['message'] ?? '网络异常');
       }
-    }).catchError(() {
-      BotToast.showText(text: '网络异常');
     });
   }
 
-  initHomeComponents(value) {
-    List<Widget> tmp = [];
-    for (var i = 0; i < value['blocks'].length; i++) {
-      var ele = value['blocks'][i];
+  getWidgetByType(ele) {
+    switch (ele["showType"]) {
+      case "BANNER":
+        var data = List<BannerModel>.from(
+            ele['extInfo']['banners'].map((ele) => BannerModel.fromJson(ele)));
 
-      switch (ele["showType"]) {
-        case "BANNER":
-          var data = List<BannerModel>.from(ele['extInfo']['banners']
-              .map((ele) => BannerModel.fromJson(ele)));
+        return BannerComponent.Banner(banners: data);
+      case "HOMEPAGE_SLIDE_PLAYLIST":
+        var data = SongListModel.fromJson(ele);
 
-          tmp.add(BannerComponent.Banner(banners: data));
-          break;
-        case "HOMEPAGE_SLIDE_PLAYLIST":
-          var data = SongListModel.fromJson(ele);
+        return SongList(songList: data);
+      case "HOMEPAGE_SLIDE_SONGLIST_ALIGN":
+        var data = SongMusicListModel.fromJson(ele);
 
-          tmp.add(SongList(songList: data));
-          break;
-        case "HOMEPAGE_SLIDE_SONGLIST_ALIGN":
-          var data = SongMusicListModel.fromJson(ele);
-
-          tmp.add(SongMusicList(model: data));
-          break;
-        default:
-      }
-
-      if (i == 0) {
-        homeModel.add(DiscoverMenu());
-      }
+        return SongMusicList(model: data);
+      default:
+        return Container();
     }
-    this.setState(() {
-      homeModel = tmp;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
-        child: Column(
-          children: homeModel,
-        ),
+      child: ListView.builder(
+        itemCount: homeData.length,
+        itemBuilder: (context, index) {
+          return getWidgetByType(homeData[index]);
+        },
       ),
     );
   }

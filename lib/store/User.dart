@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-07 11:46:06
+ * @LastEditTime: 2021-05-10 17:19:15
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
@@ -16,8 +16,10 @@ class User with ChangeNotifier {
 
   User() {
     PreferenceUtils.getJSON(PreferencesKey.USER_INFO).then((data) {
-      userInfo = _createUserInfo(data);
-      notifyListeners();
+      if (data != null) {
+        userInfo = _createUserInfo(data);
+        notifyListeners();
+      }
     });
 
     initUserInfo();
