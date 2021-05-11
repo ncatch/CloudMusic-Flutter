@@ -104,7 +104,7 @@ class PlayInfoStore with ChangeNotifier {
     if (cache != null) {
       playIndex = cache['playIndex'];
       musicLyric = cache['musicLyric'];
-      playMode = cache['playModeval'];
+      playMode = playModes.values[cache['playModeval']];
       musicInfo = MusicInfo.fromJson(cache['musicInfo']);
 
       musicList = List<MusicInfo>.from(
@@ -116,12 +116,14 @@ class PlayInfoStore with ChangeNotifier {
 
   // 缓存数据
   cacheData() {
+    var playModeIndex = playModes.values.indexOf(playMode);
+
     PreferenceUtils.saveJSON(PreferencesKey.PLAY_INFO, {
       "playIndex": playIndex,
       "musicLyric": musicLyric,
       "musicInfo": musicInfo,
       "musicList": musicList,
-      "playModeval": playMode,
+      "playModeval": playModeIndex,
     });
   }
 

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-05-11 16:47:07
+ * @LastEditTime: 2021-05-11 19:42:06
  * @LastEditors: Walker
  */
 
@@ -83,6 +83,12 @@ class SearchPageState extends State<SearchPage> {
     }));
   }
 
+  hotMusicLick(key) {
+    // 搜索key
+    searchText.text = key;
+    searchChange(key);
+  }
+
   // 搜索
   searchChange(String search) {
     if (search == '') {
@@ -97,7 +103,7 @@ class SearchPageState extends State<SearchPage> {
       time = null;
     }
 
-    time = new Timer(Duration(milliseconds: 500), () {
+    time = new Timer(Duration(milliseconds: 200), () {
       searchSong(search).then((value) {
         this.setState(() {
           searchList = value;
@@ -119,31 +125,35 @@ class SearchPageState extends State<SearchPage> {
     for (var i = 0; i < length; i++) {
       hotTitles.add(
         Container(
-          width: width / 2,
-          height: 25,
-          child: Row(children: [
-            Container(
-              width: 22,
-              child: Text((i + 1).toString(),
+            width: width / 2,
+            height: 25,
+            child: InkWell(
+              onTap: () {
+                hotMusicLick(hotList[i]['searchWord']);
+              },
+              child: Row(children: [
+                Container(
+                  width: 22,
+                  child: Text((i + 1).toString(),
+                      style: TextStyle(
+                          color: i < 3 ? Colors.red : Colors.grey,
+                          fontSize: fontSize)),
+                ),
+                Text(
+                  hotList[i]['searchWord'],
                   style: TextStyle(
-                      color: i < 3 ? Colors.red : Colors.grey,
-                      fontSize: fontSize)),
-            ),
-            Text(
-              hotList[i]['searchWord'],
-              style: TextStyle(
-                  fontSize: fontSize,
-                  fontWeight: i < 3 ? FontWeight.w600 : FontWeight.w400),
-            ),
-            hotList[i]['iconUrl'] != null
-                ? Image.network(
-                    hotList[i]['iconUrl'],
-                    width: 30,
-                    height: 12,
-                  )
-                : Text(''),
-          ]),
-        ),
+                      fontSize: fontSize,
+                      fontWeight: i < 3 ? FontWeight.w600 : FontWeight.w400),
+                ),
+                hotList[i]['iconUrl'] != null
+                    ? Image.network(
+                        hotList[i]['iconUrl'],
+                        width: 30,
+                        height: 12,
+                      )
+                    : Text(''),
+              ]),
+            )),
       );
     }
 

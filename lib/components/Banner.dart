@@ -2,7 +2,7 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-05-08 10:58:08
+ * @LastEditTime: 2021-05-10 21:43:20
  * @LastEditors: Walker
  */
 
@@ -46,6 +46,7 @@ class BannerState extends State<Banner> {
     return Container(
       height: 180,
       child: Swiper(
+        key: UniqueKey(),
         itemBuilder: (BuildContext context, int index) {
           return InkWell(
             onTap: () {
