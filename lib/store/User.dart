@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-10 17:19:15
+ * @LastEditTime: 2021-05-11 16:31:23
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
@@ -58,11 +58,13 @@ class User with ChangeNotifier {
       PreferenceUtils.saveString(PreferencesKey.USER_TOKEN, data['token']);
     }
 
-    // 获取用户等级信息
-    getUserLevel().then((res) {
-      levelInfo = res;
-      notifyListeners();
-    });
-    // 获取用户歌单
+    if (userInfo.userId > 0) {
+      // 获取用户等级信息
+      getUserLevel().then((res) {
+        levelInfo = res;
+        notifyListeners();
+      });
+      // 获取用户歌单
+    }
   }
 }

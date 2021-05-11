@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-05-08 17:36:04
+ * @LastEditTime: 2021-05-11 16:08:33
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -32,7 +32,7 @@ class LoginState extends State<Login> {
         userStore.initUserInfo(data);
         Navigator.pop(context);
       } else {
-        BotToast.showText(text: data['msg'] ?? '未知的错误');
+        BotToast.showText(text: data['msg'] ?? '网络异常');
       }
     });
   }

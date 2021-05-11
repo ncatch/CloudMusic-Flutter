@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-10 17:37:41
+ * @LastEditTime: 2021-05-11 16:27:00
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
@@ -58,28 +58,29 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
     return Scaffold(
         drawer: DrawerMenu(),
         appBar: AppBar(
-            title: Container(
-          height: 38,
-          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-          ),
-          child: InkWell(
-            onTap: () {
-              Navigator.pushNamed(context, '/search');
-            },
-            child: Row(
-              children: [
-                Icon(Icons.search, color: Colors.grey),
-                Text(
-                  '搜索',
-                  style: TextStyle(color: Colors.grey),
-                )
-              ],
+          title: Container(
+            height: 38,
+            padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/search');
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.search, color: Colors.grey),
+                  Text(
+                    '搜索',
+                    style: TextStyle(color: Colors.grey),
+                  )
+                ],
+              ),
             ),
           ),
-        )),
+        ),
         body: Flex(
           direction: Axis.vertical,
           children: [

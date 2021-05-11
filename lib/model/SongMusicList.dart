@@ -2,13 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-07 15:40:01
- * @LastEditTime: 2021-05-08 16:25:30
+ * @LastEditTime: 2021-05-11 16:46:28
  * @LastEditors: Walker
  */
 
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'MusicInfo.dart';
 import 'PlayInfo.dart';
 
 class SongMusicListModel {

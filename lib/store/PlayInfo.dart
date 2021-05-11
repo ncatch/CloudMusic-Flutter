@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-10 17:58:15
+ * @LastEditTime: 2021-05-11 17:34:34
  * @LastEditors: Walker
  */
 
@@ -15,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:volume_controller/volume_controller.dart';
 import '../model/PlayInfo.dart';
+import '../model/MusicInfo.dart';
 
 import '../libs/config.dart';
 import '../utils/preference.dart';

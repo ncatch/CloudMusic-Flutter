@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 14:16:20
- * @LastEditTime: 2021-04-29 10:02:30
+ * @LastEditTime: 2021-05-11 17:00:56
  * @LastEditors: Walker
  */
 import 'dart:convert';
+import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:dio/dio.dart';
 
 import '../utils/http.dart';

@@ -2,12 +2,13 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:35:14
- * @LastEditTime: 2021-05-06 11:19:50
+ * @LastEditTime: 2021-05-11 16:47:07
  * @LastEditors: Walker
  */
 
 import 'dart:async';
 
+import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
