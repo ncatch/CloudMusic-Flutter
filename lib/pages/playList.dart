@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-12 11:13:11
+ * @LastEditTime: 2021-05-12 14:42:51
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -15,6 +15,7 @@ import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
 
 class PlayList extends StatefulWidget {
   var songId;
@@ -26,7 +27,7 @@ class PlayList extends StatefulWidget {
 }
 
 class PlayListState extends State<PlayList> {
-  double headHeight = 300; // head 高度
+  double headHeight = 270; // head 高度
   double appBarImgOper = 0; // appbar 透明度
   double sunkenHeight = 20; // head 凹陷高度
 
@@ -46,6 +47,12 @@ class PlayListState extends State<PlayList> {
       }
     });
   }
+
+  // 显示简介详情
+  showDescript() {}
+
+  // 关注
+  attention() {}
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +107,7 @@ class PlayListState extends State<PlayList> {
                             opacity: 0.6,
                             child: new Container(
                               decoration: new BoxDecoration(
-                                color: Colors.grey.shade900,
+                                color: Colors.white,
                               ),
                             ),
                           ),
@@ -120,10 +127,15 @@ class PlayListState extends State<PlayList> {
                   ),
                 ),
                 Positioned(
-                  top: 50,
-                  child: Column(
+                  top: 60,
+                  width: size.width,
+                  height: headHeight - 140,
+                  child: Flex(
+                    direction: Axis.horizontal,
                     children: [
                       Container(
+                        width: 130,
+                        margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
                         child: Stack(
                           children: [
                             Container(
@@ -133,8 +145,8 @@ class PlayListState extends State<PlayList> {
                                 child: Image.network(
                                   playListInfo.coverImgUrl,
                                   fit: BoxFit.fill,
-                                  width: 100,
-                                  height: 100,
+                                  width: 114,
+                                  height: 114,
                                 ),
                               ),
                             ),
@@ -163,9 +175,83 @@ class PlayListState extends State<PlayList> {
                               ),
                               height: 22,
                               top: 4,
-                              right: 10,
+                              right: 25,
                             )
                           ],
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          padding: EdgeInsets.fromLTRB(4, 0, 20, 0),
+                          height: headHeight,
+                          child: Wrap(
+                            alignment: WrapAlignment.start,
+                            children: [
+                              Container(
+                                child: Text(
+                                  playListInfo.title,
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                child: Wrap(
+                                  children: [
+                                    Container(
+                                      margin: EdgeInsets.fromLTRB(0, 0, 6, 0),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: Image.network(
+                                          playListInfo.creator.avatarUrl,
+                                          fit: BoxFit.fill,
+                                          width: 24,
+                                          height: 24,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      playListInfo.creator.nickname,
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    InkWell(
+                                      onTap: attention,
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(5, 2, 0, 0),
+                                        padding:
+                                            EdgeInsets.fromLTRB(8, 0, 8, 0),
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          color: Colors.grey.shade300,
+                                        ),
+                                        child: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                          size: 16,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                child: InkWell(
+                                  onTap: () {
+                                    showDescript();
+                                  },
+                                  child: Text(
+                                    playListInfo.descript.overFlowString(10) +
+                                        ' >',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       )
                     ],

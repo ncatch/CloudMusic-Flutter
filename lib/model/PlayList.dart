@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-12 11:06:23
+ * @LastEditTime: 2021-05-12 14:44:05
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
+import 'package:cloudmusic_flutter/model/Creator.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 
 class PlayListModel {
@@ -14,7 +15,7 @@ class PlayListModel {
   String coverImgUrl = "";
   String descript = "";
   int playCount = 0;
-  var creator = {}; // 创建人
+  Creator creator = Creator(); // 创建人
   var tags = [];
   List<MusicInfo> musicList = [];
   List<dynamic> subscribers = [];
@@ -34,7 +35,7 @@ class PlayListModel {
     this.headBgUrl = headBgUrl;
     this.coverImgUrl = coverImgUrl;
 
-    this.creator = creator ?? {};
+    this.creator = creator ?? Creator();
   }
 
   PlayListModel.fromData(Map<String, dynamic> data) {
@@ -46,7 +47,7 @@ class PlayListModel {
     this.playCount = data['playCount'];
 
     this.subscribers = data['subscribers'];
-    this.creator = data['creator'];
+    this.creator = Creator.fromData(data['creator']);
 
     this.musicList = List<MusicInfo>.from(
         data['tracks'].map<MusicInfo>((ele) => MusicInfo.fromData(ele)));
