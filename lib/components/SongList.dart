@@ -2,13 +2,15 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-05-11 16:11:27
+ * @LastEditTime: 2021-05-12 15:45:09
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/pages/playList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../libs/extends/IntExtend.dart';
 
 import '../../../services/home.dart';
 
@@ -84,7 +86,7 @@ class SongListState extends State<SongList> {
                         Icon(Icons.play_arrow_outlined,
                             color: Colors.white, size: 18),
                         Text(
-                          (ele.playCount / 10000).round().toString() + '万',
+                          ele.playCount.toMyriadString(),
                           style: TextStyle(color: Colors.white, fontSize: 12),
                         ),
                       ],

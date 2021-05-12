@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-12 14:44:05
+ * @LastEditTime: 2021-05-12 15:00:40
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -15,6 +15,10 @@ class PlayListModel {
   String coverImgUrl = "";
   String descript = "";
   int playCount = 0;
+  int subscribedCount = 0; // 收藏数
+  int shareCount = 0; // 分享数
+  int commentCount = 0; // 评论数
+
   Creator creator = Creator(); // 创建人
   var tags = [];
   List<MusicInfo> musicList = [];
@@ -45,6 +49,9 @@ class PlayListModel {
     this.title = data['name'];
     this.tags = data['tags'];
     this.playCount = data['playCount'];
+    this.subscribedCount = data['subscribedCount'];
+    this.shareCount = data['shareCount'];
+    this.commentCount = data['commentCount'];
 
     this.subscribers = data['subscribers'];
     this.creator = Creator.fromData(data['creator']);
