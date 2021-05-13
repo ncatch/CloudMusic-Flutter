@@ -2,12 +2,13 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-13 11:38:16
+ * @LastEditTime: 2021-05-13 13:41:30
  * @LastEditors: Walker
  */
 
 import 'dart:io';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -24,6 +25,17 @@ class DioUtil {
     // var cookie = await PreferenceUtils.getString(PreferencesKey.USER_COOKIE);
 
     // List<Cookie> cookies = [Cookie.fromSetCookieValue(cookie)];
+
+    try {
+      Directory appDocDir = await getApplicationDocumentsDirectory();
+      String appDocPath = appDocDir.path;
+
+      var cj = PersistCookieJar(
+          ignoreExpires: true, storage: FileStorage(appDocPath + "/.cookies/"));
+      dio.interceptors.add(CookieManager(cj));
+    } catch (e) {
+      print(e);
+    }
 
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
@@ -46,16 +58,5 @@ class DioUtil {
       // If you want to resolve the request with some custom data，
       // you can resolve a `Response` object eg: return `dio.resolve(response)`.
     }));
-
-    try {
-      Directory appDocDir = await getApplicationDocumentsDirectory();
-      String appDocPath = appDocDir.path;
-
-      var cj = PersistCookieJar(
-          ignoreExpires: true, storage: FileStorage(appDocPath + "/.cookies/"));
-      dio.interceptors.add(CookieManager(cj));
-    } catch (e) {
-      print(e);
-    }
   }
 }

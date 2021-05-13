@@ -2,12 +2,13 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-12 15:00:40
+ * @LastEditTime: 2021-05-13 13:48:40
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/model/Creator.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
+import 'package:cloudmusic_flutter/model/UserInfo.dart';
 
 class PlayListModel {
   String title = "";
@@ -22,7 +23,7 @@ class PlayListModel {
   Creator creator = Creator(); // 创建人
   var tags = [];
   List<MusicInfo> musicList = [];
-  List<dynamic> subscribers = [];
+  List<UserInfo> subscribers = [];
 
   PlayListModel({
     String title = "",
@@ -53,8 +54,10 @@ class PlayListModel {
     this.shareCount = data['shareCount'];
     this.commentCount = data['commentCount'];
 
-    this.subscribers = data['subscribers'];
     this.creator = Creator.fromData(data['creator']);
+
+    this.subscribers = List<UserInfo>.from(
+        data['subscribers'].mape<UserInfo>((ele) => UserInfo.fromJson(ele)));
 
     this.musicList = List<MusicInfo>.from(
         data['tracks'].map<MusicInfo>((ele) => MusicInfo.fromData(ele)));

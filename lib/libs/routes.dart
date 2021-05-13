@@ -2,11 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:34:13
- * @LastEditTime: 2021-05-11 16:00:37
+ * @LastEditTime: 2021-05-13 13:45:26
  * @LastEditors: Walker
  */
 
-import 'package:cloudmusic_flutter/pages/playList.dart';
+import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../components/SearchPage.dart';

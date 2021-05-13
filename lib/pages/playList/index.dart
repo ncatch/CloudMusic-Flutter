@@ -18,7 +18,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
 import 'package:provider/provider.dart';
-import '../libs/extends/IntExtend.dart';
+import '../../libs/extends/IntExtend.dart';
 
 class PlayList extends StatefulWidget {
   final songId;

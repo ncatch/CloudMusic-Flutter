@@ -2,7 +2,7 @@
  * @Description: 歌词组件
  * @Author: Walker
  * @Date: 2021-04-30 15:26:08
- * @LastEditTime: 2021-05-08 13:42:48
+ * @LastEditTime: 2021-05-13 11:51:29
  * @LastEditors: Walker
  */
 
@@ -125,11 +125,13 @@ class LyricState extends State<Lyric> {
     if (tmpIndex != currIndex) {
       currIndex = tmpIndex;
 
-      _scrollController.animateTo(
-        currIndex * 40, // 具体高度待调试
-        duration: new Duration(milliseconds: 400),
-        curve: Curves.linear,
-      );
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          currIndex * 40, // 具体高度待调试
+          duration: new Duration(milliseconds: 400),
+          curve: Curves.linear,
+        );
+      }
     }
   }
 

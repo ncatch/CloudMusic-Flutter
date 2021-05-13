@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-13 11:46:53
+ * @LastEditTime: 2021-05-13 13:41:00
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -96,7 +96,6 @@ class _MyAppState extends State<MyApp> {
         primaryColor: primaryColor,
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
-        splashColor: primaryColor,
       ),
       home: HomeStatefulWidget(),
       routes: routes,
