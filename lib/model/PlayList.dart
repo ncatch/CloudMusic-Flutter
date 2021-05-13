@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-13 13:48:40
+ * @LastEditTime: 2021-05-13 15:03:32
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -57,7 +57,7 @@ class PlayListModel {
     this.creator = Creator.fromData(data['creator']);
 
     this.subscribers = List<UserInfo>.from(
-        data['subscribers'].mape<UserInfo>((ele) => UserInfo.fromJson(ele)));
+        data['subscribers'].map<UserInfo>((ele) => UserInfo.fromJson(ele)));
 
     this.musicList = List<MusicInfo>.from(
         data['tracks'].map<MusicInfo>((ele) => MusicInfo.fromData(ele)));
