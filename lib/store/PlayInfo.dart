@@ -2,11 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-11 17:34:34
+ * @LastEditTime: 2021-05-13 11:43:01
  * @LastEditors: Walker
  */
 
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
@@ -45,12 +46,16 @@ class PlayInfoStore with ChangeNotifier {
   var playMode = playModes.repeat;
 
   PlayInfoStore() {
-    // 监听系统声音变化 调整播放声音
-    VolumeController.volumeListener.listen((volume) {
-      audioPlayer.setVolume(volume);
-      _volume = volume;
-    });
-    VolumeController.getVolume().then((volume) => _volume = volume);
+    try {
+      if (Platform.isAndroid || Platform.isIOS) {
+        // 监听系统声音变化 调整播放声音
+        VolumeController.volumeListener.listen((volume) {
+          audioPlayer.setVolume(volume);
+          _volume = volume;
+        });
+        VolumeController.getVolume().then((volume) => _volume = volume);
+      }
+    } catch (e) {}
 
     audioPlayer
       ..onDurationChanged.listen((e) {
@@ -102,13 +107,13 @@ class PlayInfoStore with ChangeNotifier {
     var cache = await PreferenceUtils.getJSON(PreferencesKey.PLAY_INFO);
 
     if (cache != null) {
-      playIndex = cache['playIndex'];
-      musicLyric = cache['musicLyric'];
-      playMode = playModes.values[cache['playModeval']];
-      musicInfo = MusicInfo.fromJson(cache['musicInfo']);
+      playIndex = cache['playIndex'] ?? -1;
+      musicLyric = cache['musicLyric'] ?? "";
+      playMode = playModes.values[cache['playModeval'] ?? 0];
+      musicInfo = MusicInfo.fromJson(cache['musicInfo'] ?? {});
 
       musicList = List<MusicInfo>.from(
-          cache['musicList'].map((ele) => MusicInfo.fromJson(ele)));
+          (cache['musicList'] ?? []).map((ele) => MusicInfo.fromJson(ele)));
 
       initPalyInfo(musicInfo.id);
     }
