@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-10 21:33:59
+ * @LastEditTime: 2021-05-13 10:54:46
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -44,7 +44,7 @@ class DiscoverState extends State<Discover> {
   }
 
   refreshHomeData() {
-    getHomeData().then((value) {
+    return getHomeData().then((value) {
       if (value['code'] == 200) {
         PreferenceUtils.saveJSON(PreferencesKey.HOME_DATA, value['data']);
         setState(() {
@@ -53,6 +53,7 @@ class DiscoverState extends State<Discover> {
       } else {
         BotToast.showText(text: value['message'] ?? '网络异常');
       }
+      return true;
     });
   }
 
@@ -90,8 +91,11 @@ class DiscoverState extends State<Discover> {
       tmp.insert(1, DiscoverMenu());
     }
 
-    return Container(
-      child: Column(
+    return RefreshIndicator(
+      onRefresh: () async {
+        return refreshHomeData();
+      },
+      child: ListView(
         children: tmp,
       ),
     );

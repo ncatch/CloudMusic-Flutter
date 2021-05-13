@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-12 17:29:47
+ * @LastEditTime: 2021-05-13 10:33:25
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -11,8 +11,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
-import 'package:cloudmusic_flutter/model/MusicInfo.dart';
-import 'package:cloudmusic_flutter/model/PlayInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
@@ -23,7 +21,7 @@ import 'package:provider/provider.dart';
 import '../libs/extends/IntExtend.dart';
 
 class PlayList extends StatefulWidget {
-  var songId;
+  final songId;
 
   PlayList({Key? key, this.songId}) : super(key: key);
 

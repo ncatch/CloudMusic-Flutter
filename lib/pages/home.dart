@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-11 16:27:00
+ * @LastEditTime: 2021-05-13 10:53:35
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
@@ -85,13 +85,9 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
           direction: Axis.vertical,
           children: [
             Expanded(
-              flex: 1,
-              child: ListView(
-                children: [
-                  pages.length > 0 ? pages[_selectedIndex] : Text('加载中...')
-                ],
-              ),
-            ),
+                flex: 1,
+                child:
+                    pages.length > 0 ? pages[_selectedIndex] : Text('加载中...')),
             PlayMini()
           ],
         ),
