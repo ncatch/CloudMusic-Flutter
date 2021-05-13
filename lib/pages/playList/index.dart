@@ -2,16 +2,18 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-13 17:31:43
+ * @LastEditTime: 2021-05-13 19:58:12
  * @LastEditors: Walker
  */
 import 'dart:ui';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/pages/playList/subscribers.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,9 +38,23 @@ class PlayListState extends State<PlayList> {
 
   PlayListModel playListInfo = PlayListModel();
 
+  ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(() {
+      double t = _scrollController.offset / 150;
+      if (t < 0.0) {
+        t = 0.0;
+      } else if (t > 1.0) {
+        t = 1.0;
+      }
+      setState(() {
+        appBarImgOper = t;
+        sunkenHeight = 20 - 20 * t;
+      });
+    });
 
     getPlayListById(widget.songId).then((res) {
       if (res['code'] == 200) {
@@ -74,8 +90,20 @@ class PlayListState extends State<PlayList> {
 
   musicMenu() {}
 
+  playAll(playInfoStore) {
+    playInfoStore.setPlayList(playListInfo.musicList);
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return Play();
+    }));
+  }
+
   musicClick(playInfoStore, index) {
     playInfoStore.setPlayList(playListInfo.musicList, index);
+
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return Play();
+    }));
   }
 
   List<Widget> getMusicList(playInfoStore) {
@@ -85,6 +113,7 @@ class PlayListState extends State<PlayList> {
 
       result.add(Container(
         height: 50,
+        padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
         child: InkWell(
           onTap: () {
             musicClick(playInfoStore, i);
@@ -146,11 +175,11 @@ class PlayListState extends State<PlayList> {
                 children: [
                   Container(
                     child: ListView(
+                      controller: _scrollController,
                       children: [
                         Container(
                           height: headHeight,
                           child: Stack(
-                            fit: StackFit.expand,
                             children: [
                               Container(
                                 height: headHeight,
@@ -168,41 +197,6 @@ class PlayListState extends State<PlayList> {
                                   ),
                                 ),
                               ),
-                              Container(
-                                height: 50,
-                                child: Positioned(
-                                  width: size.width,
-                                  bottom: 0,
-                                  child: Opacity(
-                                    opacity: appBarImgOper,
-                                    child: Image(
-                                      width: size.width,
-                                      image: NetworkImage(
-                                          playListInfo.headBgUrl == ""
-                                              ? play_img_url_default
-                                              : playListInfo.headBgUrl),
-                                      fit: BoxFit.fitWidth,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              playListInfo.headBgUrl == ""
-                                  ? Container(
-                                      height: headHeight,
-                                      child: new BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 10.0, sigmaY: 10.0),
-                                        child: Opacity(
-                                          opacity: 0.6,
-                                          child: new Container(
-                                            decoration: new BoxDecoration(
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  : Container(),
                               Positioned(
                                 top: 60,
                                 width: size.width,
@@ -342,6 +336,7 @@ class PlayListState extends State<PlayList> {
                                                 },
                                                 child: Text(
                                                   playListInfo.descript
+                                                          .split('\n')[0]
                                                           .overFlowString(10) +
                                                       ' >',
                                                   style: TextStyle(
@@ -362,8 +357,9 @@ class PlayListState extends State<PlayList> {
                                 height: headHeight + 20,
                                 child: ClipPath(
                                   clipper: HeadClipper(
-                                      height: sunkenHeight,
-                                      headHeight: headHeight),
+                                    height: sunkenHeight,
+                                    headHeight: headHeight,
+                                  ),
                                   child: Container(
                                     decoration: new BoxDecoration(
                                       color: Colors.white,
@@ -488,8 +484,7 @@ class PlayListState extends State<PlayList> {
                                   height: 40,
                                   child: InkWell(
                                     onTap: () {
-                                      playInfoStore
-                                          .setPlayList(playListInfo.musicList);
+                                      playAll(context);
                                     },
                                     child: Row(
                                       children: [
@@ -521,7 +516,27 @@ class PlayListState extends State<PlayList> {
                           ),
                         ),
                         ...getMusicList(playInfoStore),
+                        Subscribers(
+                          playListInfo: playListInfo,
+                        ),
                       ],
+                    ),
+                  ),
+                  Container(
+                    height: 50,
+                    child: Positioned(
+                      width: size.width,
+                      bottom: 0,
+                      child: Opacity(
+                        opacity: appBarImgOper,
+                        child: Image(
+                          width: size.width,
+                          image: NetworkImage(playListInfo.headBgUrl == ""
+                              ? play_img_url_default
+                              : playListInfo.headBgUrl),
+                          fit: BoxFit.fitWidth,
+                        ),
+                      ),
                     ),
                   ),
                   Container(

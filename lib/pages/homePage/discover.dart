@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-13 13:40:35
+ * @LastEditTime: 2021-05-13 19:10:07
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -36,9 +36,11 @@ class DiscoverState extends State<Discover> {
     super.initState();
 
     PreferenceUtils.getJSON(PreferencesKey.HOME_DATA).then((value) {
-      this.setState(() {
-        homeData = value['blocks'];
-      });
+      if (value != null) {
+        this.setState(() {
+          homeData = value['blocks'];
+        });
+      }
     });
 
     refreshHomeData();
