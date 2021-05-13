@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-13 13:41:00
+ * @LastEditTime: 2021-05-13 21:51:03
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -10,6 +10,7 @@
 import 'dart:io';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -24,8 +25,6 @@ import './utils/http.dart';
 import './store/SystemInfo.dart';
 import './store/PlayInfo.dart';
 import './store/User.dart';
-
-import './libs/extends/StringExtend.dart';
 
 _initSystemInfo() {
   try {
@@ -66,6 +65,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  bool isInit = false;
+
   @override
   void initState() {
     super.initState();
@@ -88,8 +89,22 @@ class _MyAppState extends State<MyApp> {
     ].request();
   }
 
+  init(context) {
+    var playInfoStore = Provider.of<PlayInfoStore>(context);
+    playInfoStore.init();
+
+    var userStore = Provider.of<User>(context);
+    userStore.init();
+
+    isInit = true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!isInit) {
+      init(context);
+    }
+
     return MaterialApp(
       title: '网抑云',
       theme: ThemeData(

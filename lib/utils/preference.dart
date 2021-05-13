@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-06 17:39:01
- * @LastEditTime: 2021-05-07 13:39:33
+ * @LastEditTime: 2021-05-13 21:43:52
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -30,8 +30,12 @@ class PreferenceUtils {
   }
 
   static init() async {
-    _instance = await SharedPreferences.getInstance();
-    return _instance;
+    try {
+      _instance = await SharedPreferences.getInstance();
+      return _instance;
+    } catch (e) {
+      return null;
+    }
   }
 
   static saveInteger(String key, int value) async =>

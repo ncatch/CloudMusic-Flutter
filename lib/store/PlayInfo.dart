@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-13 11:43:01
+ * @LastEditTime: 2021-05-13 21:47:38
  * @LastEditors: Walker
  */
 
@@ -53,7 +53,6 @@ class PlayInfoStore with ChangeNotifier {
           audioPlayer.setVolume(volume);
           _volume = volume;
         });
-        VolumeController.getVolume().then((volume) => _volume = volume);
       }
     } catch (e) {}
 
@@ -98,7 +97,9 @@ class PlayInfoStore with ChangeNotifier {
             break;
         }
       });
+  }
 
+  init() {
     getCacheData();
   }
 
@@ -184,6 +185,10 @@ class PlayInfoStore with ChangeNotifier {
   }
 
   Future<int> playMusic(id) async {
+    try {
+      VolumeController.getVolume().then((volume) => _volume = volume);
+    } catch (e) {}
+
     await initPalyInfo(id);
 
     return audioPlayer.resume().then((value) {

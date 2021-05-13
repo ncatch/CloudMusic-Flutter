@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-11 16:31:23
+ * @LastEditTime: 2021-05-13 22:19:14
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,24 +16,26 @@ class User with ChangeNotifier {
   var levelInfo;
 
   User() {
+    initUserInfo();
+  }
+
+  init() {
     PreferenceUtils.getJSON(PreferencesKey.USER_INFO).then((data) {
       if (data != null) {
         userInfo = _createUserInfo(data);
         notifyListeners();
       }
     });
-
-    initUserInfo();
   }
 
   UserInfo _createUserInfo(data) {
     var tmp = UserInfo();
-    tmp.userId = data["userId"];
-    tmp.nickname = data["nickname"];
+    tmp.userId = data["id"];
+    tmp.nickname = data["userName"];
     tmp.vipType = data["vipType"];
     tmp.userType = data["userType"];
-    tmp.avatarUrl = data["avatarUrl"];
-    tmp.backgroundUrl = data["backgroundUrl"];
+    tmp.avatarUrl = data["avatarUrl"] ?? play_img_url_default;
+    tmp.backgroundUrl = data["backgroundUrl"] ?? play_img_url_default;
     return tmp;
   }
 
@@ -50,7 +53,7 @@ class User with ChangeNotifier {
     // data['account']
 
     if (data != null) {
-      var tmp = _createUserInfo(data['profile']);
+      var tmp = _createUserInfo(data['account']);
       userInfo = tmp;
       notifyListeners();
       PreferenceUtils.saveJSON(PreferencesKey.USER_INFO, tmp);

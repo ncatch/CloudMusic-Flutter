@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-13 19:58:12
+ * @LastEditTime: 2021-05-13 21:40:49
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -32,7 +32,7 @@ class PlayList extends StatefulWidget {
 }
 
 class PlayListState extends State<PlayList> {
-  double headHeight = 270; // head 高度
+  double headHeight = 250; // head 高度
   double appBarImgOper = 0; // appbar 透明度
   double sunkenHeight = 20; // head 凹陷高度
 
@@ -99,11 +99,12 @@ class PlayListState extends State<PlayList> {
   }
 
   musicClick(playInfoStore, index) {
-    playInfoStore.setPlayList(playListInfo.musicList, index);
+    playInfoStore.getCacheData();
+    // playInfoStore.setPlayList(playListInfo.musicList, index);
 
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return Play();
-    }));
+    // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+    //   return Play();
+    // }));
   }
 
   List<Widget> getMusicList(playInfoStore) {
@@ -114,6 +115,9 @@ class PlayListState extends State<PlayList> {
       result.add(Container(
         height: 50,
         padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+        decoration: BoxDecoration(
+          color: Colors.white,
+        ),
         child: InkWell(
           onTap: () {
             musicClick(playInfoStore, i);
@@ -174,6 +178,22 @@ class PlayListState extends State<PlayList> {
               child: Stack(
                 children: [
                   Container(
+                    width: size.width,
+                    height: headHeight,
+                    decoration: new BoxDecoration(
+                      image: new DecorationImage(
+                        image: new NetworkImage(playListInfo.headBgUrl == ""
+                            ? play_img_url_default
+                            : playListInfo.headBgUrl),
+                        fit: BoxFit.cover,
+                        colorFilter: new ColorFilter.mode(
+                          Colors.black54,
+                          BlendMode.overlay,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
                     child: ListView(
                       controller: _scrollController,
                       children: [
@@ -181,22 +201,6 @@ class PlayListState extends State<PlayList> {
                           height: headHeight,
                           child: Stack(
                             children: [
-                              Container(
-                                height: headHeight,
-                                decoration: new BoxDecoration(
-                                  image: new DecorationImage(
-                                    image: new NetworkImage(
-                                        playListInfo.headBgUrl == ""
-                                            ? play_img_url_default
-                                            : playListInfo.headBgUrl),
-                                    fit: BoxFit.cover,
-                                    colorFilter: new ColorFilter.mode(
-                                      Colors.black54,
-                                      BlendMode.overlay,
-                                    ),
-                                  ),
-                                ),
-                              ),
                               Positioned(
                                 top: 60,
                                 width: size.width,
@@ -473,7 +477,9 @@ class PlayListState extends State<PlayList> {
                           ),
                         ),
                         Container(
-                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
                           padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                           child: Flex(
                             direction: Axis.horizontal,
@@ -523,7 +529,7 @@ class PlayListState extends State<PlayList> {
                     ),
                   ),
                   Container(
-                    height: 50,
+                    height: 90,
                     child: Positioned(
                       width: size.width,
                       bottom: 0,
@@ -540,7 +546,7 @@ class PlayListState extends State<PlayList> {
                     ),
                   ),
                   Container(
-                    height: 50,
+                    height: 100,
                     child: AppBar(
                       leading: BackButton(),
                       leadingWidth: 30,
