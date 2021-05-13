@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-13 10:33:25
+ * @LastEditTime: 2021-05-13 11:04:17
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -231,7 +231,7 @@ class PlayListState extends State<PlayList> {
                                   ),
                                   Container(
                                     margin: EdgeInsets.fromLTRB(0, 15, 0, 15),
-                                    child: Wrap(
+                                    child: Row(
                                       children: [
                                         Container(
                                           margin:

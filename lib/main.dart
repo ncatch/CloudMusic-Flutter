@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-12 13:50:47
+ * @LastEditTime: 2021-05-13 10:59:21
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -55,9 +55,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: '网抑云',
       theme: ThemeData(
-          primaryColor: primaryColor,
-          backgroundColor: Colors.white,
-          scaffoldBackgroundColor: Colors.white),
+        primaryColor: primaryColor,
+        backgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
+        splashColor: primaryColor,
+      ),
       home: HomeStatefulWidget(),
       routes: routes,
       navigatorObservers: [BotToastNavigatorObserver()],

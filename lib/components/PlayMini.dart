@@ -2,7 +2,7 @@
  * @Description: 播放控件
  * @Author: Walker
  * @Date: 2021-04-29 16:19:03
- * @LastEditTime: 2021-05-08 17:54:15
+ * @LastEditTime: 2021-05-13 11:11:19
  * @LastEditors: Walker
  */
 
@@ -45,19 +45,21 @@ class PlayMiniState extends State<PlayMini> with ShowCurrMusicList {
             direction: Axis.horizontal,
             children: [
               Container(
-                width: 50,
-                height: 50,
+                width: 30,
+                height: 30,
+                margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   image: new DecorationImage(
                     image: new NetworkImage(playInfoStore.musicInfo.iconUrl),
                     fit: BoxFit.cover,
                   ),
+                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
               Expanded(
                   flex: 1,
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 0, 0, 0),
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                     child: Text(playInfoStore.musicInfo.musicName +
                         '-' +
                         playInfoStore.musicInfo.singerName),

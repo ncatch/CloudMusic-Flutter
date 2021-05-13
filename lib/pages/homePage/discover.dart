@@ -2,12 +2,13 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-13 10:54:46
+ * @LastEditTime: 2021-05-13 10:56:09
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
+import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
@@ -92,6 +93,7 @@ class DiscoverState extends State<Discover> {
     }
 
     return RefreshIndicator(
+      color: primaryColor,
       onRefresh: () async {
         return refreshHomeData();
       },
