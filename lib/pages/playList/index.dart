@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-14 14:24:28
+ * @LastEditTime: 2021-05-14 20:44:03
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -21,6 +21,7 @@ import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:provider/provider.dart';
 
 class PlayList extends StatefulWidget {
@@ -33,10 +34,10 @@ class PlayList extends StatefulWidget {
 }
 
 class PlayListState extends State<PlayList> {
+  bool isInit = false;
   double headHeight = 250; // head 高度
   double appBarImgOper = 0; // appbar 透明度
   double sunkenHeight = 20; // head 凹陷高度
-  bool showPlayMenu = false;
 
   PlayListModel playListInfo = PlayListModel();
 
@@ -52,11 +53,12 @@ class PlayListState extends State<PlayList> {
       } else if (t > 1.0) {
         t = 1.0;
       }
-      setState(() {
-        appBarImgOper = t;
-        sunkenHeight = 20 - 20 * t;
-        showPlayMenu = _scrollController.offset > 250;
-      });
+      if (appBarImgOper != t) {
+        setState(() {
+          appBarImgOper = t;
+          // sunkenHeight = 20 - 20 * t;
+        });
+      }
     });
 
     getPlayListById(widget.songId).then((res) {
@@ -68,6 +70,14 @@ class PlayListState extends State<PlayList> {
         BotToast.showText(text: res['msg'] ?? '网络异常');
       }
     });
+  }
+
+  init() {
+    if (isMobile) {
+      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
+    }
+
+    isInit = true;
   }
 
   // 显示简介详情
@@ -151,6 +161,10 @@ class PlayListState extends State<PlayList> {
 
   @override
   Widget build(BuildContext context) {
+    if (!isInit) {
+      init();
+    }
+
     var size = MediaQuery.of(context).size;
     var playInfoStore = Provider.of<PlayInfoStore>(context);
     var playMenuComponent = PlayMenu(playListInfo: playListInfo);
@@ -404,14 +418,6 @@ class PlayListState extends State<PlayList> {
                       ),
                     ),
                   ),
-                  showPlayMenu
-                      ? Positioned(
-                          top: 90,
-                          height: 40,
-                          width: size.width,
-                          child: playMenuComponent,
-                        )
-                      : Container()
                 ],
               )),
           Container(

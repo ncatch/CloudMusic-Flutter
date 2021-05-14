@@ -2,12 +2,13 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-13 19:10:07
+ * @LastEditTime: 2021-05-14 20:39:50
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
+import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
@@ -16,6 +17,7 @@ import 'package:cloudmusic_flutter/services/home.dart';
 import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 // 当前页面组件
 import '../../../components/Banner.dart' as BannerComponent;
@@ -29,8 +31,10 @@ class Discover extends StatefulWidget {
 }
 
 class DiscoverState extends State<Discover> {
+  bool isInit = false;
   List<Widget> homeModel = [];
   List<dynamic> homeData = [];
+
   @override
   void initState() {
     super.initState();
@@ -80,8 +84,20 @@ class DiscoverState extends State<Discover> {
     }
   }
 
+  init() {
+    if (isMobile) {
+      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
+    }
+
+    isInit = true;
+  }
+
   @override
   Widget build(BuildContext context) {
+    if (!isInit) {
+      init();
+    }
+
     List<Widget> tmp = [];
 
     if (homeData.length > 0) {

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-14 16:27:11
+ * @LastEditTime: 2021-05-14 20:38:49
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -96,11 +96,6 @@ class _MyAppState extends State<MyApp> {
 
     var userStore = Provider.of<User>(context);
     userStore.init();
-
-    // TODO 待调试
-    if (isMobile) {
-      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
-    }
 
     isInit = true;
   }

@@ -2,14 +2,16 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-14 19:40:33
+ * @LastEditTime: 2021-05-14 20:45:43
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 
 class PlayListComment extends StatefulWidget {
   final PlayListModel info;
@@ -24,6 +26,7 @@ class PlayListCommentState extends State<PlayListComment> {
   var commentList = [];
   var hotCommentList = [];
   bool disChildScroll = true;
+  bool isInit = false;
 
   ScrollController _scrollController = ScrollController();
 
@@ -32,7 +35,7 @@ class PlayListCommentState extends State<PlayListComment> {
     super.initState();
 
     _scrollController.addListener(() {
-      var tmp = _scrollController.offset < 110;
+      var tmp = _scrollController.offset < 40;
 
       if (disChildScroll != tmp) {
         this.setState(() {
@@ -42,6 +45,14 @@ class PlayListCommentState extends State<PlayListComment> {
     });
 
     getComments();
+  }
+
+  init() {
+    if (isMobile) {
+      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
+    }
+
+    isInit = true;
   }
 
   getComments() {
@@ -122,6 +133,9 @@ class PlayListCommentState extends State<PlayListComment> {
 
   @override
   Widget build(BuildContext context) {
+    if (!isInit) {
+      init();
+    }
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -232,9 +246,9 @@ class PlayListCommentState extends State<PlayListComment> {
             height: size.height - 40,
             child: ListView(
               shrinkWrap: true,
-              physics: disChildScroll
-                  ? NeverScrollableScrollPhysics()
-                  : AlwaysScrollableScrollPhysics(),
+              // physics: disChildScroll
+              //     ? NeverScrollableScrollPhysics()
+              //     : AlwaysScrollableScrollPhysics(),
               children: commentComponents(),
             ),
           ),
