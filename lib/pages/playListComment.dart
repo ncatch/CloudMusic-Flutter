@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-14 17:59:48
+ * @LastEditTime: 2021-05-14 19:32:50
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/PlayList.dart';
@@ -49,7 +49,48 @@ class PlayListCommentState extends State<PlayListComment> {
       var ele = commentList[i];
 
       result.add(Container(
-        child: Text(ele['content']),
+        padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(
+              width: 1,
+              color: Colors.grey.shade200,
+            ),
+          ),
+        ),
+        child: Flex(
+          direction: Axis.horizontal,
+          children: [
+            Container(
+              width: 50,
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+              child: Container(
+                width: 30,
+                height: 30,
+                alignment: Alignment.topCenter,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  image: DecorationImage(
+                    image: NetworkImage(ele['user']['avatarUrl']),
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(ele['user']['nickname']),
+                  Text(DateTime.fromMillisecondsSinceEpoch(ele['time'])
+                      .toLocal()
+                      .toString()),
+                  Text(ele['content']),
+                ],
+              ),
+            ),
+          ],
+        ),
       ));
     }
 
@@ -68,6 +109,8 @@ class PlayListCommentState extends State<PlayListComment> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(
@@ -84,7 +127,12 @@ class PlayListCommentState extends State<PlayListComment> {
       body: ListView(
         children: [
           Container(
-            height: 90,
+            height: 100,
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 10, color: Colors.grey.shade100),
+              ),
+            ),
             child: InkWell(
               onTap: toPlayList,
               child: Flex(
@@ -143,7 +191,35 @@ class PlayListCommentState extends State<PlayListComment> {
               ),
             ),
           ),
-          ...commentComponents(),
+          Container(
+            height: 40,
+            padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+            child: Flex(
+              direction: Axis.horizontal,
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Text('评论'),
+                ),
+                Container(
+                  width: 100,
+                  child: Row(
+                    children: [
+                      Text('推荐'),
+                      Text('最热'),
+                      Text('最新'),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            height: size.height - 40,
+            child: ListView(
+              children: commentComponents(),
+            ),
+          ),
         ],
       ),
     );
