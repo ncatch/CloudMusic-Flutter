@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-13 21:51:03
+ * @LastEditTime: 2021-05-14 16:27:11
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -13,6 +13,7 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
@@ -95,6 +96,11 @@ class _MyAppState extends State<MyApp> {
 
     var userStore = Provider.of<User>(context);
     userStore.init();
+
+    // TODO 待调试
+    if (isMobile) {
+      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
+    }
 
     isInit = true;
   }

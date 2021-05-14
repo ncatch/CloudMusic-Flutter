@@ -41,6 +41,7 @@ dependencies:
   webview_flutter: ^2.0.4
   bot_toast: ^4.0.1
   permission_handler: ^7.1.0
+  flutter_displaymode: ^0.3.1-nullsafety.0
 
 dev_dependencies:
   flutter_test:
