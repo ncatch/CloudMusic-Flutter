@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 09:53:41
- * @LastEditTime: 2021-05-14 15:22:43
+ * @LastEditTime: 2021-05-14 15:51:10
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -14,6 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../libs/extends/IntExtend.dart';
 import '../../libs/enums.dart';
+import '../playListComment.dart';
 
 class PlayListMenu extends StatefulWidget {
   PlayListModel playListInfo = PlayListModel();
@@ -95,7 +96,11 @@ class PlayListMenuState extends State<PlayListMenu> {
   }
 
   // 评论
-  comment() {}
+  comment() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return PlayListComment(info: widget.playListInfo);
+    }));
+  }
 
   // 分享
   share() {}
