@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-14 11:40:43
+ * @LastEditTime: 2021-05-14 14:37:57
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -19,6 +19,8 @@ class PlayListModel {
   int subscribedCount = 0; // 收藏数
   int shareCount = 0; // 分享数
   int commentCount = 0; // 评论数
+  int id = 0;
+  bool subscribed = false;
 
   Creator creator = Creator(); // 创建人
   var tags = [];
@@ -44,6 +46,7 @@ class PlayListModel {
   }
 
   PlayListModel.fromData(Map<String, dynamic> data) {
+    this.id = data['id'];
     this.headBgUrl = data['backgroundCoverUrl'] ?? "";
     this.coverImgUrl = data['coverImgUrl'] ?? play_img_url_default;
     this.descript = data['description'];
@@ -53,6 +56,7 @@ class PlayListModel {
     this.subscribedCount = data['subscribedCount'];
     this.shareCount = data['shareCount'];
     this.commentCount = data['commentCount'];
+    this.subscribed = data['subscribed'] ?? false;
 
     this.creator = Creator.fromData(data['creator']);
 

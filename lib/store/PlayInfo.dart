@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-13 21:47:38
+ * @LastEditTime: 2021-05-14 14:05:11
  * @LastEditors: Walker
  */
 
@@ -191,6 +191,8 @@ class PlayInfoStore with ChangeNotifier {
 
     await initPalyInfo(id);
 
+    cacheData();
+
     return audioPlayer.resume().then((value) {
       sliderValue = 0.0;
       isPlayer = value == 1;
@@ -205,8 +207,6 @@ class PlayInfoStore with ChangeNotifier {
         (list.length > 0 && list[0].id != musicList[0].id)) {
       musicList = list;
       this.setPlayIndex(index);
-
-      cacheData();
     } else if (index != playIndex) {
       this.setPlayIndex(index);
     }
@@ -223,7 +223,6 @@ class PlayInfoStore with ChangeNotifier {
       // musicInfo = musicList[index];
       musicInfo.bgImgUrl = tmp.bgImgUrl;
       playMusic(tmp.id);
-      cacheData();
     }
   }
 

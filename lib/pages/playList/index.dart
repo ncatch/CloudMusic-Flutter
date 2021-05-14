@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-14 10:03:10
+ * @LastEditTime: 2021-05-14 14:24:28
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -14,6 +14,7 @@ import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/playListMenu.dart';
+import 'package:cloudmusic_flutter/pages/playList/playMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/subscribers.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
@@ -35,6 +36,7 @@ class PlayListState extends State<PlayList> {
   double headHeight = 250; // head 高度
   double appBarImgOper = 0; // appbar 透明度
   double sunkenHeight = 20; // head 凹陷高度
+  bool showPlayMenu = false;
 
   PlayListModel playListInfo = PlayListModel();
 
@@ -53,6 +55,7 @@ class PlayListState extends State<PlayList> {
       setState(() {
         appBarImgOper = t;
         sunkenHeight = 20 - 20 * t;
+        showPlayMenu = _scrollController.offset > 250;
       });
     });
 
@@ -80,14 +83,6 @@ class PlayListState extends State<PlayList> {
   selectClich() {}
 
   musicMenu() {}
-
-  playAll(playInfoStore) {
-    playInfoStore.setPlayList(playListInfo.musicList);
-
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return Play();
-    }));
-  }
 
   musicClick(playInfoStore, index) {
     playInfoStore.setPlayList(playListInfo.musicList, index);
@@ -158,6 +153,7 @@ class PlayListState extends State<PlayList> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var playInfoStore = Provider.of<PlayInfoStore>(context);
+    var playMenuComponent = PlayMenu(playListInfo: playListInfo);
 
     return Scaffold(
       body: Flex(
@@ -168,27 +164,24 @@ class PlayListState extends State<PlayList> {
               child: Stack(
                 children: [
                   Container(
-                    width: size.width,
-                    height: headHeight,
-                    decoration: new BoxDecoration(
-                      image: new DecorationImage(
-                        image: new NetworkImage(playListInfo.headBgUrl == ""
-                            ? play_img_url_default
-                            : playListInfo.headBgUrl),
-                        fit: BoxFit.cover,
-                        colorFilter: new ColorFilter.mode(
-                          Colors.black54,
-                          BlendMode.overlay,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
                     child: ListView(
                       controller: _scrollController,
                       children: [
                         Container(
                           height: headHeight,
+                          decoration: new BoxDecoration(
+                            image: new DecorationImage(
+                              image: new NetworkImage(
+                                  playListInfo.headBgUrl == ""
+                                      ? play_img_url_default
+                                      : playListInfo.headBgUrl),
+                              fit: BoxFit.cover,
+                              colorFilter: new ColorFilter.mode(
+                                Colors.black54,
+                                BlendMode.overlay,
+                              ),
+                            ),
+                          ),
                           child: Stack(
                             children: [
                               Positioned(
@@ -366,58 +359,18 @@ class PlayListState extends State<PlayList> {
                                 child: Container(
                                   width: size.width,
                                   alignment: Alignment.center,
-                                  child:
-                                      PlayListMenu(playListInfo: playListInfo),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                          ),
-                          padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            children: [
-                              Expanded(
-                                flex: 1,
-                                child: Container(
-                                  height: 40,
-                                  child: InkWell(
-                                    onTap: () {
-                                      playAll(context);
-                                    },
-                                    child: Row(
-                                      children: [
-                                        Icon(Icons.play_circle_fill,
-                                            color: primaryColor),
-                                        Text(' 播放全部'),
-                                        Text(playListInfo.musicList.length
-                                            .toString()),
-                                      ],
+                                  child: Opacity(
+                                    opacity: 1 - appBarImgOper,
+                                    child: PlayListMenu(
+                                      playListInfo: playListInfo,
                                     ),
                                   ),
                                 ),
                               ),
-                              Container(
-                                child: Row(
-                                  children: [
-                                    IconButton(
-                                      onPressed: downloadMusic,
-                                      icon: Icon(Icons.cloud_download_outlined),
-                                    ),
-                                    IconButton(
-                                      onPressed: selectClich,
-                                      icon: Icon(Icons.playlist_add_check),
-                                    )
-                                  ],
-                                ),
-                              )
                             ],
                           ),
                         ),
+                        playMenuComponent,
                         ...getMusicList(playInfoStore),
                         Subscribers(
                           playListInfo: playListInfo,
@@ -427,18 +380,14 @@ class PlayListState extends State<PlayList> {
                   ),
                   Container(
                     height: 90,
-                    child: Positioned(
-                      width: size.width,
-                      bottom: 0,
-                      child: Opacity(
-                        opacity: appBarImgOper,
-                        child: Image(
-                          width: size.width,
-                          image: NetworkImage(playListInfo.headBgUrl == ""
-                              ? play_img_url_default
-                              : playListInfo.headBgUrl),
-                          fit: BoxFit.fitWidth,
-                        ),
+                    child: Opacity(
+                      opacity: appBarImgOper,
+                      child: Image(
+                        width: size.width,
+                        image: NetworkImage(playListInfo.headBgUrl == ""
+                            ? play_img_url_default
+                            : playListInfo.headBgUrl),
+                        fit: BoxFit.fitWidth,
                       ),
                     ),
                   ),
@@ -455,6 +404,14 @@ class PlayListState extends State<PlayList> {
                       ),
                     ),
                   ),
+                  showPlayMenu
+                      ? Positioned(
+                          top: 90,
+                          height: 40,
+                          width: size.width,
+                          child: playMenuComponent,
+                        )
+                      : Container()
                 ],
               )),
           Container(

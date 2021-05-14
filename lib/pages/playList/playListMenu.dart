@@ -2,21 +2,93 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 09:53:41
- * @LastEditTime: 2021-05-14 10:34:22
+ * @LastEditTime: 2021-05-14 15:09:15
  * @LastEditors: Walker
  */
+import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../libs/extends/IntExtend.dart';
 
-class PlayListMenu extends StatelessWidget {
+class PlayListMenu extends StatefulWidget {
   PlayListModel playListInfo = PlayListModel();
 
-  PlayListMenu({Key? key, required this.playListInfo});
+  PlayListMenu({Key? key, required this.playListInfo}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => PlayListMenuState();
+}
+
+class PlayListMenuState extends State<PlayListMenu> {
+  bool isSubscribed = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    isSubscribed = widget.playListInfo.subscribed;
+  }
 
   // 收藏
-  subscribed() {}
+  subscribed(context) async {
+    // 1:收藏,2:取消收藏
+    int type = widget.playListInfo.subscribed ? 2 : 1;
+
+    if (type == 2) {
+      final action = await showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Text('确定不再收藏此歌单吗?'),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  '取消',
+                  style: TextStyle(color: primaryColor),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, false);
+                },
+              ),
+              TextButton(
+                child: Text(
+                  '不再收藏',
+                  style: TextStyle(color: primaryColor),
+                ),
+                onPressed: () {
+                  Navigator.pop(context, true);
+                },
+              ),
+            ],
+          );
+        },
+      );
+      if (!action) {
+        return;
+      }
+    }
+
+    BotToast.showLoading();
+    subscribe(widget.playListInfo.id, type).then((res) {
+      BotToast.closeAllLoading();
+      if (res['code'] == 200) {
+        BotToast.showText(text: type == 1 ? '收藏成功' : '取消收藏成功');
+
+        var tmp = widget.playListInfo.subscribed;
+
+        widget.playListInfo.subscribed = !tmp;
+        this.setState(() {
+          isSubscribed = !tmp;
+        });
+      }
+    }).catchError(() {
+      BotToast.closeAllLoading();
+    });
+  }
 
   // 评论
   comment() {}
@@ -50,16 +122,20 @@ class PlayListMenu extends StatelessWidget {
           Expanded(
             flex: 1,
             child: InkWell(
-              onTap: subscribed,
+              onTap: () {
+                subscribed(context);
+              },
               child: Wrap(
                 alignment: WrapAlignment.center,
                 children: [
                   Icon(
-                    Icons.library_add_outlined,
+                    widget.playListInfo.subscribed
+                        ? Icons.check_circle_outline
+                        : Icons.library_add_outlined,
                     size: 18,
                   ),
                   Text(
-                    ' ' + playListInfo.subscribedCount.toMyriadString(),
+                    ' ' + widget.playListInfo.subscribedCount.toMyriadString(),
                   ),
                 ],
               ),
@@ -85,7 +161,7 @@ class PlayListMenu extends StatelessWidget {
                     size: 18,
                   ),
                   Text(
-                    ' ' + playListInfo.commentCount.toMyriadString(),
+                    ' ' + widget.playListInfo.commentCount.toMyriadString(),
                   ),
                 ],
               ),
@@ -111,7 +187,7 @@ class PlayListMenu extends StatelessWidget {
                     size: 18,
                   ),
                   Text(
-                    ' ' + playListInfo.shareCount.toMyriadString(),
+                    ' ' + widget.playListInfo.shareCount.toMyriadString(),
                   ),
                 ],
               ),
