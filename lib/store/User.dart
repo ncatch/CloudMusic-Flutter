@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-13 22:19:14
+ * @LastEditTime: 2021-05-14 11:28:41
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -23,6 +23,7 @@ class User with ChangeNotifier {
     PreferenceUtils.getJSON(PreferencesKey.USER_INFO).then((data) {
       if (data != null) {
         userInfo = _createUserInfo(data);
+        initUserInfo();
         notifyListeners();
       }
     });
@@ -30,8 +31,8 @@ class User with ChangeNotifier {
 
   UserInfo _createUserInfo(data) {
     var tmp = UserInfo();
-    tmp.userId = data["id"];
-    tmp.nickname = data["userName"];
+    tmp.userId = data["userId"];
+    tmp.nickname = data["nickname"];
     tmp.vipType = data["vipType"];
     tmp.userType = data["userType"];
     tmp.avatarUrl = data["avatarUrl"] ?? play_img_url_default;
@@ -53,7 +54,7 @@ class User with ChangeNotifier {
     // data['account']
 
     if (data != null) {
-      var tmp = _createUserInfo(data['account']);
+      var tmp = _createUserInfo(data['profile']);
       userInfo = tmp;
       notifyListeners();
       PreferenceUtils.saveJSON(PreferencesKey.USER_INFO, tmp);
@@ -67,7 +68,8 @@ class User with ChangeNotifier {
         levelInfo = res;
         notifyListeners();
       });
-      // 获取用户歌单
+      // 用户详情
+      getUserDetail(userInfo.userId).then((res) {});
     }
   }
 }

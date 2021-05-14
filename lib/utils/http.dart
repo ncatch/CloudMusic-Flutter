@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-13 21:57:34
+ * @LastEditTime: 2021-05-14 10:44:56
  * @LastEditors: Walker
  */
 
@@ -19,13 +19,10 @@ import './preference.dart';
 class DioUtil {
   static Dio dio = new Dio();
   static var cookieJar = CookieJar();
+  static String? cookie;
 
   //拦截器部分
   static tokenInter() async {
-    // var cookie = await PreferenceUtils.getString(PreferencesKey.USER_COOKIE);
-
-    // List<Cookie> cookies = [Cookie.fromSetCookieValue(cookie)];
-
     try {
       Directory appDocDir = await getApplicationDocumentsDirectory();
       String appDocPath = appDocDir.path;
@@ -39,7 +36,20 @@ class DioUtil {
 
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {
+      // 接口权限
       options.headers['Authorization'] = token;
+
+      // 用户身份
+      if (cookie == null || cookie == "") {
+        cookie = await PreferenceUtils.getString(PreferencesKey.USER_COOKIE);
+      }
+
+      options.queryParameters['cookie'] = Uri.encodeComponent(cookie ?? "");
+
+      // 拼接服务器地址
+      if (!options.path.startsWith('http')) {
+        options.path = server + options.path;
+      }
 
       // Do something before request is sent
       return handler.next(options); //continue

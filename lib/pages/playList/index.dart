@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-13 21:40:49
+ * @LastEditTime: 2021-05-14 10:03:10
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -13,6 +13,7 @@ import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/pages/playList/playListMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/subscribers.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
@@ -20,7 +21,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
 import 'package:provider/provider.dart';
-import '../../libs/extends/IntExtend.dart';
 
 class PlayList extends StatefulWidget {
   final songId;
@@ -73,15 +73,6 @@ class PlayListState extends State<PlayList> {
   // 关注
   attention() {}
 
-  // 收藏
-  subscribed() {}
-
-  // 评论
-  comment() {}
-
-  // 分享
-  share() {}
-
   // 下载音乐
   downloadMusic() {}
 
@@ -99,12 +90,11 @@ class PlayListState extends State<PlayList> {
   }
 
   musicClick(playInfoStore, index) {
-    playInfoStore.getCacheData();
-    // playInfoStore.setPlayList(playListInfo.musicList, index);
+    playInfoStore.setPlayList(playListInfo.musicList, index);
 
-    // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-    //   return Play();
-    // }));
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return Play();
+    }));
   }
 
   List<Widget> getMusicList(playInfoStore) {
@@ -372,107 +362,14 @@ class PlayListState extends State<PlayList> {
                                 ),
                               ),
                               Positioned(
-                                  bottom: 15,
-                                  child: Container(
-                                    width: size.width,
-                                    alignment: Alignment.center,
-                                    child: Container(
-                                      width: 280,
-                                      height: 40,
-                                      padding:
-                                          EdgeInsets.fromLTRB(20, 0, 20, 0),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(25),
-                                        color: Colors.white,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            offset: Offset(0.0, 2.0), //阴影xy轴偏移量
-                                            blurRadius: 10.0, //阴影模糊程度
-                                            spreadRadius: 1, //阴影扩散程度
-                                          ),
-                                        ],
-                                      ),
-                                      child: Flex(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        direction: Axis.horizontal,
-                                        children: [
-                                          // 收藏
-                                          Expanded(
-                                            flex: 1,
-                                            child: InkWell(
-                                              onTap: subscribed,
-                                              child: Wrap(
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Icon(Icons
-                                                      .library_add_outlined),
-                                                  Text(
-                                                    ' ' +
-                                                        playListInfo
-                                                            .subscribedCount
-                                                            .toMyriadString(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            '|',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey.shade300,
-                                            ),
-                                          ),
-                                          // 评论
-                                          Expanded(
-                                            flex: 1,
-                                            child: InkWell(
-                                              onTap: comment,
-                                              child: Wrap(
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Icon(Icons.comment_outlined),
-                                                  Text(
-                                                    ' ' +
-                                                        playListInfo
-                                                            .commentCount
-                                                            .toMyriadString(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Text(
-                                            '|',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              color: Colors.grey.shade300,
-                                            ),
-                                          ),
-                                          // 分享
-                                          Expanded(
-                                            flex: 1,
-                                            child: InkWell(
-                                              onTap: share,
-                                              child: Wrap(
-                                                alignment: WrapAlignment.center,
-                                                children: [
-                                                  Icon(Icons.share_outlined),
-                                                  Text(
-                                                    ' ' +
-                                                        playListInfo.shareCount
-                                                            .toMyriadString(),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  )),
+                                bottom: 15,
+                                child: Container(
+                                  width: size.width,
+                                  alignment: Alignment.center,
+                                  child:
+                                      PlayListMenu(playListInfo: playListInfo),
+                                ),
+                              ),
                             ],
                           ),
                         ),
