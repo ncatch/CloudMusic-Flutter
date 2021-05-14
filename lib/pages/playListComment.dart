@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-14 19:32:50
+ * @LastEditTime: 2021-05-14 19:40:33
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/PlayList.dart';
@@ -23,10 +23,23 @@ class PlayListComment extends StatefulWidget {
 class PlayListCommentState extends State<PlayListComment> {
   var commentList = [];
   var hotCommentList = [];
+  bool disChildScroll = true;
+
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+
+    _scrollController.addListener(() {
+      var tmp = _scrollController.offset < 110;
+
+      if (disChildScroll != tmp) {
+        this.setState(() {
+          disChildScroll = tmp;
+        });
+      }
+    });
 
     getComments();
   }
@@ -125,6 +138,7 @@ class PlayListCommentState extends State<PlayListComment> {
         ),
       ),
       body: ListView(
+        controller: _scrollController,
         children: [
           Container(
             height: 100,
@@ -217,6 +231,10 @@ class PlayListCommentState extends State<PlayListComment> {
           Container(
             height: size.height - 40,
             child: ListView(
+              shrinkWrap: true,
+              physics: disChildScroll
+                  ? NeverScrollableScrollPhysics()
+                  : AlwaysScrollableScrollPhysics(),
               children: commentComponents(),
             ),
           ),
