@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 11:24:30
- * @LastEditTime: 2021-05-14 14:34:47
+ * @LastEditTime: 2021-05-14 15:23:47
  * @LastEditors: Walker
  */
 const clientType = {
@@ -19,4 +19,12 @@ enum playModes {
   random, // 随机
 }
 
-// const subscribe = {1: '收藏', 2: '取消收藏'};
+enum subscribeDic {
+  collect, // 收藏
+  cancel, // 取消收藏
+}
+
+var subscribeVal = {
+  subscribeDic.cancel: 2,
+  subscribeDic.collect: 1,
+};

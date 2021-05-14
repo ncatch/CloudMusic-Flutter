@@ -2,16 +2,18 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 09:53:41
- * @LastEditTime: 2021-05-14 15:09:15
+ * @LastEditTime: 2021-05-14 15:22:43
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../libs/extends/IntExtend.dart';
+import '../../libs/enums.dart';
 
 class PlayListMenu extends StatefulWidget {
   PlayListModel playListInfo = PlayListModel();
@@ -35,9 +37,11 @@ class PlayListMenuState extends State<PlayListMenu> {
   // 收藏
   subscribed(context) async {
     // 1:收藏,2:取消收藏
-    int type = widget.playListInfo.subscribed ? 2 : 1;
+    var type = widget.playListInfo.subscribed
+        ? subscribeDic.cancel
+        : subscribeDic.collect;
 
-    if (type == 2) {
+    if (type == subscribeDic.cancel) {
       final action = await showDialog(
         context: context,
         barrierDismissible: false,
@@ -71,12 +75,12 @@ class PlayListMenuState extends State<PlayListMenu> {
         return;
       }
     }
-
     BotToast.showLoading();
-    subscribe(widget.playListInfo.id, type).then((res) {
+    subscribe(widget.playListInfo.id, subscribeVal[type]).then((res) {
       BotToast.closeAllLoading();
       if (res['code'] == 200) {
-        BotToast.showText(text: type == 1 ? '收藏成功' : '取消收藏成功');
+        BotToast.showText(
+            text: type == subscribeDic.collect ? '收藏成功' : '取消收藏成功');
 
         var tmp = widget.playListInfo.subscribed;
 
