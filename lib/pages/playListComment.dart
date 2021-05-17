@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-17 19:23:51
+ * @LastEditTime: 2021-05-17 19:47:49
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -24,6 +24,8 @@ class PlayListComment extends StatefulWidget {
 
 class PlayListCommentState extends State<PlayListComment>
     with SingleTickerProviderStateMixin {
+  double total = 0;
+  int offset = 1;
   var commentList = [];
   var hotCommentList = [];
   bool disChildScroll = true;
@@ -60,13 +62,26 @@ class PlayListCommentState extends State<PlayListComment>
     isInit = true;
   }
 
-  getComments() {
-    getPlayListComment(widget.info.id).then((res) {
+  getComments({isLoad = false}) {
+    var before = '';
+    if (isLoad) {
+      before = commentList[commentList.length - 1]['time'].toString();
+    }
+
+    getPlayListComment(widget.info.id, offset: offset, before: before)
+        .then((res) {
       if (res['code'] == 200) {
-        this.setState(() {
-          commentList = res['comments'];
-          hotCommentList = res['hotComments'];
-        });
+        if (isLoad != '') {
+          this.setState(() {
+            commentList.addAll(res['comments']);
+          });
+        } else {
+          this.setState(() {
+            total = res['total'];
+            commentList = res['comments'];
+            hotCommentList = res['hotComments'];
+          });
+        }
       }
     });
   }
@@ -165,7 +180,7 @@ class PlayListCommentState extends State<PlayListComment>
             ),
             foregroundColor: Colors.black,
             title: Text(
-              "评论(${commentList.length})",
+              "评论($total)",
               style: TextStyle(color: Colors.black, fontSize: 14),
             ),
             backgroundColor: Colors.white,
@@ -282,9 +297,14 @@ class PlayListCommentState extends State<PlayListComment>
                 Container(
                   child: NotificationListener(
                     onNotification: (notification) {
-                      if (notification.runtimeType == OverscrollNotification &&
-                          _scrollController.offset <= 0) {
-                        _customScrollController.position.moveTo(0);
+                      if (notification.runtimeType == OverscrollNotification) {
+                        if (_scrollController.offset <= 0) {
+                          _customScrollController.position.moveTo(0);
+                        } else {
+                          // 加载数据
+                          offset++;
+                          getComments(isLoad: true);
+                        }
                       }
                       return true;
                     },

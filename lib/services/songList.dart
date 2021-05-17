@@ -2,7 +2,7 @@
  * @Description: 歌单相关接口
  * @Author: Walker
  * @Date: 2021-04-30 19:18:22
- * @LastEditTime: 2021-05-17 10:27:10
+ * @LastEditTime: 2021-05-17 19:39:18
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/utils/http.dart';
@@ -19,7 +19,7 @@ Future<dynamic> subscribe(id, type) {
   });
 }
 
-Future<dynamic> getPlayListComment(id, [limit = 20, offset = "", before = ""]) {
+Future<dynamic> getPlayListComment(id, {limit = 20, offset = "", before = ""}) {
   return DioUtil.dio
       .get(
           '/comment/playlist?id=$id&limit=$limit&offset=$offset&bofore=$before')
