@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-14 20:45:43
+ * @LastEditTime: 2021-05-17 10:38:36
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -29,18 +29,32 @@ class PlayListCommentState extends State<PlayListComment> {
   bool isInit = false;
 
   ScrollController _scrollController = ScrollController();
+  ScrollController _scrollControllerChild = ScrollController();
 
   @override
   void initState() {
     super.initState();
 
     _scrollController.addListener(() {
-      var tmp = _scrollController.offset < 40;
+      if (disChildScroll) {
+        var tmp = _scrollController.offset <= 110;
+        print(_scrollController.offset);
 
-      if (disChildScroll != tmp) {
-        this.setState(() {
-          disChildScroll = tmp;
-        });
+        if (disChildScroll != tmp) {
+          this.setState(() {
+            disChildScroll = tmp;
+          });
+        }
+      }
+    });
+
+    _scrollControllerChild.addListener(() {
+      if (!disChildScroll) {
+        if (_scrollController.offset <= 5) {
+          this.setState(() {
+            disChildScroll = true;
+          });
+        }
       }
     });
 
@@ -106,9 +120,18 @@ class PlayListCommentState extends State<PlayListComment> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(ele['user']['nickname']),
-                  Text(DateTime.fromMillisecondsSinceEpoch(ele['time'])
-                      .toLocal()
-                      .toString()),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
+                    child: Text(
+                      DateTime.fromMillisecondsSinceEpoch(
+                        ele['time'],
+                      ).toLocal().toString(),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ),
                   Text(ele['content']),
                 ],
               ),
@@ -245,10 +268,11 @@ class PlayListCommentState extends State<PlayListComment> {
           Container(
             height: size.height - 40,
             child: ListView(
+              controller: _scrollControllerChild,
               shrinkWrap: true,
-              // physics: disChildScroll
-              //     ? NeverScrollableScrollPhysics()
-              //     : AlwaysScrollableScrollPhysics(),
+              physics: disChildScroll
+                  ? NeverScrollableScrollPhysics()
+                  : AlwaysScrollableScrollPhysics(),
               children: commentComponents(),
             ),
           ),

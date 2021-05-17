@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-14 14:05:11
+ * @LastEditTime: 2021-05-17 10:40:15
  * @LastEditors: Walker
  */
 
@@ -172,7 +172,10 @@ class PlayInfoStore with ChangeNotifier {
 
     return getMusicUrl(id).then((result) {
       musicLoading = false;
-      setPlayMusic(result[0]['url']);
+      if (result[0]['url'] != null) {
+        setPlayMusic(result[0]['url']);
+      }
+
       notifyListeners();
 
       return result;

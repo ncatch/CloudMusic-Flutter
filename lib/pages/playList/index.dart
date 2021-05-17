@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-14 20:44:03
+ * @LastEditTime: 2021-05-17 14:35:17
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -11,7 +11,6 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
-import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/playListMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/playMenu.dart';
@@ -38,6 +37,7 @@ class PlayListState extends State<PlayList> {
   double headHeight = 250; // head 高度
   double appBarImgOper = 0; // appbar 透明度
   double sunkenHeight = 20; // head 凹陷高度
+  double headImgTop = 0;
 
   PlayListModel playListInfo = PlayListModel();
 
@@ -56,6 +56,7 @@ class PlayListState extends State<PlayList> {
       if (appBarImgOper != t) {
         setState(() {
           appBarImgOper = t;
+          headImgTop = _scrollController.offset;
           // sunkenHeight = 20 - 20 * t;
         });
       }
@@ -168,6 +169,8 @@ class PlayListState extends State<PlayList> {
     var size = MediaQuery.of(context).size;
     var playInfoStore = Provider.of<PlayInfoStore>(context);
     var playMenuComponent = PlayMenu(playListInfo: playListInfo);
+    var hasHeadImg = playListInfo.headBgUrl != "";
+    var bgUrl = hasHeadImg ? playListInfo.headBgUrl : playListInfo.coverImgUrl;
 
     return Scaffold(
       body: Flex(
@@ -177,25 +180,49 @@ class PlayListState extends State<PlayList> {
               flex: 1,
               child: Stack(
                 children: [
+                  Positioned(
+                    top: -headImgTop,
+                    height: headHeight,
+                    child: Container(
+                      width: size.width,
+                      decoration: new BoxDecoration(
+                        image: new DecorationImage(
+                          image: new NetworkImage(bgUrl),
+                          fit: BoxFit.cover,
+                          colorFilter: new ColorFilter.mode(
+                            Colors.black54,
+                            BlendMode.overlay,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: -headImgTop,
+                    height: headHeight,
+                    child: Container(
+                      child: hasHeadImg
+                          ? null
+                          : new BackdropFilter(
+                              filter:
+                                  ImageFilter.blur(sigmaX: 50.0, sigmaY: 50.0),
+                              child: Opacity(
+                                opacity: 0.6,
+                                child: new Container(
+                                  decoration: new BoxDecoration(
+                                    color: Colors.grey.shade900,
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ),
+                  ),
                   Container(
                     child: ListView(
                       controller: _scrollController,
                       children: [
                         Container(
                           height: headHeight,
-                          decoration: new BoxDecoration(
-                            image: new DecorationImage(
-                              image: new NetworkImage(
-                                  playListInfo.headBgUrl == ""
-                                      ? play_img_url_default
-                                      : playListInfo.headBgUrl),
-                              fit: BoxFit.cover,
-                              colorFilter: new ColorFilter.mode(
-                                Colors.black54,
-                                BlendMode.overlay,
-                              ),
-                            ),
-                          ),
                           child: Stack(
                             children: [
                               Positioned(
@@ -395,15 +422,42 @@ class PlayListState extends State<PlayList> {
                   Container(
                     height: 90,
                     child: Opacity(
-                      opacity: appBarImgOper,
-                      child: Image(
-                        width: size.width,
-                        image: NetworkImage(playListInfo.headBgUrl == ""
-                            ? play_img_url_default
-                            : playListInfo.headBgUrl),
-                        fit: BoxFit.fitWidth,
-                      ),
-                    ),
+                        opacity: appBarImgOper,
+                        child: Stack(
+                          children: [
+                            Positioned(
+                              child: Image(
+                                width: size.width,
+                                image: NetworkImage(bgUrl),
+                                fit: BoxFit.fitWidth,
+                              ),
+                            ),
+                            hasHeadImg
+                                ? Container(
+                                    height: 90,
+                                  )
+                                : Positioned(
+                                    child: ClipRect(
+                                      clipper: AppBarRect(),
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                          sigmaX: 50.0,
+                                          sigmaY: 50.0,
+                                        ),
+                                        child: Opacity(
+                                          opacity: 0.6,
+                                          child: new Container(
+                                            height: 90,
+                                            // decoration: new BoxDecoration(
+                                            //   color: Colors.grey.shade900,
+                                            // ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                          ],
+                        )),
                   ),
                   Container(
                     height: 100,
@@ -427,6 +481,22 @@ class PlayListState extends State<PlayList> {
         ],
       ),
     );
+  }
+}
+
+class AppBarRect extends CustomClipper<Rect> {
+  double height = 90;
+
+  AppBarRect({Key? key, this.height = 90});
+
+  Rect getClip(Size size) {
+    return Rect.fromLTRB(0, 0, size.width, height);
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
+    // TODO: implement shouldReclip
+    return false;
   }
 }
 

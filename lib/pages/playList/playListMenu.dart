@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 09:53:41
- * @LastEditTime: 2021-05-14 15:51:10
+ * @LastEditTime: 2021-05-17 10:56:32
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -89,8 +89,11 @@ class PlayListMenuState extends State<PlayListMenu> {
         this.setState(() {
           isSubscribed = !tmp;
         });
+      } else {
+        BotToast.showText(text: res['msg'] ?? '网络异常');
       }
-    }).catchError(() {
+    }, onError: (err) {
+      print(err);
       BotToast.closeAllLoading();
     });
   }
