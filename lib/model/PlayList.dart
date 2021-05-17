@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-14 14:37:57
+ * @LastEditTime: 2021-05-17 14:39:41
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -14,7 +14,7 @@ class PlayListModel {
   String title = "";
   String headBgUrl = "";
   String coverImgUrl = "";
-  String descript = "";
+  String? descript;
   int playCount = 0;
   int subscribedCount = 0; // 收藏数
   int shareCount = 0; // 分享数
@@ -31,7 +31,7 @@ class PlayListModel {
     String title = "",
     String headBgUrl = "",
     String coverImgUrl = play_img_url_default,
-    String descript = "",
+    String? descript,
     int playCount = 0,
     creator,
   }) {

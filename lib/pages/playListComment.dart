@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-17 10:38:36
+ * @LastEditTime: 2021-05-17 17:26:47
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -22,41 +22,34 @@ class PlayListComment extends StatefulWidget {
   State<StatefulWidget> createState() => PlayListCommentState();
 }
 
-class PlayListCommentState extends State<PlayListComment> {
+class PlayListCommentState extends State<PlayListComment>
+    with SingleTickerProviderStateMixin {
   var commentList = [];
   var hotCommentList = [];
   bool disChildScroll = true;
   bool isInit = false;
 
   ScrollController _scrollController = ScrollController();
-  ScrollController _scrollControllerChild = ScrollController();
+  ScrollController _customScrollController = ScrollController();
 
+  TabController? tabController;
   @override
   void initState() {
     super.initState();
 
     _scrollController.addListener(() {
-      if (disChildScroll) {
-        var tmp = _scrollController.offset <= 110;
-        print(_scrollController.offset);
+      var innerPos = _scrollController.position.pixels; // 内容滚动的距离
+      var maxOuterPos =
+          _customScrollController.position.maxScrollExtent; // 头部最大滚动高度
 
-        if (disChildScroll != tmp) {
-          this.setState(() {
-            disChildScroll = tmp;
-          });
-        }
+      if (innerPos > 0 && innerPos < maxOuterPos) {
+        _customScrollController.position.moveTo(innerPos);
+        // (innerPos,
+        //     curve: Curves.linear, duration: Duration(microseconds: 100));
       }
     });
 
-    _scrollControllerChild.addListener(() {
-      if (!disChildScroll) {
-        if (_scrollController.offset <= 5) {
-          this.setState(() {
-            disChildScroll = true;
-          });
-        }
-      }
-    });
+    tabController = TabController(length: 1, vsync: this);
 
     getComments();
   }
@@ -80,7 +73,7 @@ class PlayListCommentState extends State<PlayListComment> {
     });
   }
 
-  commentComponents() {
+  List<Widget> commentComponents() {
     List<Widget> result = [];
 
     for (var i = 0; i < commentList.length; i++) {
@@ -162,122 +155,166 @@ class PlayListCommentState extends State<PlayListComment> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          color: Colors.black,
-        ),
-        leadingWidth: 30,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        title: Text(
-          "评论(${commentList.length})",
-          style: TextStyle(color: Colors.black, fontSize: 14),
-        ),
-      ),
-      body: ListView(
-        controller: _scrollController,
-        children: [
-          Container(
-            height: 100,
-            decoration: BoxDecoration(
-              border: Border(
-                bottom: BorderSide(width: 10, color: Colors.grey.shade100),
+      body: CustomScrollView(
+        controller: _customScrollController,
+        slivers: <Widget>[
+          SliverAppBar(
+            pinned: true,
+            elevation: 0,
+            expandedHeight: 140,
+            leading: BackButton(
+              color: Colors.black,
+            ),
+            foregroundColor: Colors.black,
+            title: Text(
+              "评论(${commentList.length})",
+              style: TextStyle(color: Colors.black, fontSize: 14),
+            ),
+            backgroundColor: Colors.white,
+            flexibleSpace: FlexibleSpaceBar(
+              background: Container(
+                height: 100,
+                margin: EdgeInsets.only(top: 70),
+                decoration: BoxDecoration(
+                  border: Border(
+                    bottom: BorderSide(width: 10, color: Colors.grey.shade100),
+                  ),
+                ),
+                child: InkWell(
+                  onTap: toPlayList,
+                  child: Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                      Container(
+                        width: 60,
+                        height: 60,
+                        margin: EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            image: NetworkImage(widget.info.coverImgUrl),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Wrap(
+                          children: [
+                            Container(
+                              child: Text(
+                                widget.info.title,
+                                style: TextStyle(fontSize: 16),
+                              ),
+                            ),
+                            Container(
+                              child: InkWell(
+                                onTap: toUserDetail,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'by ',
+                                      style: TextStyle(color: Colors.grey),
+                                    ),
+                                    Text(
+                                      widget.info.creator.nickname,
+                                      style: TextStyle(color: Colors.blue[400]),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 30,
+                        child: Icon(
+                          Icons.navigate_next,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            child: InkWell(
-              onTap: toPlayList,
-              child: Flex(
-                direction: Axis.horizontal,
-                children: [
-                  Container(
-                    width: 60,
-                    height: 60,
-                    margin: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        image: NetworkImage(widget.info.coverImgUrl),
-                        fit: BoxFit.cover,
-                      ),
-                      borderRadius: BorderRadius.circular(4),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: Wrap(
-                      children: [
-                        Container(
-                          child: Text(
-                            widget.info.title,
-                            style: TextStyle(fontSize: 16),
+          ),
+          SliverPersistentHeader(
+            pinned: true,
+            delegate: StickyTabBarDelegate(
+              child: TabBar(
+                indicatorColor: Colors.white,
+                labelColor: Colors.black,
+                controller: tabController,
+                tabs: <Widget>[
+                  Tab(
+                    child: Container(
+                      height: 50,
+                      color: Colors.white,
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          Expanded(
+                            flex: 1,
+                            child: Text('评论'),
                           ),
-                        ),
-                        Container(
-                          child: InkWell(
-                            onTap: toUserDetail,
+                          Container(
+                            width: 100,
                             child: Row(
                               children: [
-                                Text(
-                                  'by ',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  widget.info.creator.nickname,
-                                  style: TextStyle(color: Colors.blue[400]),
-                                )
+                                Text('推荐'),
+                                Text('最热'),
+                                Text('最新'),
                               ],
                             ),
-                          ),
-                        ),
-                      ],
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: 30,
-                    child: Icon(
-                      Icons.navigate_next,
-                      color: Colors.grey,
-                    ),
-                  ),
+                  )
                 ],
               ),
             ),
           ),
-          Container(
-            height: 40,
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-            child: Flex(
-              direction: Axis.horizontal,
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text('评论'),
-                ),
+          SliverFillRemaining(
+            child: TabBarView(
+              controller: tabController,
+              children: <Widget>[
                 Container(
-                  width: 100,
-                  child: Row(
-                    children: [
-                      Text('推荐'),
-                      Text('最热'),
-                      Text('最新'),
-                    ],
+                  child: ListView(
+                    controller: _scrollController,
+                    children: commentComponents(),
                   ),
-                )
+                ),
               ],
-            ),
-          ),
-          Container(
-            height: size.height - 40,
-            child: ListView(
-              controller: _scrollControllerChild,
-              shrinkWrap: true,
-              physics: disChildScroll
-                  ? NeverScrollableScrollPhysics()
-                  : AlwaysScrollableScrollPhysics(),
-              children: commentComponents(),
             ),
           ),
         ],
       ),
     );
+  }
+}
+
+class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
+  final TabBar child;
+
+  StickyTabBarDelegate({required this.child});
+
+  @override
+  Widget build(
+      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return this.child;
+  }
+
+  @override
+  double get maxExtent => this.child.preferredSize.height;
+
+  @override
+  double get minExtent => this.child.preferredSize.height;
+
+  @override
+  bool shouldRebuild(SliverPersistentHeaderDelegate oldDelegate) {
+    return true;
   }
 }

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-17 14:35:17
+ * @LastEditTime: 2021-05-17 14:39:16
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -47,7 +47,7 @@ class PlayListState extends State<PlayList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      double t = _scrollController.offset / 150;
+      double t = _scrollController.offset / 180;
       if (t < 0.0) {
         t = 0.0;
       } else if (t > 1.0) {
@@ -363,10 +363,14 @@ class PlayListState extends State<PlayList> {
                                                   showDescript();
                                                 },
                                                 child: Text(
-                                                  playListInfo.descript
-                                                          .split('\n')[0]
-                                                          .overFlowString(10) +
-                                                      ' >',
+                                                  playListInfo.descript == null
+                                                      ? ''
+                                                      : ((playListInfo.descript ??
+                                                                  "")
+                                                              .split('\n')[0]
+                                                              .overFlowString(
+                                                                  10) +
+                                                          ' >'),
                                                   style: TextStyle(
                                                       color: Colors.white),
                                                 ),
