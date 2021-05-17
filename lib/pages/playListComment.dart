@@ -2,9 +2,11 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-17 19:47:49
+ * @LastEditTime: 2021-05-17 21:26:47
  * @LastEditors: Walker
  */
+import 'dart:async';
+
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
@@ -30,6 +32,7 @@ class PlayListCommentState extends State<PlayListComment>
   var hotCommentList = [];
   bool disChildScroll = true;
   bool isInit = false;
+  var time;
 
   ScrollController _scrollController = ScrollController();
   ScrollController _customScrollController = ScrollController();
@@ -68,7 +71,8 @@ class PlayListCommentState extends State<PlayListComment>
       before = commentList[commentList.length - 1]['time'].toString();
     }
 
-    getPlayListComment(widget.info.id, offset: offset, before: before)
+    getPlayListComment(widget.info.id,
+            offset: (offset - 1) * 20, before: before)
         .then((res) {
       if (res['code'] == 200) {
         if (isLoad != '') {
@@ -83,6 +87,20 @@ class PlayListCommentState extends State<PlayListComment>
           });
         }
       }
+    });
+  }
+
+  loadComments() {
+    if (time != null) {
+      time.cancel();
+      time = null;
+    }
+
+    time = new Timer(Duration(milliseconds: 50), () {
+      offset++;
+      getComments(isLoad: true);
+      time.cancel();
+      time = null;
     });
   }
 
@@ -302,8 +320,7 @@ class PlayListCommentState extends State<PlayListComment>
                           _customScrollController.position.moveTo(0);
                         } else {
                           // 加载数据
-                          offset++;
-                          getComments(isLoad: true);
+                          loadComments();
                         }
                       }
                       return true;
