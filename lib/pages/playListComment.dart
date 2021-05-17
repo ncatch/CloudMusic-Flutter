@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-17 17:26:47
+ * @LastEditTime: 2021-05-17 19:23:51
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -44,8 +44,6 @@ class PlayListCommentState extends State<PlayListComment>
 
       if (innerPos > 0 && innerPos < maxOuterPos) {
         _customScrollController.position.moveTo(innerPos);
-        // (innerPos,
-        //     curve: Curves.linear, duration: Duration(microseconds: 100));
       }
     });
 
@@ -282,9 +280,18 @@ class PlayListCommentState extends State<PlayListComment>
               controller: tabController,
               children: <Widget>[
                 Container(
-                  child: ListView(
-                    controller: _scrollController,
-                    children: commentComponents(),
+                  child: NotificationListener(
+                    onNotification: (notification) {
+                      if (notification.runtimeType == OverscrollNotification &&
+                          _scrollController.offset <= 0) {
+                        _customScrollController.position.moveTo(0);
+                      }
+                      return true;
+                    },
+                    child: ListView(
+                      controller: _scrollController,
+                      children: commentComponents(),
+                    ),
                   ),
                 ),
               ],
