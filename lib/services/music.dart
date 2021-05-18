@@ -2,7 +2,7 @@
  * @Description: 歌曲相关接口
  * @Author: nocatch
  * @Date: 2021-04-09 14:28:07
- * @LastEditTime: 2021-05-06 13:52:10
+ * @LastEditTime: 2021-05-18 16:28:10
  * @LastEditors: Walker
  */
 import '../libs/config.dart';
@@ -23,7 +23,7 @@ Future<dynamic> getMusicLyric(id) {
   });
 }
 
-Future<List<dynamic>> getMusicDetail(ids) {
+Future<List<dynamic>> getMusicDetail(List<int> ids) {
   return DioUtil.dio
       .get(server + '/song/detail?ids=' + ids.join(',').toString())
       .then((value) {

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-17 14:39:41
+ * @LastEditTime: 2021-05-18 16:35:55
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -26,6 +26,7 @@ class PlayListModel {
   var tags = [];
   List<MusicInfo> musicList = [];
   List<UserInfo> subscribers = [];
+  List<int> musicIds = [];
 
   PlayListModel({
     String title = "",
@@ -63,7 +64,11 @@ class PlayListModel {
     this.subscribers = List<UserInfo>.from((data['subscribers'] ?? [])
         .map<UserInfo>((ele) => UserInfo.fromJson(ele)));
 
-    this.musicList = List<MusicInfo>.from((data['tracks'] ?? [])
-        .map<MusicInfo>((ele) => MusicInfo.fromData(ele)));
+    // this.musicList = List<MusicInfo>.from((data['tracks'] ?? [])
+    //     .map<MusicInfo>((ele) => MusicInfo.fromData(ele)));
+    this.musicList = [];
+
+    this.musicIds =
+        List<int>.from((data['trackIds'] ?? []).map((ele) => ele['id']));
   }
 }

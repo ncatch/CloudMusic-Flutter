@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-18 11:41:32
+ * @LastEditTime: 2021-05-18 16:17:39
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -74,9 +74,11 @@ class PlayListCommentState extends State<PlayListComment>
           comments.commentList[comments.commentList.length - 1].time.toString();
     }
 
-    getPlayListComment(widget.info.id,
-            offset: (offset - 1) * 20, before: before)
-        .then((res) {
+    getPlayListComment(
+      widget.info.id,
+      offset: (offset - 1) * 20,
+      before: before,
+    ).then((res) {
       if (res['code'] == 200) {
         if (isLoad != '') {
           this.setState(() {

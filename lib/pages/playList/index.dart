@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-17 14:39:16
+ * @LastEditTime: 2021-05-18 18:00:50
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -11,12 +11,16 @@ import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
+import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/pages/playList/detail.dart';
 import 'package:cloudmusic_flutter/pages/playList/playListMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/playMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/subscribers.dart';
+import 'package:cloudmusic_flutter/services/music.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
+import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
@@ -43,6 +47,9 @@ class PlayListState extends State<PlayList> {
 
   ScrollController _scrollController = ScrollController();
 
+  int pageIndex = 1;
+  int pageSize = 20;
+
   @override
   void initState() {
     super.initState();
@@ -62,11 +69,12 @@ class PlayListState extends State<PlayList> {
       }
     });
 
+    pageIndex = 1;
     getPlayListById(widget.songId).then((res) {
       if (res['code'] == 200) {
-        this.setState(() {
-          playListInfo = PlayListModel.fromData(res['playlist']);
-        });
+        playListInfo = PlayListModel.fromData(res['playlist']);
+
+        this.getMusicList();
       } else {
         BotToast.showText(text: res['msg'] ?? '网络异常');
       }
@@ -81,8 +89,35 @@ class PlayListState extends State<PlayList> {
     isInit = true;
   }
 
+  getMusicList() {
+    int min = (pageIndex - 1) * pageSize;
+    int max = pageIndex * pageSize;
+
+    if (min >= playListInfo.musicIds.length) {
+      return;
+    }
+
+    if (max > playListInfo.musicIds.length) {
+      max = playListInfo.musicIds.length;
+    }
+
+    List<int> ids = playListInfo.musicIds.sublist(min, max);
+    getMusicDetail(ids).then((res) {
+      this.setState(() {
+        playListInfo.musicList
+            .addAll(res.map<MusicInfo>((ele) => MusicInfo.fromData(ele)));
+      });
+    });
+  }
+
   // 显示简介详情
-  showDescript() {}
+  showDescript() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return PlayListDetail(
+        playListInfo: playListInfo,
+      );
+    }));
+  }
 
   // 关注
   attention() {}
@@ -103,7 +138,7 @@ class PlayListState extends State<PlayList> {
     }));
   }
 
-  List<Widget> getMusicList(playInfoStore) {
+  List<Widget> getMusicListWidget(playInfoStore) {
     List<Widget> result = [];
     for (var i = 0; i < playListInfo.musicList.length; i++) {
       var ele = playListInfo.musicList[i];
@@ -135,11 +170,11 @@ class PlayListState extends State<PlayList> {
                   direction: Axis.vertical,
                   children: [
                     Text(
-                      ele.musicName,
+                      ele.musicName.overFlowString(18),
                       style: TextStyle(fontSize: 14),
                     ),
                     Text(
-                      ele.singerName + '-' + ele.tip,
+                      ele.singerName + '-' + ele.tip.overFlowString(15),
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey,
@@ -168,6 +203,7 @@ class PlayListState extends State<PlayList> {
 
     var size = MediaQuery.of(context).size;
     var playInfoStore = Provider.of<PlayInfoStore>(context);
+    var systemInfo = Provider.of<SystemInfo>(context);
     var playMenuComponent = PlayMenu(playListInfo: playListInfo);
     var hasHeadImg = playListInfo.headBgUrl != "";
     var bgUrl = hasHeadImg ? playListInfo.headBgUrl : playListInfo.coverImgUrl;
@@ -218,209 +254,228 @@ class PlayListState extends State<PlayList> {
                     ),
                   ),
                   Container(
-                    child: ListView(
-                      controller: _scrollController,
-                      children: [
-                        Container(
-                          height: headHeight,
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                top: 60,
-                                width: size.width,
-                                height: headHeight - 140,
-                                child: Flex(
-                                  direction: Axis.horizontal,
-                                  children: [
-                                    Container(
-                                      width: 130,
-                                      margin: EdgeInsets.fromLTRB(20, 0, 0, 0),
-                                      child: Stack(
-                                        children: [
-                                          Container(
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 0, 0, 5),
-                                            child: ClipRRect(
-                                              borderRadius:
-                                                  BorderRadius.circular(10),
-                                              child: Image.network(
-                                                playListInfo.coverImgUrl,
-                                                fit: BoxFit.fill,
-                                                width: 114,
-                                                height: 114,
-                                              ),
-                                            ),
-                                          ),
-                                          Positioned(
-                                            child: Container(
-                                              padding: EdgeInsets.fromLTRB(
-                                                  6, 0, 6, 0),
-                                              decoration: BoxDecoration(
-                                                color: Colors.black38,
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(50)),
-                                              ),
-                                              child: Row(
-                                                children: [
-                                                  Icon(
-                                                      Icons.play_arrow_outlined,
-                                                      color: Colors.white,
-                                                      size: 18),
-                                                  Text(
-                                                    (playListInfo.playCount /
-                                                                10000)
-                                                            .round()
-                                                            .toString() +
-                                                        '万',
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            height: 22,
-                                            top: 4,
-                                            right: 25,
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(4, 0, 20, 0),
-                                        height: headHeight,
-                                        child: Wrap(
-                                          alignment: WrapAlignment.start,
+                    child: NotificationListener(
+                      onNotification: (notification) {
+                        if (notification.runtimeType ==
+                            OverscrollNotification) {
+                          if (_scrollController.offset > 0) {
+                            pageIndex++;
+                            getMusicList();
+                          }
+                        }
+                        return true;
+                      },
+                      child: ListView(
+                        controller: _scrollController,
+                        children: [
+                          Container(
+                            height: headHeight,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  top: 60,
+                                  width: size.width,
+                                  height: headHeight - 140,
+                                  child: Flex(
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Container(
+                                        width: 130,
+                                        margin:
+                                            EdgeInsets.fromLTRB(20, 0, 0, 0),
+                                        child: Stack(
                                           children: [
                                             Container(
-                                              child: Text(
-                                                playListInfo.title,
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16,
+                                              padding: EdgeInsets.fromLTRB(
+                                                  0, 0, 0, 5),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                                child: Image.network(
+                                                  playListInfo.coverImgUrl,
+                                                  fit: BoxFit.fill,
+                                                  width: 114,
+                                                  height: 114,
                                                 ),
                                               ),
                                             ),
-                                            Container(
-                                              margin: EdgeInsets.fromLTRB(
-                                                  0, 15, 0, 15),
-                                              child: Row(
-                                                children: [
-                                                  Container(
-                                                    margin: EdgeInsets.fromLTRB(
-                                                        0, 0, 6, 0),
-                                                    child: ClipRRect(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              12),
-                                                      child: Image.network(
-                                                        playListInfo
-                                                            .creator.avatarUrl,
-                                                        fit: BoxFit.fill,
-                                                        width: 24,
-                                                        height: 24,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    playListInfo
-                                                        .creator.nickname,
-                                                    style: TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  InkWell(
-                                                    onTap: attention,
-                                                    child: Container(
-                                                      margin:
-                                                          EdgeInsets.fromLTRB(
-                                                              5, 2, 0, 0),
-                                                      padding:
-                                                          EdgeInsets.fromLTRB(
-                                                              8, 0, 8, 0),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                        color: Colors
-                                                            .grey.shade300,
-                                                      ),
-                                                      child: Icon(
-                                                        Icons.add,
+                                            Positioned(
+                                              child: Container(
+                                                padding: EdgeInsets.fromLTRB(
+                                                    6, 0, 6, 0),
+                                                decoration: BoxDecoration(
+                                                  color: Colors.black38,
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(50)),
+                                                ),
+                                                child: Row(
+                                                  children: [
+                                                    Icon(
+                                                        Icons
+                                                            .play_arrow_outlined,
                                                         color: Colors.white,
-                                                        size: 16,
-                                                      ),
+                                                        size: 18),
+                                                    Text(
+                                                      (playListInfo.playCount /
+                                                                  10000)
+                                                              .round()
+                                                              .toString() +
+                                                          '万',
+                                                      style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 12),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Container(
-                                              child: InkWell(
-                                                onTap: () {
-                                                  showDescript();
-                                                },
-                                                child: Text(
-                                                  playListInfo.descript == null
-                                                      ? ''
-                                                      : ((playListInfo.descript ??
-                                                                  "")
-                                                              .split('\n')[0]
-                                                              .overFlowString(
-                                                                  10) +
-                                                          ' >'),
-                                                  style: TextStyle(
-                                                      color: Colors.white),
+                                                  ],
                                                 ),
                                               ),
-                                            ),
+                                              height: 22,
+                                              top: 4,
+                                              right: 25,
+                                            )
                                           ],
                                         ),
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                width: size.width,
-                                height: headHeight + 20,
-                                child: ClipPath(
-                                  clipper: HeadClipper(
-                                    height: sunkenHeight,
-                                    headHeight: headHeight,
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          padding:
+                                              EdgeInsets.fromLTRB(4, 0, 20, 0),
+                                          height: headHeight,
+                                          child: Wrap(
+                                            alignment: WrapAlignment.start,
+                                            children: [
+                                              Container(
+                                                child: Text(
+                                                  playListInfo.title,
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                              Container(
+                                                margin: EdgeInsets.fromLTRB(
+                                                    0, 15, 0, 15),
+                                                child: Row(
+                                                  children: [
+                                                    Container(
+                                                      margin:
+                                                          EdgeInsets.fromLTRB(
+                                                              0, 0, 6, 0),
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        child: Image.network(
+                                                          playListInfo.creator
+                                                              .avatarUrl,
+                                                          fit: BoxFit.fill,
+                                                          width: 24,
+                                                          height: 24,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      playListInfo
+                                                          .creator.nickname
+                                                          .overFlowString(10),
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    InkWell(
+                                                      onTap: attention,
+                                                      child: Container(
+                                                        margin:
+                                                            EdgeInsets.fromLTRB(
+                                                                5, 2, 0, 0),
+                                                        padding:
+                                                            EdgeInsets.fromLTRB(
+                                                                8, 0, 8, 0),
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                          color: Colors
+                                                              .grey.shade300,
+                                                        ),
+                                                        child: Icon(
+                                                          Icons.add,
+                                                          color: Colors.white,
+                                                          size: 16,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    showDescript();
+                                                  },
+                                                  child: Text(
+                                                    playListInfo.descript ==
+                                                            null
+                                                        ? ''
+                                                        : ((playListInfo.descript ??
+                                                                    "")
+                                                                .split('\n')[0]
+                                                                .overFlowString(
+                                                                    10) +
+                                                            ' >'),
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
                                   ),
-                                  child: Container(
-                                    decoration: new BoxDecoration(
-                                      color: Colors.white,
-                                    ),
-                                  ),
                                 ),
-                              ),
-                              Positioned(
-                                bottom: 15,
-                                child: Container(
+                                Positioned(
+                                  bottom: 0,
                                   width: size.width,
-                                  alignment: Alignment.center,
-                                  child: Opacity(
-                                    opacity: 1 - appBarImgOper,
-                                    child: PlayListMenu(
-                                      playListInfo: playListInfo,
+                                  height: headHeight + 20,
+                                  child: ClipPath(
+                                    clipper: HeadClipper(
+                                      height: sunkenHeight,
+                                      headHeight: headHeight,
+                                    ),
+                                    child: Container(
+                                      decoration: new BoxDecoration(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ],
+                                Positioned(
+                                  bottom: 15,
+                                  child: Container(
+                                    width: size.width,
+                                    alignment: Alignment.center,
+                                    child: Opacity(
+                                      opacity: 1 - appBarImgOper,
+                                      child: PlayListMenu(
+                                        playListInfo: playListInfo,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                        playMenuComponent,
-                        ...getMusicList(playInfoStore),
-                        Subscribers(
-                          playListInfo: playListInfo,
-                        ),
-                      ],
+                          playMenuComponent,
+                          ...getMusicListWidget(playInfoStore),
+                          Subscribers(
+                            playListInfo: playListInfo,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   Container(
@@ -474,6 +529,7 @@ class PlayListState extends State<PlayList> {
                         "歌单",
                         style: TextStyle(color: Colors.white, fontSize: 14),
                       ),
+                      brightness: systemInfo.brightNess,
                     ),
                   ),
                 ],
