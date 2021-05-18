@@ -2,12 +2,13 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-17 21:26:47
+ * @LastEditTime: 2021-05-18 11:41:32
  * @LastEditors: Walker
  */
 import 'dart:async';
 
 import 'package:cloudmusic_flutter/libs/config.dart';
+import 'package:cloudmusic_flutter/model/Comments.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
@@ -28,8 +29,9 @@ class PlayListCommentState extends State<PlayListComment>
     with SingleTickerProviderStateMixin {
   double total = 0;
   int offset = 1;
-  var commentList = [];
-  var hotCommentList = [];
+
+  Comments comments = Comments();
+
   bool disChildScroll = true;
   bool isInit = false;
   var time;
@@ -68,7 +70,8 @@ class PlayListCommentState extends State<PlayListComment>
   getComments({isLoad = false}) {
     var before = '';
     if (isLoad) {
-      before = commentList[commentList.length - 1]['time'].toString();
+      before =
+          comments.commentList[comments.commentList.length - 1].time.toString();
     }
 
     getPlayListComment(widget.info.id,
@@ -77,13 +80,12 @@ class PlayListCommentState extends State<PlayListComment>
       if (res['code'] == 200) {
         if (isLoad != '') {
           this.setState(() {
-            commentList.addAll(res['comments']);
+            comments.commentList.addAll(List<CommentInfo>.from(res['comments']
+                .map<CommentInfo>((ele) => CommentInfo.fromData(ele))));
           });
         } else {
           this.setState(() {
-            total = res['total'];
-            commentList = res['comments'];
-            hotCommentList = res['hotComments'];
+            comments = Comments.fromData(res);
           });
         }
       }
@@ -107,8 +109,8 @@ class PlayListCommentState extends State<PlayListComment>
   List<Widget> commentComponents() {
     List<Widget> result = [];
 
-    for (var i = 0; i < commentList.length; i++) {
-      var ele = commentList[i];
+    for (var i = 0; i < comments.commentList.length; i++) {
+      var ele = comments.commentList[i];
 
       result.add(Container(
         padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
@@ -133,7 +135,7 @@ class PlayListCommentState extends State<PlayListComment>
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
                   image: DecorationImage(
-                    image: NetworkImage(ele['user']['avatarUrl']),
+                    image: NetworkImage(ele.user.avatarUrl),
                   ),
                 ),
               ),
@@ -143,12 +145,12 @@ class PlayListCommentState extends State<PlayListComment>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(ele['user']['nickname']),
+                  Text(ele.user.nickname),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                     child: Text(
                       DateTime.fromMillisecondsSinceEpoch(
-                        ele['time'],
+                        ele.time,
                       ).toLocal().toString(),
                       style: TextStyle(
                         fontSize: 12,
@@ -156,7 +158,7 @@ class PlayListCommentState extends State<PlayListComment>
                       ),
                     ),
                   ),
-                  Text(ele['content']),
+                  Text(ele.content),
                 ],
               ),
             ),
