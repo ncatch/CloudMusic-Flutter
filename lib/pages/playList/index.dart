@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-18 18:00:50
+ * @LastEditTime: 2021-05-19 12:23:55
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -17,6 +17,7 @@ import 'package:cloudmusic_flutter/pages/playList/detail.dart';
 import 'package:cloudmusic_flutter/pages/playList/playListMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/playMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/subscribers.dart';
+import 'package:cloudmusic_flutter/pages/playList/HeadClipPath.dart';
 import 'package:cloudmusic_flutter/services/music.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
@@ -38,7 +39,7 @@ class PlayList extends StatefulWidget {
 
 class PlayListState extends State<PlayList> {
   bool isInit = false;
-  double headHeight = 250; // head 高度
+  double headHeight = 270; // head 高度
   double appBarImgOper = 0; // appbar 透明度
   double sunkenHeight = 20; // head 凹陷高度
   double headImgTop = 0;
@@ -54,19 +55,17 @@ class PlayListState extends State<PlayList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      double t = _scrollController.offset / 180;
+      double t = _scrollController.offset / 200;
       if (t < 0.0) {
         t = 0.0;
       } else if (t > 1.0) {
         t = 1.0;
       }
-      if (appBarImgOper != t) {
-        setState(() {
-          appBarImgOper = t;
-          headImgTop = _scrollController.offset;
-          // sunkenHeight = 20 - 20 * t;
-        });
-      }
+      setState(() {
+        appBarImgOper = t;
+        headImgTop = _scrollController.offset;
+        sunkenHeight = 20 - 20 * t;
+      });
     });
 
     pageIndex = 1;
@@ -347,7 +346,8 @@ class PlayListState extends State<PlayList> {
                                             children: [
                                               Container(
                                                 child: Text(
-                                                  playListInfo.title,
+                                                  playListInfo.title
+                                                      .overFlowString(20),
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 16,
@@ -440,17 +440,9 @@ class PlayListState extends State<PlayList> {
                                 Positioned(
                                   bottom: 0,
                                   width: size.width,
-                                  height: headHeight + 20,
-                                  child: ClipPath(
-                                    clipper: HeadClipper(
-                                      height: sunkenHeight,
-                                      headHeight: headHeight,
-                                    ),
-                                    child: Container(
-                                      decoration: new BoxDecoration(
-                                        color: Colors.white,
-                                      ),
-                                    ),
+                                  height: 40,
+                                  child: HeadClipPath(
+                                    valNotifier: ValueNotifier(sunkenHeight),
                                   ),
                                 ),
                                 Positioned(
@@ -532,6 +524,12 @@ class PlayListState extends State<PlayList> {
                       brightness: systemInfo.brightNess,
                     ),
                   ),
+                  Positioned(
+                    top: 90,
+                    height: 50,
+                    width: size.width,
+                    child: headImgTop >= 217 ? playMenuComponent : Container(),
+                  ),
                 ],
               )),
           Container(
@@ -555,35 +553,6 @@ class AppBarRect extends CustomClipper<Rect> {
 
   @override
   bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
-    // TODO: implement shouldReclip
-    return false;
-  }
-}
-
-class HeadClipper extends CustomClipper<Path> {
-  double height;
-  double headHeight;
-
-  HeadClipper({Key? key, this.height = 0, this.headHeight = 0});
-
-  Path getClip(Size size) {
-    var path = Path();
-    path.lineTo(0, headHeight - height); //第一个点
-
-    var firstControlPoint = Offset(size.width / 2, headHeight); //曲线开始点
-    var firstendPoint = Offset(size.width, headHeight - height); // 曲线结束点
-
-    path.quadraticBezierTo(firstControlPoint.dx, firstControlPoint.dy,
-        firstendPoint.dx, firstendPoint.dy);
-
-    path.lineTo(size.width, size.height); //第二个点
-    path.lineTo(0, size.height); //第四个点
-    path.lineTo(0, 0); // 第五个点
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
     // TODO: implement shouldReclip
     return false;
   }

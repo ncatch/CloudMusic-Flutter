@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 13:46:30
- * @LastEditTime: 2021-05-14 13:50:43
+ * @LastEditTime: 2021-05-19 11:00:14
  * @LastEditors: Walker
  */
 
@@ -45,7 +45,7 @@ class PlayMenu extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Container(
-              height: 40,
+              height: 50,
               child: InkWell(
                 onTap: () {
                   playAll(context);
