@@ -2,12 +2,13 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-19 17:29:13
+ * @LastEditTime: 2021-05-19 17:55:36
  * @LastEditors: Walker
  */
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Comments.dart';
@@ -23,8 +24,13 @@ import '../libs/enums.dart';
 
 class PlayListComment extends StatefulWidget {
   final PlayListModel info;
+  final ResourceType type;
 
-  PlayListComment({Key? key, required this.info}) : super(key: key);
+  PlayListComment({
+    Key? key,
+    required this.info,
+    required this.type,
+  }) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => PlayListCommentState();
@@ -81,6 +87,10 @@ class PlayListCommentState extends State<PlayListComment>
           comments.commentList[comments.commentList.length - 1].time.toString();
     }
 
+    if (offset * 20 > widget.info.commentCount) {
+      return;
+    }
+
     getPlayListComment(
       widget.info.id,
       offset: (offset - 1) * 20,
@@ -128,10 +138,15 @@ class PlayListCommentState extends State<PlayListComment>
       widget.info.id,
       ele.commentId,
       type,
-      ResourceType.playList.index,
+      widget.type.index,
     ).then((res) {
       if (res['code'] == 200) {
         this.setState(() {
+          if (ele.liked) {
+            ele.likedCount--;
+          } else {
+            ele.likedCount++;
+          }
           ele.liked = !ele.liked;
         });
       } else {
@@ -151,7 +166,7 @@ class PlayListCommentState extends State<PlayListComment>
   }
 
   sendComment() {
-    // comment(ResourceType.playList, CommentType.send, commentText.value,
+    // comment(widget.type.index, CommentType.send, commentText.value,
     //         id: widget.info.id)
     //     .then((res) {});
   }
@@ -394,22 +409,25 @@ class PlayListCommentState extends State<PlayListComment>
                     controller: tabController,
                     children: <Widget>[
                       Container(
-                        child: NotificationListener(
-                          onNotification: (notification) {
-                            if (notification.runtimeType ==
-                                OverscrollNotification) {
-                              if (_scrollController.offset <= 0) {
-                                _customScrollController.position.moveTo(0);
-                              } else {
-                                // 加载数据
-                                loadComments();
+                        child: ScrollConfiguration(
+                          behavior: PrimaryScrollBehavior(),
+                          child: NotificationListener(
+                            onNotification: (notification) {
+                              if (notification.runtimeType ==
+                                  OverscrollNotification) {
+                                if (_scrollController.offset <= 0) {
+                                  _customScrollController.position.moveTo(0);
+                                } else {
+                                  // 加载数据
+                                  loadComments();
+                                }
                               }
-                            }
-                            return true;
-                          },
-                          child: ListView(
-                            controller: _scrollController,
-                            children: commentComponents(),
+                              return true;
+                            },
+                            child: ListView(
+                              controller: _scrollController,
+                              children: commentComponents(),
+                            ),
                           ),
                         ),
                       ),

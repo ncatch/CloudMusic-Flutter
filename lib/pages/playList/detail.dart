@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-18 16:50:09
- * @LastEditTime: 2021-05-19 15:54:49
+ * @LastEditTime: 2021-05-19 17:37:46
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -65,7 +65,7 @@ class PlayListDetail extends StatelessWidget {
                       child: Container(
                         width: 200,
                         height: 200,
-                        margin: EdgeInsets.only(top: 100),
+                        margin: EdgeInsets.only(top: 80),
                         decoration: new BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
                           image: new DecorationImage(
@@ -124,7 +124,7 @@ class PlayListDetail extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: 30,
+                top: 40,
                 right: 10,
                 child: IconButton(
                   color: Colors.white,

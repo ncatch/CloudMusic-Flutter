@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 09:53:41
- * @LastEditTime: 2021-05-19 16:48:06
+ * @LastEditTime: 2021-05-19 17:40:02
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -101,7 +101,10 @@ class PlayListMenuState extends State<PlayListMenu> {
   // 评论
   comment() {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return PlayListComment(info: widget.playListInfo);
+      return PlayListComment(
+        info: widget.playListInfo,
+        type: ResourceType.playList,
+      );
     }));
   }
 

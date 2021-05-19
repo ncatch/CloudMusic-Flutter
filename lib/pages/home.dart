@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-18 18:00:18
+ * @LastEditTime: 2021-05-19 18:00:30
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:flutter/cupertino.dart';
@@ -92,9 +93,13 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
           direction: Axis.vertical,
           children: [
             Expanded(
-                flex: 1,
+              flex: 1,
+              child: ScrollConfiguration(
+                behavior: PrimaryScrollBehavior(show: false),
                 child:
-                    pages.length > 0 ? pages[_selectedIndex] : Text('加载中...')),
+                    pages.length > 0 ? pages[_selectedIndex] : Text('加载中...'),
+              ),
+            ),
             PlayMini()
           ],
         ),
