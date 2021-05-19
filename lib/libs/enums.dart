@@ -2,29 +2,47 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 11:24:30
- * @LastEditTime: 2021-05-14 15:23:47
+ * @LastEditTime: 2021-05-19 16:47:38
  * @LastEditors: Walker
  */
-const clientType = {
+const ClientType = {
   "pc": 0,
   "android": 1,
   "iphone": 2,
   "ipad": 3,
 };
 
-enum playModes {
+enum PlayModes {
   order, // 顺序播放
   repeatOne, // 单曲循环
   repeat, // 列表循环
   random, // 随机
 }
 
-enum subscribeDic {
+enum SubscribeDic {
   collect, // 收藏
   cancel, // 取消收藏
 }
 
-var subscribeVal = {
-  subscribeDic.cancel: 2,
-  subscribeDic.collect: 1,
+var SubscribeVal = {
+  SubscribeDic.cancel: 2,
+  SubscribeDic.collect: 1,
 };
+
+// 评论操作类型
+class CommentType {
+  static int delete = 0; // 删除
+  static int send = 1; // 发送
+  static int reply = 2; // 回复
+}
+
+// 评论资源类型
+enum ResourceType {
+  music, // 歌曲 0
+  mv, // mv 1
+  playList, // 歌单 2
+  dvd, // 专辑 3
+  radio, // 电台 4
+  video, // 视频 5
+  dynamic, // 动态 6
+}

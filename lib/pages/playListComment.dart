@@ -2,19 +2,24 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-18 16:17:39
+ * @LastEditTime: 2021-05-19 17:29:13
  * @LastEditors: Walker
  */
 import 'dart:async';
 
+import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
+import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Comments.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
+import 'package:cloudmusic_flutter/services/comment.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
+import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import '../libs/enums.dart';
 
 class PlayListComment extends StatefulWidget {
   final PlayListModel info;
@@ -40,6 +45,8 @@ class PlayListCommentState extends State<PlayListComment>
   ScrollController _customScrollController = ScrollController();
 
   TabController? tabController;
+
+  TextEditingController commentText = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -108,6 +115,47 @@ class PlayListCommentState extends State<PlayListComment>
     });
   }
 
+  // 查看评论的回复
+  commentReply() {}
+
+  // 评论点赞
+  likeCommentClick(CommentInfo ele) {
+    int type = 1;
+    if (ele.liked) {
+      type = 0;
+    }
+    likeComment(
+      widget.info.id,
+      ele.commentId,
+      type,
+      ResourceType.playList.index,
+    ).then((res) {
+      if (res['code'] == 200) {
+        this.setState(() {
+          ele.liked = !ele.liked;
+        });
+      } else {
+        BotToast.showText(text: res['msg'] ?? '网络异常');
+      }
+    });
+  }
+
+  toUserDetail() {}
+
+  toPlayList() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return PlayList(
+        songId: widget.info.id,
+      );
+    }));
+  }
+
+  sendComment() {
+    // comment(ResourceType.playList, CommentType.send, commentText.value,
+    //         id: widget.info.id)
+    //     .then((res) {});
+  }
+
   List<Widget> commentComponents() {
     List<Widget> result = [];
 
@@ -147,7 +195,33 @@ class PlayListCommentState extends State<PlayListComment>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(ele.user.nickname),
+                  Flex(
+                    direction: Axis.horizontal,
+                    children: [
+                      Expanded(
+                        child: Text(ele.user.nickname),
+                      ),
+                      Container(
+                        width: 60,
+                        child: Text(
+                          ele.likedCount.toString(),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                      Container(
+                        width: 35,
+                        child: IconButton(
+                          onPressed: () {
+                            likeCommentClick(ele);
+                          },
+                          icon: Icon(
+                            ele.liked ? Icons.favorite : Icons.favorite_border,
+                            color: ele.liked ? primaryColor : Colors.grey,
+                          ), // favorite
+                        ),
+                      ),
+                    ],
+                  ),
                   Container(
                     margin: EdgeInsets.fromLTRB(0, 5, 0, 5),
                     child: Text(
@@ -161,6 +235,12 @@ class PlayListCommentState extends State<PlayListComment>
                     ),
                   ),
                   Text(ele.content),
+                  ele.beReplieds.length > 0
+                      ? TextButton(
+                          onPressed: commentReply,
+                          child: Text('${ele.beReplieds.length}条回复 >'),
+                        )
+                      : Container()
                 ],
               ),
             ),
@@ -172,172 +252,201 @@ class PlayListCommentState extends State<PlayListComment>
     return result;
   }
 
-  toUserDetail() {}
-
-  toPlayList() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return PlayList(
-        songId: widget.info.id,
-      );
-    }));
-  }
-
   @override
   Widget build(BuildContext context) {
     if (!isInit) {
       init();
     }
-    var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: CustomScrollView(
-        controller: _customScrollController,
-        slivers: <Widget>[
-          SliverAppBar(
-            pinned: true,
-            elevation: 0,
-            expandedHeight: 140,
-            leading: BackButton(
-              color: Colors.black,
-            ),
-            foregroundColor: Colors.black,
-            title: Text(
-              "评论($total)",
-              style: TextStyle(color: Colors.black, fontSize: 14),
-            ),
-            backgroundColor: Colors.white,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Container(
-                height: 100,
-                margin: EdgeInsets.only(top: 70),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 10, color: Colors.grey.shade100),
+      body: Flex(
+        direction: Axis.vertical,
+        children: [
+          Expanded(
+            flex: 1,
+            child: CustomScrollView(
+              controller: _customScrollController,
+              slivers: <Widget>[
+                SliverAppBar(
+                  pinned: true,
+                  elevation: 0,
+                  expandedHeight: 140,
+                  leading: BackButton(
+                    color: Colors.black,
                   ),
-                ),
-                child: InkWell(
-                  onTap: toPlayList,
-                  child: Flex(
-                    direction: Axis.horizontal,
-                    children: [
-                      Container(
-                        width: 60,
-                        height: 60,
-                        margin: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            image: NetworkImage(widget.info.coverImgUrl),
-                            fit: BoxFit.cover,
-                          ),
-                          borderRadius: BorderRadius.circular(4),
+                  foregroundColor: Colors.black,
+                  title: Text(
+                    "评论($total)",
+                    style: TextStyle(color: Colors.black, fontSize: 14),
+                  ),
+                  backgroundColor: Colors.white,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: Container(
+                      height: 100,
+                      margin: EdgeInsets.only(top: 70),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                              width: 10, color: Colors.grey.shade100),
                         ),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: Wrap(
+                      child: InkWell(
+                        onTap: toPlayList,
+                        child: Flex(
+                          direction: Axis.horizontal,
                           children: [
                             Container(
-                              child: Text(
-                                widget.info.title,
-                                style: TextStyle(fontSize: 16),
+                              width: 60,
+                              height: 60,
+                              margin: EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: NetworkImage(widget.info.coverImgUrl),
+                                  fit: BoxFit.cover,
+                                ),
+                                borderRadius: BorderRadius.circular(4),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Wrap(
+                                children: [
+                                  Container(
+                                    child: Text(
+                                      widget.info.title,
+                                      style: TextStyle(fontSize: 16),
+                                    ),
+                                  ),
+                                  Container(
+                                    child: InkWell(
+                                      onTap: toUserDetail,
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'by ',
+                                            style:
+                                                TextStyle(color: Colors.grey),
+                                          ),
+                                          Text(
+                                            widget.info.creator.nickname,
+                                            style: TextStyle(
+                                                color: Colors.blue[400]),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                             Container(
-                              child: InkWell(
-                                onTap: toUserDetail,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'by ',
-                                      style: TextStyle(color: Colors.grey),
-                                    ),
-                                    Text(
-                                      widget.info.creator.nickname,
-                                      style: TextStyle(color: Colors.blue[400]),
-                                    )
-                                  ],
-                                ),
+                              width: 30,
+                              child: Icon(
+                                Icons.navigate_next,
+                                color: Colors.grey,
                               ),
                             ),
                           ],
                         ),
                       ),
+                    ),
+                  ),
+                ),
+                SliverPersistentHeader(
+                  pinned: true,
+                  delegate: StickyTabBarDelegate(
+                    child: TabBar(
+                      indicatorColor: Colors.white,
+                      labelColor: Colors.black,
+                      controller: tabController,
+                      tabs: <Widget>[
+                        Tab(
+                          child: Container(
+                            height: 50,
+                            color: Colors.white,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              children: [
+                                Expanded(
+                                  flex: 1,
+                                  child: Text('评论'),
+                                ),
+                                Container(
+                                  width: 100,
+                                  child: Row(
+                                    children: [
+                                      Text('推荐'),
+                                      Text('最热'),
+                                      Text('最新'),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                SliverFillRemaining(
+                  child: TabBarView(
+                    controller: tabController,
+                    children: <Widget>[
                       Container(
-                        width: 30,
-                        child: Icon(
-                          Icons.navigate_next,
-                          color: Colors.grey,
+                        child: NotificationListener(
+                          onNotification: (notification) {
+                            if (notification.runtimeType ==
+                                OverscrollNotification) {
+                              if (_scrollController.offset <= 0) {
+                                _customScrollController.position.moveTo(0);
+                              } else {
+                                // 加载数据
+                                loadComments();
+                              }
+                            }
+                            return true;
+                          },
+                          child: ListView(
+                            controller: _scrollController,
+                            children: commentComponents(),
+                          ),
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-          ),
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: StickyTabBarDelegate(
-              child: TabBar(
-                indicatorColor: Colors.white,
-                labelColor: Colors.black,
-                controller: tabController,
-                tabs: <Widget>[
-                  Tab(
-                    child: Container(
-                      height: 50,
-                      color: Colors.white,
-                      child: Flex(
-                        direction: Axis.horizontal,
-                        children: [
-                          Expanded(
-                            flex: 1,
-                            child: Text('评论'),
-                          ),
-                          Container(
-                            width: 100,
-                            child: Row(
-                              children: [
-                                Text('推荐'),
-                                Text('最热'),
-                                Text('最新'),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          SliverFillRemaining(
-            child: TabBarView(
-              controller: tabController,
-              children: <Widget>[
-                Container(
-                  child: NotificationListener(
-                    onNotification: (notification) {
-                      if (notification.runtimeType == OverscrollNotification) {
-                        if (_scrollController.offset <= 0) {
-                          _customScrollController.position.moveTo(0);
-                        } else {
-                          // 加载数据
-                          loadComments();
-                        }
-                      }
-                      return true;
-                    },
-                    child: ListView(
-                      controller: _scrollController,
-                      children: commentComponents(),
-                    ),
-                  ),
-                ),
               ],
             ),
           ),
+          Container(
+              height: 50,
+              child: Flex(
+                direction: Axis.horizontal,
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                      child: TextField(
+                        controller: commentText,
+                        decoration: InputDecoration(
+                          hintText: '写评论...',
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 80,
+                    child: TextButton(
+                      onPressed: sendComment,
+                      child: Text('发送'),
+                    ),
+                  )
+                ],
+              ))
         ],
       ),
     );

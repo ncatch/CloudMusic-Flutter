@@ -2,7 +2,7 @@
  * @Description: 播放模式组件
  * @Author: Walker
  * @Date: 2021-05-08 18:00:16
- * @LastEditTime: 2021-05-08 19:41:12
+ * @LastEditTime: 2021-05-19 16:47:52
  * @LastEditors: Walker
  */
 
@@ -23,21 +23,21 @@ class PlayMode extends StatefulWidget {
 
 class PlayModeState extends State<PlayMode> {
   var icons = {
-    playModes.random: Icons.shuffle_rounded,
-    playModes.repeat: Icons.repeat_rounded,
-    playModes.repeatOne: Icons.repeat_one_rounded,
-    playModes.order: Icons.wrap_text_rounded,
+    PlayModes.random: Icons.shuffle_rounded,
+    PlayModes.repeat: Icons.repeat_rounded,
+    PlayModes.repeatOne: Icons.repeat_one_rounded,
+    PlayModes.order: Icons.wrap_text_rounded,
   };
 
   var tips = {
-    playModes.random: "随机播放",
-    playModes.repeat: "循环播放",
-    playModes.repeatOne: "单曲播放",
-    playModes.order: "顺序播放",
+    PlayModes.random: "随机播放",
+    PlayModes.repeat: "循环播放",
+    PlayModes.repeatOne: "单曲播放",
+    PlayModes.order: "顺序播放",
   };
 
   changePlayMode(PlayInfoStore playInfoStore) {
-    var playModeList = playModes.values;
+    var playModeList = PlayModes.values;
 
     var currIndex = playModeList.indexOf(playInfoStore.playMode);
 

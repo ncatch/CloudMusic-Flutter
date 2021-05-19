@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-05-10 21:43:33
+ * @LastEditTime: 2021-05-19 16:27:23
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Play.dart';
@@ -92,51 +92,50 @@ class SongListMusicState extends State<SongMusicList> {
                 key: UniqueKey(),
                 itemBuilder: (BuildContext context, int page) {
                   var pageData = widget.model.musicList[page];
-                  return ListView.builder(
-                    itemBuilder: (BuildContext context, int index) {
-                      var tmp = pageData[index];
-
-                      return InkWell(
-                        onTap: () {
-                          musicClick(context, tmp.id);
-                        },
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Container(
-                              width: 45,
-                              height: 40,
-                              margin: EdgeInsets.fromLTRB(0, 0, 15, 10),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Image.network(
-                                  tmp.iconUrl,
-                                  fit: BoxFit.fill,
+                  return Column(
+                    children: pageData.map<Widget>(
+                      (tmp) {
+                        return InkWell(
+                          onTap: () {
+                            musicClick(context, tmp.id);
+                          },
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            children: [
+                              Container(
+                                width: 45,
+                                height: 40,
+                                margin: EdgeInsets.fromLTRB(0, 0, 15, 10),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Image.network(
+                                    tmp.iconUrl,
+                                    fit: BoxFit.fill,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Wrap(
-                              direction: Axis.vertical,
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(handleSongName(tmp.musicName)),
-                                    Text(
-                                      ' - ' + tmp.singerName,
-                                      style: TextStyle(color: Colors.grey),
-                                    )
-                                  ],
-                                ),
-                                Container(
-                                  child: Text(tmp.descript),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                    itemCount: pageData.length,
+                              Wrap(
+                                direction: Axis.vertical,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Text(handleSongName(tmp.musicName)),
+                                      Text(
+                                        ' - ' + tmp.singerName,
+                                        style: TextStyle(color: Colors.grey),
+                                      )
+                                    ],
+                                  ),
+                                  Container(
+                                    child: Text(tmp.descript),
+                                  )
+                                ],
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ).toList(),
                   );
                 },
                 index: 0,

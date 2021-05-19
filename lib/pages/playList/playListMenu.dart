@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 09:53:41
- * @LastEditTime: 2021-05-17 10:56:32
+ * @LastEditTime: 2021-05-19 16:48:06
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -39,10 +39,10 @@ class PlayListMenuState extends State<PlayListMenu> {
   subscribed(context) async {
     // 1:收藏,2:取消收藏
     var type = widget.playListInfo.subscribed
-        ? subscribeDic.cancel
-        : subscribeDic.collect;
+        ? SubscribeDic.cancel
+        : SubscribeDic.collect;
 
-    if (type == subscribeDic.cancel) {
+    if (type == SubscribeDic.cancel) {
       final action = await showDialog(
         context: context,
         barrierDismissible: false,
@@ -77,11 +77,11 @@ class PlayListMenuState extends State<PlayListMenu> {
       }
     }
     BotToast.showLoading();
-    subscribe(widget.playListInfo.id, subscribeVal[type]).then((res) {
+    subscribe(widget.playListInfo.id, SubscribeVal[type]).then((res) {
       BotToast.closeAllLoading();
       if (res['code'] == 200) {
         BotToast.showText(
-            text: type == subscribeDic.collect ? '收藏成功' : '取消收藏成功');
+            text: type == SubscribeDic.collect ? '收藏成功' : '取消收藏成功');
 
         var tmp = widget.playListInfo.subscribed;
 

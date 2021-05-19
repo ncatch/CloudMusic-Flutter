@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-17 10:40:15
+ * @LastEditTime: 2021-05-19 16:48:27
  * @LastEditors: Walker
  */
 
@@ -43,7 +43,7 @@ class PlayInfoStore with ChangeNotifier {
   List<String> lyricArr = [];
   int playIndex = -1;
 
-  var playMode = playModes.repeat;
+  var playMode = PlayModes.repeat;
 
   PlayInfoStore() {
     try {
@@ -69,14 +69,14 @@ class PlayInfoStore with ChangeNotifier {
       })
       ..onPlayerCompletion.listen((event) {
         switch (playMode) {
-          case playModes.order:
+          case PlayModes.order:
             if (playIndex < musicList.length - 1) {
               next();
             } else {
               audioPlayer.stop();
             }
             break;
-          case playModes.random:
+          case PlayModes.random:
             var tmpIndex;
             do {
               tmpIndex = Random().nextInt(musicList.length);
@@ -84,14 +84,14 @@ class PlayInfoStore with ChangeNotifier {
 
             setPlayIndex(tmpIndex);
             break;
-          case playModes.repeat:
+          case PlayModes.repeat:
             if (playIndex < musicList.length - 1) {
               next();
             } else {
               setPlayIndex(0);
             }
             break;
-          case playModes.repeatOne:
+          case PlayModes.repeatOne:
             position = new Duration(seconds: 0);
             audioPlayer.seek(position);
             break;
@@ -110,7 +110,7 @@ class PlayInfoStore with ChangeNotifier {
     if (cache != null) {
       playIndex = cache['playIndex'] ?? -1;
       musicLyric = cache['musicLyric'] ?? "";
-      playMode = playModes.values[cache['playModeval'] ?? 0];
+      playMode = PlayModes.values[cache['playModeval'] ?? 0];
       musicInfo = MusicInfo.fromJson(cache['musicInfo'] ?? {});
 
       musicList = List<MusicInfo>.from(
@@ -122,7 +122,7 @@ class PlayInfoStore with ChangeNotifier {
 
   // 缓存数据
   cacheData() {
-    var playModeIndex = playModes.values.indexOf(playMode);
+    var playModeIndex = PlayModes.values.indexOf(playMode);
 
     PreferenceUtils.saveJSON(PreferencesKey.PLAY_INFO, {
       "playIndex": playIndex,
@@ -243,7 +243,7 @@ class PlayInfoStore with ChangeNotifier {
   }
 
   // 修改播放模式
-  changePlayMode(playModes mode) {
+  changePlayMode(PlayModes mode) {
     playMode = mode;
     notifyListeners();
   }
