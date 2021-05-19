@@ -2,13 +2,14 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-19 20:08:50
+ * @LastEditTime: 2021-05-19 22:30:11
  * @LastEditors: Walker
  */
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
+import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Comments.dart';
@@ -37,7 +38,7 @@ class PlayListComment extends StatefulWidget {
 }
 
 class PlayListCommentState extends State<PlayListComment>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, RefreshRate {
   double total = 0;
   int offset = 1;
   CommentSortType sortType = CommentSortType.time;
@@ -45,7 +46,6 @@ class PlayListCommentState extends State<PlayListComment>
   Comments comments = Comments();
 
   bool disChildScroll = true;
-  bool isInit = false;
   var time;
 
   ScrollController _scrollController = ScrollController();
@@ -71,14 +71,6 @@ class PlayListCommentState extends State<PlayListComment>
     tabController = TabController(length: 1, vsync: this);
 
     getComments();
-  }
-
-  init() {
-    if (isMobile) {
-      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
-    }
-
-    isInit = true;
   }
 
   getComments({isLoad = false}) {
@@ -286,13 +278,10 @@ class PlayListCommentState extends State<PlayListComment>
 
   @override
   Widget build(BuildContext context) {
-    if (!isInit) {
-      init();
-    }
+    super.refreshRateInit();
 
     var sortMenuSplit = Container(
       height: 14,
-      width: 2,
       decoration: BoxDecoration(
         border: Border(
           right: BorderSide(
@@ -420,13 +409,11 @@ class PlayListCommentState extends State<PlayListComment>
                                     child: Text('评论'),
                                   ),
                                   Container(
-                                    width: 124,
+                                    width: 152,
                                     child: Row(
                                       children: [
                                         Container(
-                                          width: 40,
-                                          padding:
-                                              EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                          width: 50,
                                           child: TextButton(
                                             onPressed: () {
                                               sortTypeClick(
@@ -446,9 +433,7 @@ class PlayListCommentState extends State<PlayListComment>
                                         ),
                                         sortMenuSplit,
                                         Container(
-                                          width: 40,
-                                          padding:
-                                              EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                          width: 50,
                                           child: TextButton(
                                             onPressed: () {
                                               sortTypeClick(
@@ -467,9 +452,7 @@ class PlayListCommentState extends State<PlayListComment>
                                         ),
                                         sortMenuSplit,
                                         Container(
-                                          width: 40,
-                                          padding:
-                                              EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                          width: 50,
                                           child: TextButton(
                                             onPressed: () {
                                               sortTypeClick(

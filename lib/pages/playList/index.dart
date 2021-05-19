@@ -2,13 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-19 19:19:56
+ * @LastEditTime: 2021-05-19 22:28:50
  * @LastEditors: Walker
  */
 import 'dart:ui';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
+import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/components/UserLabel.dart';
@@ -39,8 +40,7 @@ class PlayList extends StatefulWidget {
   State<StatefulWidget> createState() => PlayListState();
 }
 
-class PlayListState extends State<PlayList> {
-  bool isInit = false;
+class PlayListState extends State<PlayList> with RefreshRate {
   double headHeight = 270; // head 高度
   double appBarImgOper = 0; // appbar 透明度
   double sunkenHeight = 20; // head 凹陷高度
@@ -80,14 +80,6 @@ class PlayListState extends State<PlayList> {
         BotToast.showText(text: res['msg'] ?? '网络异常');
       }
     });
-  }
-
-  init() {
-    if (isMobile) {
-      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
-    }
-
-    isInit = true;
   }
 
   getMusicList() {
@@ -198,9 +190,7 @@ class PlayListState extends State<PlayList> {
 
   @override
   Widget build(BuildContext context) {
-    if (!isInit) {
-      init();
-    }
+    super.refreshRateInit();
 
     var size = MediaQuery.of(context).size;
     var playInfoStore = Provider.of<PlayInfoStore>(context);

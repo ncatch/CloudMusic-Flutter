@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-14 20:39:50
+ * @LastEditTime: 2021-05-19 22:27:21
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -30,8 +31,7 @@ class Discover extends StatefulWidget {
   State<StatefulWidget> createState() => DiscoverState();
 }
 
-class DiscoverState extends State<Discover> {
-  bool isInit = false;
+class DiscoverState extends State<Discover> with RefreshRate {
   List<Widget> homeModel = [];
   List<dynamic> homeData = [];
 
@@ -84,19 +84,9 @@ class DiscoverState extends State<Discover> {
     }
   }
 
-  init() {
-    if (isMobile) {
-      FlutterDisplayMode.setHighRefreshRate(); // 设置最高刷新率 最高分辨率
-    }
-
-    isInit = true;
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (!isInit) {
-      init();
-    }
+    super.refreshRateInit();
 
     List<Widget> tmp = [];
 
