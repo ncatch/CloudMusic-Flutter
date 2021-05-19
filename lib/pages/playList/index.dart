@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-19 12:23:55
+ * @LastEditTime: 2021-05-19 16:00:11
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -10,6 +10,7 @@ import 'dart:ui';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
+import 'package:cloudmusic_flutter/components/UserLabel.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
@@ -354,61 +355,8 @@ class PlayListState extends State<PlayList> {
                                                   ),
                                                 ),
                                               ),
-                                              Container(
-                                                margin: EdgeInsets.fromLTRB(
-                                                    0, 15, 0, 15),
-                                                child: Row(
-                                                  children: [
-                                                    Container(
-                                                      margin:
-                                                          EdgeInsets.fromLTRB(
-                                                              0, 0, 6, 0),
-                                                      child: ClipRRect(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(12),
-                                                        child: Image.network(
-                                                          playListInfo.creator
-                                                              .avatarUrl,
-                                                          fit: BoxFit.fill,
-                                                          width: 24,
-                                                          height: 24,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Text(
-                                                      playListInfo
-                                                          .creator.nickname
-                                                          .overFlowString(10),
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: attention,
-                                                      child: Container(
-                                                        margin:
-                                                            EdgeInsets.fromLTRB(
-                                                                5, 2, 0, 0),
-                                                        padding:
-                                                            EdgeInsets.fromLTRB(
-                                                                8, 0, 8, 0),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                          color: Colors
-                                                              .grey.shade300,
-                                                        ),
-                                                        child: Icon(
-                                                          Icons.add,
-                                                          color: Colors.white,
-                                                          size: 16,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                              UserLabel(
+                                                userInfo: playListInfo.creator,
                                               ),
                                               Container(
                                                 child: InkWell(
@@ -417,16 +365,19 @@ class PlayListState extends State<PlayList> {
                                                   },
                                                   child: Text(
                                                     playListInfo.descript ==
-                                                            null
-                                                        ? ''
-                                                        : ((playListInfo.descript ??
+                                                                null ||
+                                                            playListInfo
+                                                                    .descript ==
+                                                                ""
+                                                        ? '暂无简介'
+                                                        : (playListInfo.descript ??
                                                                     "")
                                                                 .split('\n')[0]
                                                                 .overFlowString(
                                                                     10) +
-                                                            ' >'),
+                                                            ' >',
                                                     style: TextStyle(
-                                                        color: Colors.white),
+                                                        color: Colors.grey),
                                                   ),
                                                 ),
                                               ),

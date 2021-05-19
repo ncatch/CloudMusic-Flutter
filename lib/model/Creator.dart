@@ -2,22 +2,24 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-12 14:37:24
- * @LastEditTime: 2021-05-12 14:50:41
+ * @LastEditTime: 2021-05-19 15:28:06
  * @LastEditors: Walker
  */
-class Creator {
-  String avatarUrl = "";
-  String backgroundUrl = "";
-  String nickname = "";
+import 'package:cloudmusic_flutter/model/UserInfo.dart';
 
+class Creator extends UserInfo {
   AvatarDetail avatarDetail = AvatarDetail();
 
   Creator() {}
 
   Creator.fromData(Map<String, dynamic> data) {
-    this.avatarUrl = data['avatarUrl'];
-    this.backgroundUrl = data['backgroundUrl'];
-    this.nickname = data['nickname'];
+    this.userId = data["userId"];
+    this.nickname = data["nickname"];
+    this.vipType = data["vipType"];
+    this.userType = data["userType"];
+    this.avatarUrl = data["avatarUrl"];
+    this.backgroundUrl = data["backgroundUrl"];
+
     if (data['avatarDetail'] != null) {
       this.avatarDetail = AvatarDetail.fromData(data['avatarDetail']);
     }

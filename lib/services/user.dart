@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 13:51:53
- * @LastEditTime: 2021-05-14 11:36:11
+ * @LastEditTime: 2021-05-19 15:45:03
  * @LastEditors: Walker
  */
 
@@ -45,6 +45,12 @@ Future<dynamic> getUserPlayList(id, [offset]) {
 
 Future<dynamic> getUserLevel() {
   return DioUtil.dio.get(server + '/user/level').then((value) {
+    return value.data;
+  });
+}
+
+Future<dynamic> attentionUser(int id, int type) {
+  return DioUtil.dio.get('/follow?id=$id&t=$type').then((value) {
     return value.data;
   });
 }

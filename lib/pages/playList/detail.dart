@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-18 16:50:09
- * @LastEditTime: 2021-05-19 10:31:40
+ * @LastEditTime: 2021-05-19 15:54:49
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -59,7 +59,7 @@ class PlayListDetail extends StatelessWidget {
               ),
               Container(
                 padding: EdgeInsets.fromLTRB(40, 0, 40, 0),
-                child: Column(
+                child: ListView(
                   children: [
                     Center(
                       child: Container(
@@ -115,7 +115,9 @@ class PlayListDetail extends StatelessWidget {
                       margin: EdgeInsets.only(top: 20),
                       child: Text(
                         playListInfo.descript ?? "暂无简介",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     )
                   ],
