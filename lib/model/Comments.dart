@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-18 11:29:25
- * @LastEditTime: 2021-05-19 17:10:43
+ * @LastEditTime: 2021-05-19 19:45:58
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
@@ -39,8 +39,8 @@ class CommentInfo {
     this.likedCount = data['likedCount'];
     this.liked = data['liked'];
 
-    this.beReplieds = List<BeReplied>.from(
-        data['beReplied'].map<BeReplied>((ele) => BeReplied.fromData(ele)));
+    this.beReplieds = List<BeReplied>.from((data['beReplied'] ?? [])
+        .map<BeReplied>((ele) => BeReplied.fromData(ele)));
 
     this.user = UserInfo.fromJson(data['user']);
   }

@@ -2,7 +2,7 @@
  * @Description: 用户标签 【头像 昵称 关注按钮】
  * @Author: Walker
  * @Date: 2021-05-19 15:15:35
- * @LastEditTime: 2021-05-19 16:02:34
+ * @LastEditTime: 2021-05-19 19:20:17
  * @LastEditors: Walker
  */
 
@@ -78,7 +78,7 @@ class UserLabelState extends State<UserLabel> {
             ),
             Text(
               widget.userInfo.nickname.overFlowString(10),
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Colors.white70),
             ),
             // 暂时无法判断有没有关注 先注释
             // InkWell(

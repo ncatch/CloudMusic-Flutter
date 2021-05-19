@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-19 17:55:36
+ * @LastEditTime: 2021-05-19 20:08:50
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -40,6 +40,7 @@ class PlayListCommentState extends State<PlayListComment>
     with SingleTickerProviderStateMixin {
   double total = 0;
   int offset = 1;
+  CommentSortType sortType = CommentSortType.time;
 
   Comments comments = Comments();
 
@@ -87,24 +88,27 @@ class PlayListCommentState extends State<PlayListComment>
           comments.commentList[comments.commentList.length - 1].time.toString();
     }
 
-    if (offset * 20 > widget.info.commentCount) {
-      return;
-    }
+    // TODO loading颜色
+    BotToast.showLoading();
 
-    getPlayListComment(
+    getCommentList(
       widget.info.id,
-      offset: (offset - 1) * 20,
-      before: before,
+      widget.type.index,
+      sortType.index + 1,
+      offset,
+      cursor: before,
     ).then((res) {
+      BotToast.closeAllLoading();
       if (res['code'] == 200) {
-        if (isLoad != '') {
+        if (isLoad) {
           this.setState(() {
-            comments.commentList.addAll(List<CommentInfo>.from(res['comments']
+            comments.commentList.addAll(List<CommentInfo>.from(res['data']
+                    ['comments']
                 .map<CommentInfo>((ele) => CommentInfo.fromData(ele))));
           });
         } else {
           this.setState(() {
-            comments = Comments.fromData(res);
+            comments = Comments.fromData(res['data']);
           });
         }
       }
@@ -112,6 +116,9 @@ class PlayListCommentState extends State<PlayListComment>
   }
 
   loadComments() {
+    if (offset * 20 > widget.info.commentCount) {
+      return;
+    }
     if (time != null) {
       time.cancel();
       time = null;
@@ -171,6 +178,14 @@ class PlayListCommentState extends State<PlayListComment>
     //     .then((res) {});
   }
 
+  sortTypeClick(CommentSortType type) {
+    this.setState(() {
+      this.sortType = type;
+    });
+
+    this.getComments();
+  }
+
   List<Widget> commentComponents() {
     List<Widget> result = [];
 
@@ -225,13 +240,15 @@ class PlayListCommentState extends State<PlayListComment>
                       ),
                       Container(
                         width: 35,
-                        child: IconButton(
-                          onPressed: () {
+                        height: 20,
+                        child: InkWell(
+                          onTap: () {
                             likeCommentClick(ele);
                           },
-                          icon: Icon(
+                          child: Icon(
                             ele.liked ? Icons.favorite : Icons.favorite_border,
                             color: ele.liked ? primaryColor : Colors.grey,
+                            size: 18,
                           ), // favorite
                         ),
                       ),
@@ -273,144 +290,218 @@ class PlayListCommentState extends State<PlayListComment>
       init();
     }
 
+    var sortMenuSplit = Container(
+      height: 14,
+      width: 2,
+      decoration: BoxDecoration(
+        border: Border(
+          right: BorderSide(
+            color: Colors.grey.shade300,
+            width: 1,
+          ),
+        ),
+      ),
+    );
+
     return Scaffold(
       body: Flex(
         direction: Axis.vertical,
         children: [
           Expanded(
             flex: 1,
-            child: CustomScrollView(
-              controller: _customScrollController,
-              slivers: <Widget>[
-                SliverAppBar(
-                  pinned: true,
-                  elevation: 0,
-                  expandedHeight: 140,
-                  leading: BackButton(
-                    color: Colors.black,
-                  ),
-                  foregroundColor: Colors.black,
-                  title: Text(
-                    "评论($total)",
-                    style: TextStyle(color: Colors.black, fontSize: 14),
-                  ),
-                  backgroundColor: Colors.white,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: Container(
-                      height: 100,
-                      margin: EdgeInsets.only(top: 70),
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                              width: 10, color: Colors.grey.shade100),
+            child: ScrollConfiguration(
+              behavior: PrimaryScrollBehavior(),
+              child: CustomScrollView(
+                controller: _customScrollController,
+                slivers: <Widget>[
+                  SliverAppBar(
+                    pinned: true,
+                    elevation: 0,
+                    expandedHeight: 140,
+                    leading: BackButton(
+                      color: Colors.black,
+                    ),
+                    foregroundColor: Colors.black,
+                    title: Text(
+                      "评论($total)",
+                      style: TextStyle(color: Colors.black, fontSize: 14),
+                    ),
+                    backgroundColor: Colors.white,
+                    flexibleSpace: FlexibleSpaceBar(
+                      background: Container(
+                        height: 100,
+                        margin: EdgeInsets.only(top: 70),
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(
+                                width: 10, color: Colors.grey.shade100),
+                          ),
                         ),
-                      ),
-                      child: InkWell(
-                        onTap: toPlayList,
-                        child: Flex(
-                          direction: Axis.horizontal,
-                          children: [
-                            Container(
-                              width: 60,
-                              height: 60,
-                              margin: EdgeInsets.all(15),
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  image: NetworkImage(widget.info.coverImgUrl),
-                                  fit: BoxFit.cover,
-                                ),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: Wrap(
-                                children: [
-                                  Container(
-                                    child: Text(
-                                      widget.info.title,
-                                      style: TextStyle(fontSize: 16),
-                                    ),
+                        child: InkWell(
+                          onTap: toPlayList,
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            children: [
+                              Container(
+                                width: 60,
+                                height: 60,
+                                margin: EdgeInsets.all(15),
+                                decoration: BoxDecoration(
+                                  image: DecorationImage(
+                                    image:
+                                        NetworkImage(widget.info.coverImgUrl),
+                                    fit: BoxFit.cover,
                                   ),
-                                  Container(
-                                    child: InkWell(
-                                      onTap: toUserDetail,
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'by ',
-                                            style:
-                                                TextStyle(color: Colors.grey),
-                                          ),
-                                          Text(
-                                            widget.info.creator.nickname,
-                                            style: TextStyle(
-                                                color: Colors.blue[400]),
-                                          )
-                                        ],
+                                  borderRadius: BorderRadius.circular(4),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Wrap(
+                                  children: [
+                                    Container(
+                                      child: Text(
+                                        widget.info.title,
+                                        style: TextStyle(fontSize: 16),
                                       ),
                                     ),
+                                    Container(
+                                      child: InkWell(
+                                        onTap: toUserDetail,
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'by ',
+                                              style:
+                                                  TextStyle(color: Colors.grey),
+                                            ),
+                                            Text(
+                                              widget.info.creator.nickname,
+                                              style: TextStyle(
+                                                  color: Colors.blue[400]),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                width: 30,
+                                child: Icon(
+                                  Icons.navigate_next,
+                                  color: Colors.grey,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: StickyTabBarDelegate(
+                      child: TabBar(
+                        indicatorColor: Colors.white,
+                        labelColor: Colors.black,
+                        controller: tabController,
+                        tabs: <Widget>[
+                          Tab(
+                            child: Container(
+                              height: 50,
+                              color: Colors.white,
+                              child: Flex(
+                                direction: Axis.horizontal,
+                                children: [
+                                  Expanded(
+                                    flex: 1,
+                                    child: Text('评论'),
                                   ),
+                                  Container(
+                                    width: 124,
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: 40,
+                                          padding:
+                                              EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              sortTypeClick(
+                                                  CommentSortType.recommend);
+                                            },
+                                            child: Text(
+                                              '推荐',
+                                              style: TextStyle(
+                                                color: sortType ==
+                                                        CommentSortType
+                                                            .recommend
+                                                    ? Colors.black
+                                                    : Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        sortMenuSplit,
+                                        Container(
+                                          width: 40,
+                                          padding:
+                                              EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              sortTypeClick(
+                                                  CommentSortType.hot);
+                                            },
+                                            child: Text(
+                                              '最热',
+                                              style: TextStyle(
+                                                color: sortType ==
+                                                        CommentSortType.hot
+                                                    ? Colors.black
+                                                    : Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        sortMenuSplit,
+                                        Container(
+                                          width: 40,
+                                          padding:
+                                              EdgeInsets.fromLTRB(5, 0, 5, 0),
+                                          child: TextButton(
+                                            onPressed: () {
+                                              sortTypeClick(
+                                                  CommentSortType.time);
+                                            },
+                                            child: Text(
+                                              '最新',
+                                              style: TextStyle(
+                                                color: sortType ==
+                                                        CommentSortType.time
+                                                    ? Colors.black
+                                                    : Colors.grey,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ),
                             ),
-                            Container(
-                              width: 30,
-                              child: Icon(
-                                Icons.navigate_next,
-                                color: Colors.grey,
-                              ),
-                            ),
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
                   ),
-                ),
-                SliverPersistentHeader(
-                  pinned: true,
-                  delegate: StickyTabBarDelegate(
-                    child: TabBar(
-                      indicatorColor: Colors.white,
-                      labelColor: Colors.black,
+                  SliverFillRemaining(
+                    child: TabBarView(
                       controller: tabController,
-                      tabs: <Widget>[
-                        Tab(
-                          child: Container(
-                            height: 50,
-                            color: Colors.white,
-                            child: Flex(
-                              direction: Axis.horizontal,
-                              children: [
-                                Expanded(
-                                  flex: 1,
-                                  child: Text('评论'),
-                                ),
-                                Container(
-                                  width: 100,
-                                  child: Row(
-                                    children: [
-                                      Text('推荐'),
-                                      Text('最热'),
-                                      Text('最新'),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-                SliverFillRemaining(
-                  child: TabBarView(
-                    controller: tabController,
-                    children: <Widget>[
-                      Container(
-                        child: ScrollConfiguration(
-                          behavior: PrimaryScrollBehavior(),
+                      children: <Widget>[
+                        Container(
                           child: NotificationListener(
                             onNotification: (notification) {
                               if (notification.runtimeType ==
@@ -430,11 +521,11 @@ class PlayListCommentState extends State<PlayListComment>
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
           Container(

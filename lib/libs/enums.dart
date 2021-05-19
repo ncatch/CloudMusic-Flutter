@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 11:24:30
- * @LastEditTime: 2021-05-19 16:47:38
+ * @LastEditTime: 2021-05-19 19:42:40
  * @LastEditors: Walker
  */
 const ClientType = {
@@ -45,4 +45,10 @@ enum ResourceType {
   radio, // 电台 4
   video, // 视频 5
   dynamic, // 动态 6
+}
+
+enum CommentSortType {
+  recommend, // 推荐
+  hot, // 热度
+  time, // 时间
 }

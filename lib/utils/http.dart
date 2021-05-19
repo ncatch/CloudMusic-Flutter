@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-14 10:44:56
+ * @LastEditTime: 2021-05-19 19:56:34
  * @LastEditors: Walker
  */
 
@@ -64,6 +64,9 @@ class DioUtil {
       // you can reject a `DioError` object eg: return `dio.reject(dioError)`
     }, onError: (DioError e, handler) {
       // Do something with response error
+      if (e.response?.statusCode != 200) {
+        return handler.resolve(e.response!);
+      }
       return handler.next(e); //continue
       // If you want to resolve the request with some custom data，
       // you can resolve a `Response` object eg: return `dio.resolve(response)`.

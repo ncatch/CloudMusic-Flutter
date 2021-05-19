@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-18 16:50:09
- * @LastEditTime: 2021-05-19 17:37:46
+ * @LastEditTime: 2021-05-19 19:21:07
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -100,7 +100,7 @@ class PlayListDetail extends StatelessWidget {
                               padding: EdgeInsets.fromLTRB(12, 2, 12, 2),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey.shade800,
+                                color: Colors.white54,
                               ),
                               child: Text(
                                 ele,

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-19 18:01:12
+ * @LastEditTime: 2021-05-19 19:19:56
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -383,7 +383,8 @@ class PlayListState extends State<PlayList> {
                                                                       10) +
                                                               ' >',
                                                       style: TextStyle(
-                                                          color: Colors.grey),
+                                                          color:
+                                                              Colors.white70),
                                                     ),
                                                   ),
                                                 ),
