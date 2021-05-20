@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:36:18
- * @LastEditTime: 2021-05-20 17:14:56
+ * @LastEditTime: 2021-05-20 19:46:52
  * @LastEditors: Walker
  */
 
@@ -22,6 +22,10 @@ class UserInfo {
 
   MainAuthType mainAuthType = MainAuthType();
   AvatarDetail avatarDetail = AvatarDetail();
+
+  int createTime = 0;
+  int birthday = 0;
+  int city = 0;
 
   UserInfo({
     int userId = 0,
@@ -49,6 +53,9 @@ class UserInfo {
     this.followeds = jsonstr["followeds"];
     this.followed = jsonstr["followed"];
     this.follows = jsonstr["follows"];
+    this.createTime = jsonstr["createTime"];
+    this.birthday = jsonstr["birthday"];
+    this.city = jsonstr["city"];
     this.level = jsonstr["level"] ?? 0;
 
     if (jsonstr['mainAuthType'] != null) {
@@ -73,6 +80,9 @@ class UserInfo {
     map["follows"] = this.follows;
     map["level"] = this.level;
     map["mainAuthType"] = this.mainAuthType;
+    map["createTime"] = this.createTime;
+    map["birthday"] = this.birthday;
+    map["city"] = this.city;
     return map;
   }
 }

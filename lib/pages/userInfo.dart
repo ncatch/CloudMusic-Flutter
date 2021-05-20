@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-20 17:58:34
+ * @LastEditTime: 2021-05-20 19:53:02
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -12,9 +12,9 @@ import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../model/UserInfo.dart' as model;
 import '../libs/extends/IntExtend.dart';
+import '../libs/extends/DateTime.dart';
 
 class UserInfo extends StatefulWidget {
   final int id;
@@ -83,6 +83,31 @@ class UserInfoState extends State<UserInfo>
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
+    var now = DateTime.now();
+    var createTime = DateTime.fromMillisecondsSinceEpoch(
+      userInfo.createTime,
+    );
+
+    var birthday = DateTime.fromMillisecondsSinceEpoch(
+      userInfo.birthday,
+    );
+
+    var descRow = Row(
+      children: [
+        userInfo.avatarDetail.identityIconUrl != ""
+            ? Image.network(
+                userInfo.avatarDetail.identityIconUrl,
+                width: 16,
+                height: 16,
+              )
+            : Container(),
+        Container(
+          padding: EdgeInsets.only(left: 8),
+          child: Text(userInfo.mainAuthType.desc),
+        ),
+      ],
+    );
+
     return Scaffold(
       body: Container(
         color: Colors.grey.shade100,
@@ -124,13 +149,14 @@ class UserInfoState extends State<UserInfo>
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(15, headHeight - 60, 15, 0),
+                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     width: size.width,
                     child: ListView(
                       controller: _controller,
                       children: [
                         Container(
                           alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: headHeight - 60),
                           height: 90,
                           child: Flex(
                             direction: Axis.horizontal,
@@ -244,35 +270,14 @@ class UserInfoState extends State<UserInfo>
                           height: userInfo.mainAuthType.desc != "" ? 40 : 0,
                           padding: EdgeInsets.only(left: 20),
                           alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              userInfo.avatarDetail.identityIconUrl != ""
-                                  ? Image.network(
-                                      userInfo.avatarDetail.identityIconUrl,
-                                      width: 16,
-                                      height: 16,
-                                    )
-                                  : Container(),
-                              Container(
-                                padding: EdgeInsets.only(left: 8),
-                                child: Text(userInfo.mainAuthType.desc),
-                              ),
-                            ],
-                          ),
+                          child: descRow,
                         ),
                         Container(
                           height: 40,
                           width: size.width / 2,
                           child: TabBar(
                             controller: _tabController,
-                            indicator: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(
-                                  width: 4,
-                                  color: primaryColor,
-                                ),
-                              ),
-                            ),
+                            indicatorColor: Colors.transparent,
                             labelColor: Colors.black,
                             tabs: [
                               Tab(text: '主页'),
@@ -282,20 +287,68 @@ class UserInfoState extends State<UserInfo>
                         ),
                         Container(
                           width: size.width,
-                          height: 200,
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15),
-                          ),
+                          height: 500,
                           child: TabBarView(
                             controller: _tabController,
                             children: [
-                              Container(
-                                child: Text('主页'),
+                              Wrap(
+                                children: [
+                                  Container(
+                                    width: size.width,
+                                    padding: EdgeInsets.all(15),
+                                    alignment: Alignment.centerLeft,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          child: Text(
+                                            '基本信息',
+                                            style: TextStyle(
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                        descRow,
+                                        Container(
+                                          margin: EdgeInsets.only(
+                                            bottom: 10,
+                                            top: 10,
+                                          ),
+                                          child: Text(
+                                            '村龄：${now.year - createTime.year}(${createTime.format('yyyy年MM月注册')})',
+                                          ),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          child: Text(
+                                              '年龄：${now.year - birthday.year}'),
+                                        ),
+                                        Container(
+                                          margin: EdgeInsets.only(bottom: 10),
+                                          child: Text('地区：${userInfo.city}'),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
                               ),
-                              Container(
-                                child: Text('动态'),
+                              Wrap(
+                                children: [
+                                  Container(
+                                    width: size.width,
+                                    padding: EdgeInsets.all(15),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(15),
+                                    ),
+                                    child: Text('动态'),
+                                  )
+                                ],
                               ),
                             ],
                           ),
