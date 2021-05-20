@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-19 22:30:11
+ * @LastEditTime: 2021-05-20 10:28:25
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -23,21 +23,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import '../libs/enums.dart';
 
-class PlayListComment extends StatefulWidget {
+class CommentList extends StatefulWidget {
   final PlayListModel info;
   final ResourceType type;
 
-  PlayListComment({
+  CommentList({
     Key? key,
     required this.info,
     required this.type,
   }) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => PlayListCommentState();
+  State<StatefulWidget> createState() => CommentListState();
 }
 
-class PlayListCommentState extends State<PlayListComment>
+class CommentListState extends State<CommentList>
     with SingleTickerProviderStateMixin, RefreshRate {
   double total = 0;
   int offset = 1;
@@ -73,7 +73,7 @@ class PlayListCommentState extends State<PlayListComment>
     getComments();
   }
 
-  getComments({isLoad = false}) {
+  getComments({isLoad = false, showLoading = false}) {
     var before = '';
     if (isLoad) {
       before =
@@ -81,7 +81,7 @@ class PlayListCommentState extends State<PlayListComment>
     }
 
     // TODO loading颜色
-    BotToast.showLoading();
+    if (showLoading) BotToast.showLoading();
 
     getCommentList(
       widget.info.id,
@@ -175,7 +175,7 @@ class PlayListCommentState extends State<PlayListComment>
       this.sortType = type;
     });
 
-    this.getComments();
+    this.getComments(showLoading: true);
   }
 
   List<Widget> commentComponents() {

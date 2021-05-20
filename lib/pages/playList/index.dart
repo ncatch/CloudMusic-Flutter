@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-19 22:28:50
+ * @LastEditTime: 2021-05-20 10:27:30
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -370,7 +370,7 @@ class PlayListState extends State<PlayList> with RefreshRate {
                                                                   .split(
                                                                       '\n')[0]
                                                                   .overFlowString(
-                                                                      10) +
+                                                                      20) +
                                                               ' >',
                                                       style: TextStyle(
                                                           color:
