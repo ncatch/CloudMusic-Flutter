@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-20 10:45:24
+ * @LastEditTime: 2021-05-20 17:45:58
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -10,6 +10,7 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
 import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Comments.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
@@ -68,6 +69,14 @@ class CommentListState extends State<CommentList>
     tabController = TabController(length: 1, vsync: this);
 
     getComments();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    _customScrollController.dispose();
+    tabController?.dispose();
   }
 
   getComments({isLoad = false, showLoading = false}) {
@@ -146,7 +155,7 @@ class CommentListState extends State<CommentList>
           ele.liked = !ele.liked;
         });
       } else {
-        BotToast.showText(text: res['msg'] ?? '网络异常');
+        Toast(res['msg'] ?? '网络异常');
       }
     });
   }

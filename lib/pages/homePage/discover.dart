@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-19 22:27:21
+ * @LastEditTime: 2021-05-20 16:49:02
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -10,6 +10,7 @@ import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
@@ -58,7 +59,7 @@ class DiscoverState extends State<Discover> with RefreshRate {
           homeData = value['data']['blocks'];
         });
       } else {
-        BotToast.showText(text: value['message'] ?? '网络异常');
+        Toast(value['message'] ?? '网络异常');
       }
       return true;
     });

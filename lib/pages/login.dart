@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-05-13 22:19:52
+ * @LastEditTime: 2021-05-20 16:48:49
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +33,7 @@ class LoginState extends State<Login> {
         userStore.initUserInfo(data);
         Navigator.pop(context);
       } else {
-        BotToast.showText(text: data['msg'] ?? '网络异常');
+        Toast(data['msg'] ?? '网络异常');
       }
     });
   }

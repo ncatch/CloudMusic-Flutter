@@ -2,7 +2,7 @@
  * @Description: 歌词组件
  * @Author: Walker
  * @Date: 2021-04-30 15:26:08
- * @LastEditTime: 2021-05-13 11:51:29
+ * @LastEditTime: 2021-05-20 17:45:34
  * @LastEditors: Walker
  */
 
@@ -27,6 +27,12 @@ class LyricState extends State<Lyric> {
       new TextStyle(color: Colors.grey, fontSize: 15, height: 2);
 
   int currIndex = -1;
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
 
   Duration getDuration(String time) {
     var times = time.split(':');

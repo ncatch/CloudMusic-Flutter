@@ -2,11 +2,12 @@
  * @Description: 播放模式组件
  * @Author: Walker
  * @Date: 2021-05-08 18:00:16
- * @LastEditTime: 2021-05-19 16:47:52
+ * @LastEditTime: 2021-05-20 16:46:57
  * @LastEditors: Walker
  */
 
 import 'package:bot_toast/bot_toast.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -49,7 +50,7 @@ class PlayModeState extends State<PlayMode> {
 
     playInfoStore.changePlayMode(currMode);
 
-    BotToast.showText(text: tips[currMode] ?? "");
+    Toast(tips[currMode]!);
   }
 
   @override

@@ -2,11 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 09:53:41
- * @LastEditTime: 2021-05-20 10:28:33
+ * @LastEditTime: 2021-05-20 16:49:48
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
@@ -80,8 +81,7 @@ class PlayListMenuState extends State<PlayListMenu> {
     subscribe(widget.playListInfo.id, SubscribeVal[type]).then((res) {
       BotToast.closeAllLoading();
       if (res['code'] == 200) {
-        BotToast.showText(
-            text: type == SubscribeDic.collect ? '收藏成功' : '取消收藏成功');
+        Toast(type == SubscribeDic.collect ? '收藏成功' : '取消收藏成功');
 
         var tmp = widget.playListInfo.subscribed;
 
@@ -90,10 +90,9 @@ class PlayListMenuState extends State<PlayListMenu> {
           isSubscribed = !tmp;
         });
       } else {
-        BotToast.showText(text: res['msg'] ?? '网络异常');
+        Toast(res['msg'] ?? '网络异常');
       }
     }, onError: (err) {
-      print(err);
       BotToast.closeAllLoading();
     });
   }

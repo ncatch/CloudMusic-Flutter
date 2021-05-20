@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-20 10:27:30
+ * @LastEditTime: 2021-05-20 17:45:16
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -14,6 +14,7 @@ import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/components/UserLabel.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/detail.dart';
@@ -77,9 +78,15 @@ class PlayListState extends State<PlayList> with RefreshRate {
 
         this.getMusicList();
       } else {
-        BotToast.showText(text: res['msg'] ?? '网络异常');
+        Toast(res['msg'] ?? '网络异常');
       }
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
   }
 
   getMusicList() {

@@ -2,17 +2,17 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-20 16:08:43
+ * @LastEditTime: 2021-05-20 17:48:24
  * @LastEditors: Walker
  */
-import 'dart:html';
 import 'dart:ui';
 
-import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../model/UserInfo.dart' as model;
 import '../libs/extends/IntExtend.dart';
 
@@ -24,8 +24,11 @@ class UserInfo extends StatefulWidget {
   State<StatefulWidget> createState() => UserInfoState();
 }
 
-class UserInfoState extends State<UserInfo> {
+class UserInfoState extends State<UserInfo>
+    with SingleTickerProviderStateMixin {
   double headHeight = 250;
+  ScrollController _controller = ScrollController();
+  TabController? _tabController;
 
   model.UserInfo userInfo = new model.UserInfo();
 
@@ -34,6 +37,8 @@ class UserInfoState extends State<UserInfo> {
   @override
   initState() {
     super.initState();
+
+    _tabController = new TabController(length: 2, vsync: this);
 
     getUserDetail(widget.id).then((res) {
       if (res['code'] == 200) {
@@ -45,17 +50,29 @@ class UserInfoState extends State<UserInfo> {
     });
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+    _tabController?.dispose();
+  }
+
   attention() {
-    attentionUser(userInfo.userId, userInfo.followed ? 0 : 1).then((res) {
+    attentionUser(userInfo.userId, userInfo.followed ? 2 : 1).then((res) {
       if (res['code'] == 200) {
         this.setState(() {
+          if (userInfo.followed) {
+            Toast('谢谢关注');
+          } else {
+            Toast('已取消关注');
+          }
           if (userInfo.followeds < 10000) {
             userInfo.followeds += userInfo.followed ? -1 : 1;
           }
           userInfo.followed = !userInfo.followed;
         });
       } else {
-        BotToast.showText(text: res['msg'] ?? '网络异常');
+        Toast(res['msg'] ?? '网络异常');
       }
     });
   }
@@ -68,6 +85,7 @@ class UserInfoState extends State<UserInfo> {
 
     return Scaffold(
       body: Container(
+        color: Colors.grey.shade100,
         child: Flex(
           direction: Axis.vertical,
           children: [
@@ -88,139 +106,192 @@ class UserInfoState extends State<UserInfo> {
                       ),
                     ),
                   ),
+                  // 头部渐变
                   Positioned(
                     width: size.width,
                     height: headHeight + 100,
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: new LinearGradient(
-                          begin: const Alignment(0.0, -0.5),
-                          end: const Alignment(0.0, 0.2),
+                          begin: const Alignment(0.0, -0.2),
+                          end: const Alignment(0.0, 0.3),
                           colors: <Color>[
                             Colors.white10,
-                            Colors.white,
+                            Colors.grey.shade100,
                           ],
                         ),
                       ),
                     ),
                   ),
-                  Positioned(
-                    top: headHeight - 40,
+                  Container(
+                    padding: EdgeInsets.fromLTRB(15, headHeight - 60, 15, 0),
                     width: size.width,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                      child: Column(
-                        children: [
-                          Container(
-                            alignment: Alignment.center,
-                            height: 100,
-                            child: Flex(
-                              direction: Axis.horizontal,
-                              children: [
-                                Container(
-                                  width: 80,
-                                  height: 80,
-                                  margin: EdgeInsets.symmetric(horizontal: 20),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(40),
-                                    child: Image.network(
-                                      userInfo.avatarUrl,
-                                      fit: BoxFit.fill,
+                    child: ListView(
+                      controller: _controller,
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          height: 90,
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            children: [
+                              Container(
+                                width: 80,
+                                height: 80,
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: Image.network(
+                                    userInfo.avatarUrl,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Wrap(
+                                  children: [
+                                    Flex(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                '${userInfo.followeds.toMyriadString(1)}',
+                                                style: numStyle,
+                                              ),
+                                              Text('粉丝')
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                '${userInfo.follows}',
+                                                style: numStyle,
+                                              ),
+                                              Text('关注')
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Lv.${userInfo.level}',
+                                                style: numStyle,
+                                              ),
+                                              Text('等级')
+                                            ],
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: Wrap(
-                                    children: [
-                                      Flex(
-                                        direction: Axis.horizontal,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '${userInfo.followeds.toMyriadString(1)}',
-                                                  style: numStyle,
-                                                ),
-                                                Text('粉丝')
-                                              ],
+                                    Flex(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            padding:
+                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              color: userInfo.followed
+                                                  ? Colors.grey.shade300
+                                                  : primaryColor,
                                             ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  '${userInfo.follows}',
-                                                  style: numStyle,
-                                                ),
-                                                Text('关注')
-                                              ],
-                                            ),
-                                          ),
-                                          Expanded(
-                                            flex: 1,
-                                            child: Column(
-                                              children: [
-                                                Text(
-                                                  'Lv.${userInfo.level}',
-                                                  style: numStyle,
-                                                ),
-                                                Text('等级')
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Flex(
-                                        direction: Axis.horizontal,
-                                        children: [
-                                          Expanded(
-                                            flex: 1,
-                                            child: Container(
-                                              margin: EdgeInsets.only(top: 10),
-                                              padding: EdgeInsets.fromLTRB(
-                                                  0, 5, 0, 5),
-                                              decoration: BoxDecoration(
-                                                borderRadius:
-                                                    BorderRadius.circular(15),
-                                                color: primaryColor,
-                                              ),
-                                              child: InkWell(
-                                                onTap: attention,
-                                                child: Text(
-                                                  userInfo.followed
-                                                      ? '已关注'
-                                                      : '+ 关注',
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
+                                            child: InkWell(
+                                              onTap: attention,
+                                              child: Text(
+                                                userInfo.followed
+                                                    ? '已关注'
+                                                    : '+ 关注',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: userInfo.followed
+                                                      ? Colors.grey
+                                                      : Colors.white,
+                                                  fontWeight: FontWeight.w600,
                                                 ),
                                               ),
                                             ),
                                           ),
-                                          Container(
-                                            child: IconButton(
-                                              icon: Icon(Icons.email_outlined),
-                                              onPressed: dynamicClick,
-                                            ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(top: 8),
+                                          child: IconButton(
+                                            icon: Icon(Icons.email_outlined),
+                                            onPressed: dynamicClick,
                                           ),
-                                        ],
-                                      )
-                                    ],
-                                  ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
                                 ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 40,
+                          padding: EdgeInsets.only(left: 20),
+                          alignment: Alignment.centerLeft,
+                          child: Row(
+                            children: [
+                              userInfo.avatarDetail.identityIconUrl != ""
+                                  ? Image.network(
+                                      userInfo.avatarDetail.identityIconUrl,
+                                      width: 16,
+                                      height: 16,
+                                    )
+                                  : Container(),
+                              Container(
+                                padding: EdgeInsets.only(left: 8),
+                                child: Text(userInfo.mainAuthType.desc),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: 40,
+                          child: TabBar(
+                            controller: _tabController,
+                            tabs: [
+                              Tab(text: '主页'),
+                              Tab(text: '动态'),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: TabBarView(
+                            controller: _tabController,
+                            children: [
+                              Container(
+                                child: Text('主页'),
+                              ),
+                              Container(
+                                child: Text('动态'),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  // appbar
                   Positioned(
                     height: 90,
                     width: size.width,

@@ -2,7 +2,7 @@
  * @Description: 用户标签 【头像 昵称 关注按钮】
  * @Author: Walker
  * @Date: 2021-05-19 15:15:35
- * @LastEditTime: 2021-05-20 10:46:46
+ * @LastEditTime: 2021-05-20 17:19:37
  * @LastEditors: Walker
  */
 
@@ -65,19 +65,21 @@ class UserLabelState extends State<UserLabel> {
                       ),
                     ),
                   ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        widget.userInfo.avatarDetail.identityIconUrl,
-                        fit: BoxFit.fill,
-                        width: 12,
-                        height: 12,
-                      ),
-                    ),
-                  )
+                  widget.userInfo.avatarDetail.identityIconUrl != ""
+                      ? Positioned(
+                          bottom: 0,
+                          right: 0,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(12),
+                            child: Image.network(
+                              widget.userInfo.avatarDetail.identityIconUrl,
+                              fit: BoxFit.fill,
+                              width: 12,
+                              height: 12,
+                            ),
+                          ),
+                        )
+                      : Container(),
                 ],
               ),
             ),

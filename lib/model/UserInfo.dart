@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:36:18
- * @LastEditTime: 2021-05-20 15:30:33
+ * @LastEditTime: 2021-05-20 17:14:56
  * @LastEditors: Walker
  */
 
@@ -19,6 +19,9 @@ class UserInfo {
   int follows = 0; // 关注数
 
   int level = 0;
+
+  MainAuthType mainAuthType = MainAuthType();
+  AvatarDetail avatarDetail = AvatarDetail();
 
   UserInfo({
     int userId = 0,
@@ -47,6 +50,14 @@ class UserInfo {
     this.followed = jsonstr["followed"];
     this.follows = jsonstr["follows"];
     this.level = jsonstr["level"] ?? 0;
+
+    if (jsonstr['mainAuthType'] != null) {
+      this.mainAuthType = MainAuthType.fromJson(jsonstr['mainAuthType']);
+    }
+
+    if (jsonstr['avatarDetail'] != null) {
+      this.avatarDetail = AvatarDetail.fromData(jsonstr['avatarDetail']);
+    }
   }
 
   Map toJson() {
@@ -61,6 +72,36 @@ class UserInfo {
     map["followed"] = this.followed;
     map["follows"] = this.follows;
     map["level"] = this.level;
+    map["mainAuthType"] = this.mainAuthType;
     return map;
+  }
+}
+
+class MainAuthType {
+  String desc = '';
+  List<String> tags = [];
+  int type = 0;
+
+  MainAuthType() {}
+
+  MainAuthType.fromJson(Map<String, dynamic> data) {
+    this.desc = data['desc'];
+    this.type = data['type'];
+    this.tags = data['tags'] ?? [];
+  }
+}
+
+class AvatarDetail {
+  String identityIconUrl = "";
+  int identityLevel = 0;
+  int userType = 0;
+
+  AvatarDetail() {}
+
+  AvatarDetail.fromData(Map<String, dynamic> data) {
+    this.identityIconUrl = data['identityIconUrl'];
+
+    this.identityLevel = data['identityLevel'];
+    this.userType = data['userType'];
   }
 }
