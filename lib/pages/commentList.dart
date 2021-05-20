@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-20 10:28:25
+ * @LastEditTime: 2021-05-20 10:45:24
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -10,17 +10,14 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
 import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
-import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Comments.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:cloudmusic_flutter/services/comment.dart';
-import 'package:cloudmusic_flutter/services/songList.dart';
-import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
+import './userInfo.dart';
 import '../libs/enums.dart';
 
 class CommentList extends StatefulWidget {
@@ -154,7 +151,11 @@ class CommentListState extends State<CommentList>
     });
   }
 
-  toUserDetail() {}
+  toUserDetail() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return UserInfo(id: widget.info.creator.userId);
+    }));
+  }
 
   toPlayList() {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {

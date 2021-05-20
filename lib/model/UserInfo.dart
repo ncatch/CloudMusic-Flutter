@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:36:18
- * @LastEditTime: 2021-05-06 15:57:17
+ * @LastEditTime: 2021-05-20 15:30:33
  * @LastEditors: Walker
  */
 
@@ -13,6 +13,12 @@ class UserInfo {
   int userType = 0;
   String avatarUrl = "";
   String backgroundUrl = "";
+
+  bool followed = false; // 是否关注
+  int followeds = 0; // 粉丝数
+  int follows = 0; // 关注数
+
+  int level = 0;
 
   UserInfo({
     int userId = 0,
@@ -37,6 +43,10 @@ class UserInfo {
     this.userType = jsonstr["userType"];
     this.avatarUrl = jsonstr["avatarUrl"];
     this.backgroundUrl = jsonstr["backgroundUrl"];
+    this.followeds = jsonstr["followeds"];
+    this.followed = jsonstr["followed"];
+    this.follows = jsonstr["follows"];
+    this.level = jsonstr["level"] ?? 0;
   }
 
   Map toJson() {
@@ -47,6 +57,10 @@ class UserInfo {
     map["userType"] = this.userType;
     map["avatarUrl"] = this.avatarUrl;
     map["backgroundUrl"] = this.backgroundUrl;
+    map["followeds"] = this.followeds;
+    map["followed"] = this.followed;
+    map["follows"] = this.follows;
+    map["level"] = this.level;
     return map;
   }
 }

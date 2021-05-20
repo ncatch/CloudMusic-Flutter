@@ -2,11 +2,12 @@
  * @Description: 用户标签 【头像 昵称 关注按钮】
  * @Author: Walker
  * @Date: 2021-05-19 15:15:35
- * @LastEditTime: 2021-05-19 19:20:17
+ * @LastEditTime: 2021-05-20 10:46:46
  * @LastEditors: Walker
  */
 
 import 'package:cloudmusic_flutter/model/Creator.dart';
+import 'package:cloudmusic_flutter/pages/userInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +35,11 @@ class UserLabelState extends State<UserLabel> {
   }
 
   // 跳转用户信息页
-  userClick() {}
+  userClick() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return UserInfo(id: widget.userInfo.userId);
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
