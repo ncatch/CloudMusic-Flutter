@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-20 17:48:24
+ * @LastEditTime: 2021-05-20 17:58:34
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -241,7 +241,7 @@ class UserInfoState extends State<UserInfo>
                           ),
                         ),
                         Container(
-                          height: 40,
+                          height: userInfo.mainAuthType.desc != "" ? 40 : 0,
                           padding: EdgeInsets.only(left: 20),
                           alignment: Alignment.centerLeft,
                           child: Row(
@@ -262,8 +262,18 @@ class UserInfoState extends State<UserInfo>
                         ),
                         Container(
                           height: 40,
+                          width: size.width / 2,
                           child: TabBar(
                             controller: _tabController,
+                            indicator: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  width: 4,
+                                  color: primaryColor,
+                                ),
+                              ),
+                            ),
+                            labelColor: Colors.black,
                             tabs: [
                               Tab(text: '主页'),
                               Tab(text: '动态'),
@@ -271,6 +281,8 @@ class UserInfoState extends State<UserInfo>
                           ),
                         ),
                         Container(
+                          width: size.width,
+                          height: 200,
                           padding: EdgeInsets.all(15),
                           decoration: BoxDecoration(
                             color: Colors.white,
