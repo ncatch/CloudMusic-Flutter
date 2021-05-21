@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-21 15:46:03
+ * @LastEditTime: 2021-05-21 16:50:50
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -325,10 +325,12 @@ class UserInfoState extends State<UserInfo>
                               Column(
                                 children: [
                                   ModelComponent(
+                                    title: '基本信息',
                                     children: [
-                                      TitleComponent(title: '基本信息'),
                                       userInfo.mainAuthType.desc != ''
                                           ? Container(
+                                              padding:
+                                                  EdgeInsets.only(left: 15),
                                               child: descRow,
                                             )
                                           : Container(),
@@ -351,7 +353,7 @@ class UserInfoState extends State<UserInfo>
                                         child: Text('地区：${userInfo.city}'),
                                       ),
                                       Container(
-                                        margin: EdgeInsets.only(top: 10),
+                                        margin: EdgeInsets.only(top: 15),
                                         padding: EdgeInsets.only(
                                           top: 10,
                                           bottom: 10,
@@ -360,7 +362,7 @@ class UserInfoState extends State<UserInfo>
                                           border: Border(
                                             top: BorderSide(
                                               width: 1,
-                                              color: Colors.grey.shade300,
+                                              color: Colors.grey.shade200,
                                             ),
                                           ),
                                         ),
@@ -379,9 +381,8 @@ class UserInfoState extends State<UserInfo>
                                     ],
                                   ),
                                   ModelComponent(
-                                    children: [
-                                      TitleComponent(title: '音乐品味'),
-                                    ],
+                                    title: '音乐品味',
+                                    children: [],
                                   ),
                                 ],
                               ),
@@ -459,8 +460,14 @@ class TitleComponent extends StatelessWidget {
 
 class ModelComponent extends StatelessWidget {
   final List<Widget> children;
+  final String title;
+  final String descript;
 
-  ModelComponent({Key? key, required this.children});
+  ModelComponent(
+      {Key? key,
+      required this.children,
+      required this.title,
+      this.descript = ''});
 
   @override
   Widget build(BuildContext context) {
@@ -475,7 +482,20 @@ class ModelComponent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: children,
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+            margin: EdgeInsets.only(bottom: 10),
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          ...children,
+        ],
       ),
     );
   }

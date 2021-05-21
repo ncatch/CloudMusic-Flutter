@@ -2,11 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-20 16:49:02
+ * @LastEditTime: 2021-05-21 17:45:40
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
-import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
+import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -32,7 +32,7 @@ class Discover extends StatefulWidget {
   State<StatefulWidget> createState() => DiscoverState();
 }
 
-class DiscoverState extends State<Discover> with RefreshRate {
+class DiscoverState extends State<Discover> {
   List<Widget> homeModel = [];
   List<dynamic> homeData = [];
 
@@ -87,8 +87,6 @@ class DiscoverState extends State<Discover> with RefreshRate {
 
   @override
   Widget build(BuildContext context) {
-    super.refreshRateInit();
-
     List<Widget> tmp = [];
 
     if (homeData.length > 0) {
@@ -101,13 +99,15 @@ class DiscoverState extends State<Discover> with RefreshRate {
       tmp.insert(1, DiscoverMenu());
     }
 
-    return RefreshIndicator(
-      color: primaryColor,
-      onRefresh: () async {
-        return refreshHomeData();
-      },
-      child: ListView(
-        children: tmp,
+    return HeightRefresh(
+      child: RefreshIndicator(
+        color: primaryColor,
+        onRefresh: () async {
+          return refreshHomeData();
+        },
+        child: ListView(
+          children: tmp,
+        ),
       ),
     );
   }

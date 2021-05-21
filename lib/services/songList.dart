@@ -2,7 +2,7 @@
  * @Description: 歌单相关接口
  * @Author: Walker
  * @Date: 2021-04-30 19:18:22
- * @LastEditTime: 2021-05-17 19:39:18
+ * @LastEditTime: 2021-05-21 17:15:16
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/utils/http.dart';
@@ -24,6 +24,19 @@ Future<dynamic> getPlayListComment(id, {limit = 20, offset = "", before = ""}) {
       .get(
           '/comment/playlist?id=$id&limit=$limit&offset=$offset&bofore=$before')
       .then((value) {
+    return value.data;
+  });
+}
+
+// 获取推荐歌单
+Future<dynamic> getRecommendResource() {
+  return DioUtil.dio.get('/recommend/resource').then((value) {
+    return value.data;
+  });
+}
+
+Future<dynamic> getRecommendSongs() {
+  return DioUtil.dio.get('/recommend/songs').then((value) {
     return value.data;
   });
 }

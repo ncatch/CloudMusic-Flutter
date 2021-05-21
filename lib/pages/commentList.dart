@@ -2,14 +2,14 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-20 17:45:58
+ * @LastEditTime: 2021-05-21 17:46:08
  * @LastEditors: Walker
  */
 import 'dart:async';
 
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
-import 'package:cloudmusic_flutter/components/Base/RefreshRate.dart';
+import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Comments.dart';
@@ -36,7 +36,7 @@ class CommentList extends StatefulWidget {
 }
 
 class CommentListState extends State<CommentList>
-    with SingleTickerProviderStateMixin, RefreshRate {
+    with SingleTickerProviderStateMixin {
   double total = 0;
   int offset = 1;
   CommentSortType sortType = CommentSortType.time;
@@ -288,8 +288,6 @@ class CommentListState extends State<CommentList>
 
   @override
   Widget build(BuildContext context) {
-    super.refreshRateInit();
-
     var sortMenuSplit = Container(
       height: 14,
       decoration: BoxDecoration(
@@ -302,254 +300,256 @@ class CommentListState extends State<CommentList>
       ),
     );
 
-    return Scaffold(
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            flex: 1,
-            child: ScrollConfiguration(
-              behavior: PrimaryScrollBehavior(),
-              child: CustomScrollView(
-                controller: _customScrollController,
-                slivers: <Widget>[
-                  SliverAppBar(
-                    pinned: true,
-                    elevation: 0,
-                    expandedHeight: 140,
-                    leading: BackButton(
-                      color: Colors.black,
-                    ),
-                    foregroundColor: Colors.black,
-                    title: Text(
-                      "评论($total)",
-                      style: TextStyle(color: Colors.black, fontSize: 14),
-                    ),
-                    backgroundColor: Colors.white,
-                    flexibleSpace: FlexibleSpaceBar(
-                      background: Container(
-                        height: 100,
-                        margin: EdgeInsets.only(top: 70),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(
-                                width: 10, color: Colors.grey.shade100),
+    return HeightRefresh(
+      child: Scaffold(
+        body: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(
+              flex: 1,
+              child: ScrollConfiguration(
+                behavior: PrimaryScrollBehavior(),
+                child: CustomScrollView(
+                  controller: _customScrollController,
+                  slivers: <Widget>[
+                    SliverAppBar(
+                      pinned: true,
+                      elevation: 0,
+                      expandedHeight: 140,
+                      leading: BackButton(
+                        color: Colors.black,
+                      ),
+                      foregroundColor: Colors.black,
+                      title: Text(
+                        "评论($total)",
+                        style: TextStyle(color: Colors.black, fontSize: 14),
+                      ),
+                      backgroundColor: Colors.white,
+                      flexibleSpace: FlexibleSpaceBar(
+                        background: Container(
+                          height: 100,
+                          margin: EdgeInsets.only(top: 70),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(
+                                  width: 10, color: Colors.grey.shade100),
+                            ),
                           ),
-                        ),
-                        child: InkWell(
-                          onTap: toPlayList,
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            children: [
-                              Container(
-                                width: 60,
-                                height: 60,
-                                margin: EdgeInsets.all(15),
-                                decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image:
-                                        NetworkImage(widget.info.coverImgUrl),
-                                    fit: BoxFit.cover,
-                                  ),
-                                  borderRadius: BorderRadius.circular(4),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Wrap(
-                                  children: [
-                                    Container(
-                                      child: Text(
-                                        widget.info.title,
-                                        style: TextStyle(fontSize: 16),
-                                      ),
+                          child: InkWell(
+                            onTap: toPlayList,
+                            child: Flex(
+                              direction: Axis.horizontal,
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  margin: EdgeInsets.all(15),
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image:
+                                          NetworkImage(widget.info.coverImgUrl),
+                                      fit: BoxFit.cover,
                                     ),
-                                    Container(
-                                      child: InkWell(
-                                        onTap: toUserDetail,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'by ',
-                                              style:
-                                                  TextStyle(color: Colors.grey),
-                                            ),
-                                            Text(
-                                              widget.info.creator.nickname,
-                                              style: TextStyle(
-                                                  color: Colors.blue[400]),
-                                            )
-                                          ],
+                                    borderRadius: BorderRadius.circular(4),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 1,
+                                  child: Wrap(
+                                    children: [
+                                      Container(
+                                        child: Text(
+                                          widget.info.title,
+                                          style: TextStyle(fontSize: 16),
                                         ),
                                       ),
+                                      Container(
+                                        child: InkWell(
+                                          onTap: toUserDetail,
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                'by ',
+                                                style: TextStyle(
+                                                    color: Colors.grey),
+                                              ),
+                                              Text(
+                                                widget.info.creator.nickname,
+                                                style: TextStyle(
+                                                    color: Colors.blue[400]),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Container(
+                                  width: 30,
+                                  child: Icon(
+                                    Icons.navigate_next,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    SliverPersistentHeader(
+                      pinned: true,
+                      delegate: StickyTabBarDelegate(
+                        child: TabBar(
+                          indicatorColor: Colors.white,
+                          labelColor: Colors.black,
+                          controller: tabController,
+                          tabs: <Widget>[
+                            Tab(
+                              child: Container(
+                                height: 50,
+                                color: Colors.white,
+                                child: Flex(
+                                  direction: Axis.horizontal,
+                                  children: [
+                                    Expanded(
+                                      flex: 1,
+                                      child: Text('评论'),
                                     ),
+                                    Container(
+                                      width: 152,
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            width: 50,
+                                            child: TextButton(
+                                              onPressed: () {
+                                                sortTypeClick(
+                                                    CommentSortType.recommend);
+                                              },
+                                              child: Text(
+                                                '推荐',
+                                                style: TextStyle(
+                                                  color: sortType ==
+                                                          CommentSortType
+                                                              .recommend
+                                                      ? Colors.black
+                                                      : Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          sortMenuSplit,
+                                          Container(
+                                            width: 50,
+                                            child: TextButton(
+                                              onPressed: () {
+                                                sortTypeClick(
+                                                    CommentSortType.hot);
+                                              },
+                                              child: Text(
+                                                '最热',
+                                                style: TextStyle(
+                                                  color: sortType ==
+                                                          CommentSortType.hot
+                                                      ? Colors.black
+                                                      : Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          sortMenuSplit,
+                                          Container(
+                                            width: 50,
+                                            child: TextButton(
+                                              onPressed: () {
+                                                sortTypeClick(
+                                                    CommentSortType.time);
+                                              },
+                                              child: Text(
+                                                '最新',
+                                                style: TextStyle(
+                                                  color: sortType ==
+                                                          CommentSortType.time
+                                                      ? Colors.black
+                                                      : Colors.grey,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 ),
                               ),
-                              Container(
-                                width: 30,
-                                child: Icon(
-                                  Icons.navigate_next,
-                                  color: Colors.grey,
-                                ),
-                              ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       ),
                     ),
-                  ),
-                  SliverPersistentHeader(
-                    pinned: true,
-                    delegate: StickyTabBarDelegate(
-                      child: TabBar(
-                        indicatorColor: Colors.white,
-                        labelColor: Colors.black,
+                    SliverFillRemaining(
+                      child: TabBarView(
                         controller: tabController,
-                        tabs: <Widget>[
-                          Tab(
-                            child: Container(
-                              height: 50,
-                              color: Colors.white,
-                              child: Flex(
-                                direction: Axis.horizontal,
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: Text('评论'),
-                                  ),
-                                  Container(
-                                    width: 152,
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: 50,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              sortTypeClick(
-                                                  CommentSortType.recommend);
-                                            },
-                                            child: Text(
-                                              '推荐',
-                                              style: TextStyle(
-                                                color: sortType ==
-                                                        CommentSortType
-                                                            .recommend
-                                                    ? Colors.black
-                                                    : Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        sortMenuSplit,
-                                        Container(
-                                          width: 50,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              sortTypeClick(
-                                                  CommentSortType.hot);
-                                            },
-                                            child: Text(
-                                              '最热',
-                                              style: TextStyle(
-                                                color: sortType ==
-                                                        CommentSortType.hot
-                                                    ? Colors.black
-                                                    : Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        sortMenuSplit,
-                                        Container(
-                                          width: 50,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              sortTypeClick(
-                                                  CommentSortType.time);
-                                            },
-                                            child: Text(
-                                              '最新',
-                                              style: TextStyle(
-                                                color: sortType ==
-                                                        CommentSortType.time
-                                                    ? Colors.black
-                                                    : Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
+                        children: <Widget>[
+                          Container(
+                            child: NotificationListener(
+                              onNotification: (notification) {
+                                if (notification.runtimeType ==
+                                    OverscrollNotification) {
+                                  if (_scrollController.offset <= 0) {
+                                    _customScrollController.position.moveTo(0);
+                                  } else {
+                                    // 加载数据
+                                    loadComments();
+                                  }
+                                }
+                                return true;
+                              },
+                              child: ListView(
+                                controller: _scrollController,
+                                children: commentComponents(),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  SliverFillRemaining(
-                    child: TabBarView(
-                      controller: tabController,
-                      children: <Widget>[
-                        Container(
-                          child: NotificationListener(
-                            onNotification: (notification) {
-                              if (notification.runtimeType ==
-                                  OverscrollNotification) {
-                                if (_scrollController.offset <= 0) {
-                                  _customScrollController.position.moveTo(0);
-                                } else {
-                                  // 加载数据
-                                  loadComments();
-                                }
-                              }
-                              return true;
-                            },
-                            child: ListView(
-                              controller: _scrollController,
-                              children: commentComponents(),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          Container(
-              height: 50,
-              child: Flex(
-                direction: Axis.horizontal,
-                children: [
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
-                      child: TextField(
-                        controller: commentText,
-                        decoration: InputDecoration(
-                          hintText: '写评论...',
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
+            Container(
+                height: 50,
+                child: Flex(
+                  direction: Axis.horizontal,
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(15, 5, 0, 5),
+                        child: TextField(
+                          controller: commentText,
+                          decoration: InputDecoration(
+                            hintText: '写评论...',
+                            border: InputBorder.none,
+                            focusedBorder: InputBorder.none,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: 80,
-                    child: TextButton(
-                      onPressed: sendComment,
-                      child: Text('发送'),
-                    ),
-                  )
-                ],
-              ))
-        ],
+                    Container(
+                      width: 80,
+                      child: TextButton(
+                        onPressed: sendComment,
+                        child: Text('发送'),
+                      ),
+                    )
+                  ],
+                ))
+          ],
+        ),
       ),
     );
   }

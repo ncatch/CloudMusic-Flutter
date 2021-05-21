@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-07 10:09:57
+ * @LastEditTime: 2021-05-21 17:34:49
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/store/User.dart';
@@ -22,6 +22,10 @@ class DrawerMenu extends StatefulWidget {
 class DrawerMenuState extends State<DrawerMenu> {
   toLogin() {
     Navigator.pushNamed(context, '/login');
+  }
+
+  toSetting() {
+    Navigator.pushNamed(context, '/setting');
   }
 
   exitLogin(User userStore) {
@@ -91,12 +95,9 @@ class DrawerMenuState extends State<DrawerMenu> {
                 )
               : Text(''),
           ListTile(
-            leading: Icon(Icons.ac_unit),
-            title: Text(
-              userStore.levelInfo != null
-                  ? userStore.levelInfo.toString()
-                  : '无等级数据',
-            ),
+            leading: Icon(Icons.settings),
+            title: Text('设置'),
+            onTap: toSetting,
           )
         ],
       ),
