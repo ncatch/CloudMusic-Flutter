@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: nocatch
  * @Date: 2021-05-19 22:21:01
- * @LastEditTime: 2021-05-21 17:50:58
+ * @LastEditTime: 2021-05-21 19:03:52
  * @LastEditors: Walker
  */
 
@@ -35,7 +35,7 @@ class HeightRefresh extends StatelessWidget {
     }
   }
 
-  @protected
+  @override
   Widget build(BuildContext context) {
     var systemInfo = Provider.of<SystemInfo>(context);
 

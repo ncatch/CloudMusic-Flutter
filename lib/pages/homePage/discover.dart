@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-21 17:45:40
+ * @LastEditTime: 2021-05-21 19:21:04
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -16,10 +16,12 @@ import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
 import 'package:cloudmusic_flutter/services/home.dart';
+import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
+import 'package:provider/provider.dart';
 
 // 当前页面组件
 import '../../../components/Banner.dart' as BannerComponent;
@@ -99,14 +101,43 @@ class DiscoverState extends State<Discover> {
       tmp.insert(1, DiscoverMenu());
     }
 
+    var systemInfo = Provider.of<SystemInfo>(context);
+
     return HeightRefresh(
-      child: RefreshIndicator(
-        color: primaryColor,
-        onRefresh: () async {
-          return refreshHomeData();
-        },
-        child: ListView(
-          children: tmp,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Container(
+            height: 38,
+            padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+            ),
+            child: InkWell(
+              onTap: () {
+                Navigator.pushNamed(context, '/search');
+              },
+              child: Row(
+                children: [
+                  Icon(Icons.search, color: Colors.grey),
+                  Text(
+                    '搜索',
+                    style: TextStyle(color: Colors.grey),
+                  )
+                ],
+              ),
+            ),
+          ),
+          brightness: systemInfo.brightNess,
+        ),
+        body: RefreshIndicator(
+          color: primaryColor,
+          onRefresh: () async {
+            return refreshHomeData();
+          },
+          child: ListView(
+            children: tmp,
+          ),
         ),
       ),
     );

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-19 18:00:30
+ * @LastEditTime: 2021-05-21 19:40:03
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
@@ -61,34 +61,8 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
     //   value: SystemUiOverlayStyle.light,
     //   child: Material(child:Scaffold(),),);
     // }
-    var systemInfo = Provider.of<SystemInfo>(context);
     return Scaffold(
         drawer: DrawerMenu(),
-        appBar: AppBar(
-          title: Container(
-            height: 38,
-            padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            child: InkWell(
-              onTap: () {
-                Navigator.pushNamed(context, '/search');
-              },
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: Colors.grey),
-                  Text(
-                    '搜索',
-                    style: TextStyle(color: Colors.grey),
-                  )
-                ],
-              ),
-            ),
-          ),
-          brightness: systemInfo.brightNess,
-        ),
         body: Flex(
           direction: Axis.vertical,
           children: [

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-05-20 16:48:49
+ * @LastEditTime: 2021-05-21 19:12:21
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -10,6 +10,7 @@ import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 import '../store/User.dart';
@@ -24,11 +25,36 @@ class Login extends StatefulWidget {
 class LoginState extends State<Login> {
   bool passwordVisible = false;
 
-  TextEditingController phoneText = new TextEditingController();
-  TextEditingController passwordText = new TextEditingController();
+  TextEditingController? phoneText;
+  TextEditingController? passwordText;
+
+  @override
+  initState() {
+    super.initState();
+
+    phoneText = TextEditingController();
+    passwordText = TextEditingController();
+
+    phoneText?.value = TextEditingValue(text: '15083525898');
+    passwordText?.value = TextEditingValue(text: 'nocatch.96');
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+
+    phoneText?.dispose();
+    passwordText?.dispose();
+  }
 
   login(User userStore) {
-    loginByPhone(phoneText.text, passwordText.text).then((data) {
+    if (phoneText?.text == "") {
+      return Toast('请输入账号');
+    } else if (passwordText?.text == "") {
+      return Toast('请输入密码');
+    }
+
+    loginByPhone(phoneText?.text, passwordText?.text).then((data) {
       if (data['code'] == 200) {
         userStore.initUserInfo(data);
         Navigator.pop(context);
