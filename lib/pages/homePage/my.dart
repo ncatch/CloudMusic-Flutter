@@ -2,13 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-14 11:41:33
+ * @LastEditTime: 2021-05-21 19:45:13
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:cloudmusic_flutter/store/User.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class My extends StatefulWidget {
@@ -51,14 +52,16 @@ class MyState extends State<My> {
       init(userStore);
     }
 
-    return Container(
-      child: ListView.builder(
-          itemCount: playList.length,
-          itemBuilder: (context, index) {
-            return Container(
-              child: Text(playList[index].title),
-            );
-          }),
+    return Scaffold(
+      body: Container(
+        child: ListView.builder(
+            itemCount: playList.length,
+            itemBuilder: (context, index) {
+              return Container(
+                child: Text(playList[index].title),
+              );
+            }),
+      ),
     );
   }
 }
