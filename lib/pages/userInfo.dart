@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-20 19:53:02
+ * @LastEditTime: 2021-05-21 15:46:03
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -34,9 +34,34 @@ class UserInfoState extends State<UserInfo>
 
   TextStyle numStyle = TextStyle(fontSize: 16, fontWeight: FontWeight.bold);
 
+  Color appbarColor = Colors.transparent;
+  Color appColor = Colors.white;
+
+  double scrollTop = 0;
+
   @override
   initState() {
     super.initState();
+
+    _controller.addListener(() {
+      if (_controller.offset > 150) {
+        return;
+      }
+      double t = _controller.offset / 150;
+      if (t < 0.0) {
+        t = 0.0;
+      } else if (t > 1.0) {
+        t = 1.0;
+      }
+
+      var rgb = (255 * (1 - t)).round();
+
+      this.setState(() {
+        appbarColor = Colors.white.withOpacity(t);
+        appColor = Color.fromRGBO(rgb, rgb, rgb, 1);
+        scrollTop = _controller.offset;
+      });
+    });
 
     _tabController = new TabController(length: 2, vsync: this);
 
@@ -79,6 +104,8 @@ class UserInfoState extends State<UserInfo>
 
   dynamicClick() {}
 
+  showAllBasicInfo() {}
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -92,21 +119,23 @@ class UserInfoState extends State<UserInfo>
       userInfo.birthday,
     );
 
-    var descRow = Row(
-      children: [
-        userInfo.avatarDetail.identityIconUrl != ""
-            ? Image.network(
-                userInfo.avatarDetail.identityIconUrl,
-                width: 16,
-                height: 16,
-              )
-            : Container(),
-        Container(
-          padding: EdgeInsets.only(left: 8),
-          child: Text(userInfo.mainAuthType.desc),
-        ),
-      ],
-    );
+    var descRow = userInfo.mainAuthType.desc != ""
+        ? Row(
+            children: [
+              userInfo.avatarDetail.identityIconUrl != ""
+                  ? Image.network(
+                      userInfo.avatarDetail.identityIconUrl,
+                      width: 16,
+                      height: 16,
+                    )
+                  : Container(),
+              Container(
+                padding: EdgeInsets.only(left: 8),
+                child: Text(userInfo.mainAuthType.desc),
+              ),
+            ],
+          )
+        : null;
 
     return Scaffold(
       body: Container(
@@ -122,6 +151,7 @@ class UserInfoState extends State<UserInfo>
                   Positioned(
                     width: size.width,
                     height: headHeight,
+                    top: -scrollTop / 2,
                     child: Container(
                       decoration: BoxDecoration(
                         image: DecorationImage(
@@ -135,6 +165,7 @@ class UserInfoState extends State<UserInfo>
                   Positioned(
                     width: size.width,
                     height: headHeight + 100,
+                    top: -scrollTop,
                     child: Container(
                       decoration: BoxDecoration(
                         gradient: new LinearGradient(
@@ -291,53 +322,70 @@ class UserInfoState extends State<UserInfo>
                           child: TabBarView(
                             controller: _tabController,
                             children: [
-                              Wrap(
+                              Column(
                                 children: [
-                                  Container(
-                                    width: size.width,
-                                    padding: EdgeInsets.all(15),
-                                    alignment: Alignment.centerLeft,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          child: Text(
-                                            '基本信息',
-                                            style: TextStyle(
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold,
+                                  ModelComponent(
+                                    children: [
+                                      TitleComponent(title: '基本信息'),
+                                      userInfo.mainAuthType.desc != ''
+                                          ? Container(
+                                              child: descRow,
+                                            )
+                                          : Container(),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                        child: Text(
+                                          '村龄：${now.year - createTime.year} (${createTime.format('yyyy年MM月注册')})',
+                                        ),
+                                      ),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                        child: Text(
+                                            '年龄：${now.year - birthday.year}'),
+                                      ),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                        child: Text('地区：${userInfo.city}'),
+                                      ),
+                                      Container(
+                                        margin: EdgeInsets.only(top: 10),
+                                        padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 10,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            top: BorderSide(
+                                              width: 1,
+                                              color: Colors.grey.shade300,
                                             ),
                                           ),
                                         ),
-                                        descRow,
-                                        Container(
-                                          margin: EdgeInsets.only(
-                                            bottom: 10,
-                                            top: 10,
+                                        child: InkWell(
+                                          onTap: showAllBasicInfo,
+                                          child: Center(
+                                            child: Text(
+                                              '查看全部 >',
+                                              style: TextStyle(
+                                                color: Colors.grey,
+                                              ),
+                                            ),
                                           ),
-                                          child: Text(
-                                            '村龄：${now.year - createTime.year}(${createTime.format('yyyy年MM月注册')})',
-                                          ),
                                         ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          child: Text(
-                                              '年龄：${now.year - birthday.year}'),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.only(bottom: 10),
-                                          child: Text('地区：${userInfo.city}'),
-                                        ),
-                                      ],
-                                    ),
-                                  )
+                                      ),
+                                    ],
+                                  ),
+                                  ModelComponent(
+                                    children: [
+                                      TitleComponent(title: '音乐品味'),
+                                    ],
+                                  ),
                                 ],
                               ),
-                              Wrap(
+                              Column(
                                 children: [
                                   Container(
                                     width: size.width,
@@ -363,11 +411,13 @@ class UserInfoState extends State<UserInfo>
                     child: AppBar(
                       title: Text(
                         userInfo.nickname,
-                        // style: TextStyle(color: Colors.black), // 跟随滚动条改变颜色
+                        style: TextStyle(color: appColor), // 跟随滚动条改变颜色
                       ),
-                      leading: BackButton(),
+                      leading: BackButton(
+                        color: appColor,
+                      ),
                       leadingWidth: 30,
-                      backgroundColor: Colors.white.withOpacity(0),
+                      backgroundColor: appbarColor,
                       elevation: 0,
                     ),
                   ),
@@ -380,6 +430,52 @@ class UserInfoState extends State<UserInfo>
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class TitleComponent extends StatelessWidget {
+  final String title;
+  final String descript;
+
+  TitleComponent({Key? key, required this.title, this.descript = ''});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
+      margin: EdgeInsets.only(bottom: 10),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+}
+
+class ModelComponent extends StatelessWidget {
+  final List<Widget> children;
+
+  ModelComponent({Key? key, required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Container(
+      width: size.width,
+      margin: EdgeInsets.only(bottom: 15),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: children,
       ),
     );
   }
