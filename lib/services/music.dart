@@ -2,7 +2,7 @@
  * @Description: 歌曲相关接口
  * @Author: nocatch
  * @Date: 2021-04-09 14:28:07
- * @LastEditTime: 2021-05-18 16:28:10
+ * @LastEditTime: 2021-05-24 16:52:35
  * @LastEditors: Walker
  */
 import '../libs/config.dart';
@@ -27,6 +27,12 @@ Future<List<dynamic>> getMusicDetail(List<int> ids) {
   return DioUtil.dio
       .get(server + '/song/detail?ids=' + ids.join(',').toString())
       .then((value) {
+    return value.data['songs'];
+  });
+}
+
+Future<dynamic> getLikeList(id) {
+  return DioUtil.dio.get('/likelist?uid=$id').then((value) {
     return value.data['songs'];
   });
 }

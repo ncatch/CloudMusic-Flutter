@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-24 15:15:10
+ * @LastEditTime: 2021-05-24 19:21:25
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -10,7 +10,11 @@ import 'dart:ui';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
+import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/pages/playList/index.dart';
+import 'package:cloudmusic_flutter/services/music.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
+import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
 import 'package:flutter/material.dart';
 import '../model/UserInfo.dart' as model;
 import '../libs/extends/IntExtend.dart';
@@ -38,6 +42,8 @@ class UserInfoState extends State<UserInfo>
   Color appColor = Colors.white;
 
   double scrollTop = 0;
+
+  List<PlayListModel> playListModes = [];
 
   @override
   initState() {
@@ -73,6 +79,17 @@ class UserInfoState extends State<UserInfo>
         });
       }
     });
+
+    getUserPlayList(widget.id).then((res) {
+      if (res['code'] == 200) {
+        setState(() {
+          playListModes = List<PlayListModel>.from(res['playlist']
+              .map<PlayListModel>((ele) => PlayListModel.fromData(ele)));
+        });
+      } else {
+        Toast(res['msg'] ?? '网络异常');
+      }
+    });
   }
 
   @override
@@ -106,6 +123,8 @@ class UserInfoState extends State<UserInfo>
 
   showAllBasicInfo() {}
 
+  showAllSongList(type) {}
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -136,6 +155,23 @@ class UserInfoState extends State<UserInfo>
             ],
           )
         : null;
+
+    var likeList =
+        playListModes.firstWhere((element) => element.specialType == 5);
+    likeList.title = "我喜欢的音乐";
+
+    var createList = playListModes.where((element) =>
+        element.creator.userId == widget.id && element.specialType != 5);
+    var collectList = playListModes.where((element) =>
+        element.creator.userId != widget.id && element.specialType != 5);
+
+    double contentHeight = 300 +
+        (createList.length > 10
+                ? 10
+                : collectList.length + collectList.length > 10
+                    ? 10
+                    : collectList.length) *
+            120;
 
     return Scaffold(
       body: Container(
@@ -316,8 +352,7 @@ class UserInfoState extends State<UserInfo>
                           ),
                         ),
                         Container(
-                          width: size.width,
-                          height: 500,
+                          height: contentHeight,
                           child: TabBarView(
                             controller: _tabController,
                             children: [
@@ -351,38 +386,57 @@ class UserInfoState extends State<UserInfo>
                                             EdgeInsets.fromLTRB(15, 10, 15, 0),
                                         child: Text('地区：${userInfo.city}'),
                                       ),
-                                      Container(
-                                        margin: EdgeInsets.only(top: 15),
-                                        padding: EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 10,
-                                        ),
-                                        decoration: BoxDecoration(
-                                          border: Border(
-                                            top: BorderSide(
-                                              width: 1,
-                                              color: Colors.grey.shade200,
-                                            ),
-                                          ),
-                                        ),
-                                        child: InkWell(
-                                          onTap: showAllBasicInfo,
-                                          child: Center(
-                                            child: Text(
-                                              '查看全部 >',
-                                              style: TextStyle(
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+                                      ShowAllBtn(
+                                        onTap: showAllBasicInfo,
                                       ),
                                     ],
                                   ),
                                   ModelComponent(
                                     title: '音乐品味',
-                                    children: [],
+                                    children: [
+                                      SongListItem(
+                                        info: likeList,
+                                      ),
+                                    ],
                                   ),
+                                  createList.length > 0
+                                      ? ModelComponent(
+                                          title: '创建的歌单',
+                                          children: [
+                                            ...createList.take(10).map(
+                                                  (ele) => SongListItem(
+                                                    info: ele,
+                                                  ),
+                                                ),
+                                            createList.length > 10
+                                                ? ShowAllBtn(
+                                                    onTap: () {
+                                                      showAllSongList(1);
+                                                    },
+                                                  )
+                                                : Container()
+                                          ],
+                                        )
+                                      : Container(),
+                                  collectList.length > 0
+                                      ? ModelComponent(
+                                          title: '收藏的歌单',
+                                          children: [
+                                            ...collectList.take(10).map(
+                                                  (ele) => SongListItem(
+                                                    info: ele,
+                                                  ),
+                                                ),
+                                            collectList.length > 10
+                                                ? ShowAllBtn(
+                                                    onTap: () {
+                                                      showAllSongList(2);
+                                                    },
+                                                  )
+                                                : Container()
+                                          ],
+                                        )
+                                      : Container(),
                                 ],
                               ),
                               Column(
@@ -430,22 +484,91 @@ class UserInfoState extends State<UserInfo>
   }
 }
 
-class TitleComponent extends StatelessWidget {
-  final String title;
-  final String descript;
+class SongListItem extends StatelessWidget {
+  final PlayListModel info;
 
-  TitleComponent({Key? key, required this.title, this.descript = ''});
+  SongListItem({Key? key, required this.info});
+
+  songClick(context, id) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return PlayList(
+        songId: id,
+      );
+    }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        songClick(context, info.id);
+      },
+      child: Row(
+        children: [
+          Container(
+            width: 80,
+            height: 55,
+            padding: EdgeInsets.fromLTRB(15, 5, 15, 0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6),
+              child: Image.network(
+                info.coverImgUrl,
+                fit: BoxFit.fill,
+              ),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                info.title.overFlowString(12),
+                style: TextStyle(fontSize: 16),
+              ),
+              Text(
+                '${info.trackCount}首, 播放${info.playCount.toMyriadString(1)}次',
+                style: TextStyle(
+                  color: Colors.black54,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ShowAllBtn extends StatelessWidget {
+  final void Function() onTap;
+  final String text;
+
+  ShowAllBtn({Key? key, required this.onTap, this.text = "显示全部 >"});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
-      margin: EdgeInsets.only(bottom: 10),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+      margin: EdgeInsets.only(top: 15),
+      padding: EdgeInsets.only(
+        top: 10,
+      ),
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(
+            width: 1,
+            color: Colors.grey.shade200,
+          ),
+        ),
+      ),
+      child: InkWell(
+        onTap: onTap,
+        child: Center(
+          child: Text(
+            text,
+            style: TextStyle(
+              color: Colors.grey,
+            ),
+          ),
         ),
       ),
     );
@@ -469,6 +592,7 @@ class ModelComponent extends StatelessWidget {
     return Container(
       width: size.width,
       margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
+      padding: EdgeInsets.only(bottom: 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),

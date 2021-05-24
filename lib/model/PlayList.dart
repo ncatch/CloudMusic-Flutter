@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:25
- * @LastEditTime: 2021-05-18 16:35:55
+ * @LastEditTime: 2021-05-24 18:01:44
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -21,6 +21,8 @@ class PlayListModel {
   int commentCount = 0; // 评论数
   int id = 0;
   bool subscribed = false;
+  int trackCount = 0;
+  int specialType = 0;
 
   Creator creator = Creator(); // 创建人
   var tags = [];
@@ -58,6 +60,8 @@ class PlayListModel {
     this.shareCount = data['shareCount'];
     this.commentCount = data['commentCount'];
     this.subscribed = data['subscribed'] ?? false;
+    this.trackCount = data['trackCount'] ?? 0;
+    this.specialType = data['specialType'] ?? 0;
 
     this.creator = Creator.fromData(data['creator']);
 
