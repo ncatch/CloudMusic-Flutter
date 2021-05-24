@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-24 19:21:25
+ * @LastEditTime: 2021-05-24 19:33:24
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -156,22 +156,43 @@ class UserInfoState extends State<UserInfo>
           )
         : null;
 
-    var likeList =
-        playListModes.firstWhere((element) => element.specialType == 5);
-    likeList.title = "我喜欢的音乐";
+    var likeList;
+    List<PlayListModel> createList = [];
+    List<PlayListModel> collectList = [];
+    double contentHeight = 250;
 
-    var createList = playListModes.where((element) =>
-        element.creator.userId == widget.id && element.specialType != 5);
-    var collectList = playListModes.where((element) =>
-        element.creator.userId != widget.id && element.specialType != 5);
+    if (playListModes.length > 0) {
+      likeList =
+          playListModes.firstWhere((element) => element.specialType == 5);
+      likeList.title = "我喜欢的音乐";
 
-    double contentHeight = 300 +
-        (createList.length > 10
-                ? 10
-                : collectList.length + collectList.length > 10
-                    ? 10
-                    : collectList.length) *
-            120;
+      contentHeight += 65;
+
+      createList = playListModes
+          .where((element) =>
+              element.creator.userId == widget.id && element.specialType != 5)
+          .toList();
+      collectList = playListModes
+          .where((element) =>
+              element.creator.userId != widget.id && element.specialType != 5)
+          .toList();
+
+      if (createList.length > 0) {
+        contentHeight +=
+            65 + 65 * (createList.length > 10 ? 10 : createList.length);
+
+        if (createList.length > 10) {
+          contentHeight += 40;
+        }
+      }
+      if (collectList.length > 0) {
+        contentHeight +=
+            65 + 65 * (collectList.length > 10 ? 10 : collectList.length);
+        if (collectList.length > 10) {
+          contentHeight += 40;
+        }
+      }
+    }
 
     return Scaffold(
       body: Container(
@@ -391,14 +412,16 @@ class UserInfoState extends State<UserInfo>
                                       ),
                                     ],
                                   ),
-                                  ModelComponent(
-                                    title: '音乐品味',
-                                    children: [
-                                      SongListItem(
-                                        info: likeList,
-                                      ),
-                                    ],
-                                  ),
+                                  likeList != null
+                                      ? ModelComponent(
+                                          title: '音乐品味',
+                                          children: [
+                                            SongListItem(
+                                              info: likeList,
+                                            ),
+                                          ],
+                                        )
+                                      : Container(),
                                   createList.length > 0
                                       ? ModelComponent(
                                           title: '创建的歌单',
