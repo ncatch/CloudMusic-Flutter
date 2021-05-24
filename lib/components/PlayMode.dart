@@ -2,7 +2,7 @@
  * @Description: 播放模式组件
  * @Author: Walker
  * @Date: 2021-05-08 18:00:16
- * @LastEditTime: 2021-05-20 16:46:57
+ * @LastEditTime: 2021-05-24 15:25:52
  * @LastEditors: Walker
  */
 
@@ -63,7 +63,7 @@ class PlayModeState extends State<PlayMode> {
       },
       icon: Icon(icons[playInfoStore.playMode]),
       color: Colors.white,
-      iconSize: 30,
+      iconSize: 20,
     );
   }
 }

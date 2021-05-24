@@ -2,7 +2,7 @@
  * @Description: 播放页面
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-05-08 19:24:32
+ * @LastEditTime: 2021-05-24 15:27:46
  * @LastEditors: Walker
  */
 
@@ -128,7 +128,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                         color: playInfoStore.playIndex == 0
                             ? Colors.grey
                             : Colors.white,
-                        iconSize: 30,
+                        iconSize: 20,
                       ),
                       IconButton(
                         onPressed: playInfoStore.play,
@@ -136,7 +136,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                             ? Icons.pause_circle_outline
                             : Icons.play_circle_outline),
                         color: Colors.white,
-                        iconSize: 50,
+                        iconSize: 30,
                       ),
                       IconButton(
                         onPressed: playInfoStore.next,
@@ -145,7 +145,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                                 playInfoStore.musicList.length - 1
                             ? Colors.grey
                             : Colors.white,
-                        iconSize: 30,
+                        iconSize: 20,
                       ),
                       IconButton(
                         onPressed: () {
@@ -153,7 +153,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                         },
                         icon: Icon(Icons.playlist_play_rounded),
                         color: Colors.white,
-                        iconSize: 30,
+                        iconSize: 20,
                       )
                     ],
                   ),

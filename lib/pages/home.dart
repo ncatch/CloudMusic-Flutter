@@ -2,22 +2,19 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-21 19:40:03
+ * @LastEditTime: 2021-05-24 15:55:45
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
-import 'package:cloudmusic_flutter/store/PlayInfo.dart';
-import 'package:cloudmusic_flutter/store/SystemInfo.dart';
+import 'package:cloudmusic_flutter/components/DrawerMenu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import './homePage/blogs.dart';
 import './homePage/cloudVillage.dart';
 import './homePage/discover.dart';
 import './homePage/my.dart';
 import './homePage/sing.dart';
-import '../components/DrawerMenu.dart';
 
 import '../components/PlayMini.dart';
 
@@ -34,13 +31,15 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
   int _selectedIndex = 0;
   List<Widget> pages = [];
 
+  GlobalKey<ScaffoldState> mainScaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   void initState() {
     super.initState();
 
     this.setState(() {
       pages = [
-        Discover(),
+        Discover(mainScaffoldKey: mainScaffoldKey),
         Blogs(),
         My(),
         Sing(),
@@ -62,34 +61,35 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
     //   child: Material(child:Scaffold(),),);
     // }
     return Scaffold(
-        drawer: DrawerMenu(),
-        body: Flex(
-          direction: Axis.vertical,
-          children: [
-            Expanded(
-              flex: 1,
-              child: ScrollConfiguration(
-                behavior: PrimaryScrollBehavior(show: false),
-                child:
-                    pages.length > 0 ? pages[_selectedIndex] : Text('加载中...'),
-              ),
+      key: mainScaffoldKey,
+      drawer: DrawerMenu(),
+      body: Flex(
+        direction: Axis.vertical,
+        children: [
+          Expanded(
+            flex: 1,
+            child: ScrollConfiguration(
+              behavior: PrimaryScrollBehavior(show: false),
+              child: pages.length > 0 ? pages[_selectedIndex] : Text('加载中...'),
             ),
-            PlayMini()
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: [
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '发现'),
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '博客'),
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '我的'),
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: 'K歌'),
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '云村'),
-          ],
-          currentIndex: _selectedIndex,
-          showUnselectedLabels: true,
-          selectedItemColor: primaryColor,
-          unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped,
-        ));
+          ),
+          PlayMini()
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '发现'),
+          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '博客'),
+          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '我的'),
+          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: 'K歌'),
+          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '云村'),
+        ],
+        currentIndex: _selectedIndex,
+        showUnselectedLabels: true,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: Colors.grey,
+        onTap: _onItemTapped,
+      ),
+    );
   }
 }

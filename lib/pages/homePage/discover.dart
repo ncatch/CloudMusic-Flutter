@@ -2,14 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-21 19:21:04
+ * @LastEditTime: 2021-05-24 15:57:12
  * @LastEditors: Walker
  */
-import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
-import 'package:cloudmusic_flutter/libs/config.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Banner.dart';
@@ -20,7 +18,6 @@ import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:provider/provider.dart';
 
 // 当前页面组件
@@ -28,7 +25,9 @@ import '../../../components/Banner.dart' as BannerComponent;
 import './discover/menu.dart';
 
 class Discover extends StatefulWidget {
-  Discover({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> mainScaffoldKey;
+
+  Discover({Key? key, required this.mainScaffoldKey}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => DiscoverState();
@@ -106,6 +105,12 @@ class DiscoverState extends State<Discover> {
     return HeightRefresh(
       child: Scaffold(
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () {
+              widget.mainScaffoldKey.currentState?.openDrawer();
+            },
+          ),
           title: Container(
             height: 38,
             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),

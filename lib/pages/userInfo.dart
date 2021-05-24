@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-21 16:50:50
+ * @LastEditTime: 2021-05-24 15:15:10
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -180,7 +180,6 @@ class UserInfoState extends State<UserInfo>
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                     width: size.width,
                     child: ListView(
                       controller: _controller,
@@ -388,15 +387,10 @@ class UserInfoState extends State<UserInfo>
                               ),
                               Column(
                                 children: [
-                                  Container(
-                                    width: size.width,
-                                    padding: EdgeInsets.all(15),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(15),
-                                    ),
-                                    child: Text('动态'),
-                                  )
+                                  ModelComponent(
+                                    title: '动态',
+                                    children: [],
+                                  ),
                                 ],
                               ),
                             ],
@@ -474,7 +468,7 @@ class ModelComponent extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     return Container(
       width: size.width,
-      margin: EdgeInsets.only(bottom: 15),
+      margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
