@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-21 17:46:22
+ * @LastEditTime: 2021-05-24 10:16:13
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -376,13 +376,13 @@ class PlayListState extends State<PlayList> {
                                                                         .descript ==
                                                                     ""
                                                             ? '暂无简介'
-                                                            : (playListInfo.descript ??
+                                                            : ((playListInfo.descript ??
                                                                         "")
                                                                     .split(
                                                                         '\n')[0]
                                                                     .overFlowString(
                                                                         20) +
-                                                                ' >',
+                                                                ' >'),
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white70),
