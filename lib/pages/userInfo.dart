@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-27 16:45:48
+ * @LastEditTime: 2021-05-27 17:45:56
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -506,7 +506,7 @@ class UserInfoState extends State<UserInfo>
                     width: size.width,
                     height: 40,
                     top: scrollTop < headHeight - 30
-                        ? (headHeight + 90) - scrollTop
+                        ? (headHeight + 60) - scrollTop
                         : 90,
                     child: Container(
                       width: size.width / 2,
