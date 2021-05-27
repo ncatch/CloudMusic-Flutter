@@ -2,7 +2,7 @@
  * @Description: 播放页面
  * @Author: nocatch
  * @Date: 2021-04-09 14:33:57
- * @LastEditTime: 2021-05-24 15:27:46
+ * @LastEditTime: 2021-05-27 15:26:00
  * @LastEditors: Walker
  */
 
@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 import './Lyric.dart';
 import '../store/PlayInfo.dart';
-import 'Base/ShowCurrMusicList.dart';
+import 'Base/showModalBottomSheetTools.dart';
 import 'PlayMode.dart';
 
 class Play extends StatefulWidget {

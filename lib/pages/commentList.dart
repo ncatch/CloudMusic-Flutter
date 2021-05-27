@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-27 13:48:45
+ * @LastEditTime: 2021-05-27 15:47:01
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -10,9 +10,11 @@ import 'dart:async';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
+import 'package:cloudmusic_flutter/components/Base/showModalBottomSheetTools.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Comments.dart';
+import 'package:cloudmusic_flutter/model/Hug.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:cloudmusic_flutter/services/comment.dart';
@@ -36,7 +38,7 @@ class CommentList extends StatefulWidget {
 }
 
 class CommentListState extends State<CommentList>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, ShowHugInfo {
   double total = 0;
   int offset = 1;
   CommentSortType sortType = CommentSortType.time;
@@ -160,12 +162,6 @@ class CommentListState extends State<CommentList>
     });
   }
 
-  toUserDetail() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return UserInfo(id: widget.info.creator.userId);
-    }));
-  }
-
   toPlayList() {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
       return PlayList(
@@ -180,10 +176,19 @@ class CommentListState extends State<CommentList>
     //     .then((res) {});
   }
 
-  userClick(id) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return UserInfo(id: id);
-    }));
+  userClick(CommentInfo comment) async {
+    if (comment.hugInfo == null) {
+      await getCommentHugList(
+              comment.user.userId, comment.commentId, widget.info.id)
+          .then((value) {
+        if (value['code'] == 200) {
+          comment.hugInfo = HugInfo.fromJson(value['data']);
+        }
+        return value;
+      });
+    }
+
+    ShowHugInfoModal(context, comment, widget.info);
   }
 
   sortTypeClick(CommentSortType type) {
@@ -217,15 +222,16 @@ class CommentListState extends State<CommentList>
           children: [
             Container(
               width: 50,
-              padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
               alignment: Alignment.topCenter,
               child: InkWell(
                 onTap: () {
-                  userClick(ele.user.userId);
+                  userClick(ele);
                 },
                 child: Container(
                   width: 30,
                   height: 30,
+                  margin: EdgeInsets.only(top: 5),
                   alignment: Alignment.topCenter,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
@@ -379,7 +385,10 @@ class CommentListState extends State<CommentList>
                                       ),
                                       Container(
                                         child: InkWell(
-                                          onTap: toUserDetail,
+                                          onTap: () {
+                                            toUserDetail(context,
+                                                widget.info.creator.userId);
+                                          },
                                           child: Row(
                                             children: [
                                               Text(

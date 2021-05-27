@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-18 11:29:25
- * @LastEditTime: 2021-05-19 19:45:58
+ * @LastEditTime: 2021-05-27 15:22:17
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/model/Hug.dart';
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
 
 class Comments {
@@ -31,6 +32,7 @@ class CommentInfo {
   int time = 0;
   UserInfo user = new UserInfo();
   List<BeReplied> beReplieds = [];
+  HugInfo? hugInfo;
 
   CommentInfo.fromData(Map<String, dynamic> data) {
     this.commentId = data['commentId'];

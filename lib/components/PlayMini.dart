@@ -2,7 +2,7 @@
  * @Description: 播放控件
  * @Author: Walker
  * @Date: 2021-04-29 16:19:03
- * @LastEditTime: 2021-05-13 11:11:19
+ * @LastEditTime: 2021-05-27 15:39:09
  * @LastEditors: Walker
  */
 
@@ -12,7 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'Base/ShowCurrMusicList.dart';
+import 'Base/showModalBottomSheetTools.dart';
 
 class PlayMini extends StatefulWidget {
   PlayMini({Key? key}) : super(key: key);

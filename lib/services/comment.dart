@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-19 17:07:38
- * @LastEditTime: 2021-05-19 19:39:58
+ * @LastEditTime: 2021-05-27 15:38:47
  * @LastEditors: Walker
  */
 
@@ -37,6 +37,14 @@ Future<dynamic> likeComment(id, cid, likeType, type, {threadId = ''}) {
   return DioUtil.dio
       .get(
           '/comment/like?id=$id&cid=$cid&t=$likeType&type=$type&threadId=$threadId')
+      .then((value) {
+    return value.data;
+  });
+}
+
+Future<dynamic> getCommentHugList(uid, cid, sid, {page = 1}) {
+  return DioUtil.dio
+      .get('/comment/hug/list?uid=$uid&cid=$cid&sid=$sid&page=$page')
       .then((value) {
     return value.data;
   });
