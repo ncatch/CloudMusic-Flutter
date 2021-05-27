@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-27 14:58:18
+ * @LastEditTime: 2021-05-27 16:45:48
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -505,8 +505,8 @@ class UserInfoState extends State<UserInfo>
                   Positioned(
                     width: size.width,
                     height: 40,
-                    top: scrollTop < headHeight
-                        ? (headHeight + 60) - scrollTop
+                    top: scrollTop < headHeight - 30
+                        ? (headHeight + 90) - scrollTop
                         : 90,
                     child: Container(
                       width: size.width / 2,
@@ -630,7 +630,7 @@ class ShowAllBtn extends StatelessWidget {
         border: Border(
           top: BorderSide(
             width: 1,
-            color: Colors.grey.shade200,
+            color: Colors.grey.shade400,
           ),
         ),
       ),

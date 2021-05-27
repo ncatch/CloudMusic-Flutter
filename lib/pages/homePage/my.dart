@@ -2,18 +2,22 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-24 15:25:14
+ * @LastEditTime: 2021-05-27 16:55:03
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
+import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:cloudmusic_flutter/store/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class My extends StatefulWidget {
-  My({Key? key}) : super(key: key);
+  final GlobalKey<ScaffoldState> mainScaffoldKey;
+
+  My({Key? key, required this.mainScaffoldKey}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => MyState();
@@ -22,6 +26,7 @@ class My extends StatefulWidget {
 class MyState extends State<My> {
   bool isInit = false;
   List<PlayListModel> playList = [];
+  double appbarOpacity = 0;
 
   @override
   void initState() {
@@ -48,19 +53,45 @@ class MyState extends State<My> {
   @override
   Widget build(BuildContext context) {
     var userStore = Provider.of<User>(context);
+    var systemInfo = Provider.of<SystemInfo>(context);
+
     if (!isInit) {
       init(userStore);
     }
 
-    return Scaffold(
-      body: Container(
-        child: ListView.builder(
-            itemCount: playList.length,
-            itemBuilder: (context, index) {
-              return Container(
-                child: Text(playList[index].title),
-              );
-            }),
+    return HeightRefresh(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.menu,
+              color: Colors.black,
+            ),
+            onPressed: () {
+              widget.mainScaffoldKey.currentState?.openDrawer();
+            },
+          ),
+          title: Container(
+            child: Column(
+              children: [
+                Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                      image: NetworkImage(userStore.userInfo.avatarUrl),
+                    ),
+                  ),
+                ),
+                Text(userStore.userInfo.nickname),
+              ],
+            ),
+          ),
+          backgroundColor: Colors.white.withOpacity(appbarOpacity),
+          brightness: systemInfo.brightNess,
+        ),
+        body: Container(),
       ),
     );
   }

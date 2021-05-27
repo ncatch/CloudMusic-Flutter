@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-24 15:55:45
+ * @LastEditTime: 2021-05-27 16:50:05
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
@@ -41,7 +41,7 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
       pages = [
         Discover(mainScaffoldKey: mainScaffoldKey),
         Blogs(),
-        My(),
+        My(mainScaffoldKey: mainScaffoldKey),
         Sing(),
         CloudVillage(),
       ];
