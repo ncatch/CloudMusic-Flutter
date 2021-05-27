@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-08 17:16:45
- * @LastEditTime: 2021-05-27 15:55:00
+ * @LastEditTime: 2021-05-27 16:21:29
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/Comments.dart';
@@ -10,6 +10,8 @@ import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'PrimaryScrollBehavior.dart';
 
 class ShowCurrMusicList {
   getListItem(playInfoStore) {
@@ -103,8 +105,12 @@ class ShowHugInfo {
     }));
   }
 
+  getMoreHugList() {}
+
   ShowHugInfoModal(
       context, CommentInfo commentInfo, PlayListModel playListInfo) {
+    ScrollController _scrollController = new ScrollController();
+
     showModalBottomSheet(
       context: context,
       isDismissible: true,
@@ -118,6 +124,7 @@ class ShowHugInfo {
       ),
       builder: (BuildContext context) {
         return Container(
+          height: 400,
           padding: EdgeInsets.fromLTRB(15, 0, 15, 15),
           decoration: BoxDecoration(
             color: Colors.white,
@@ -126,71 +133,103 @@ class ShowHugInfo {
               topRight: Radius.circular(20),
             ),
           ),
-          child: Column(
+          child: Flex(
+            direction: Axis.vertical,
             children: [
-              Row(
-                children: [
-                  Container(
-                    child: InkWell(
-                      onTap: () {
-                        toUserDetail(context, commentInfo.user.userId);
-                      },
-                      child: Container(
-                        width: 30,
-                        height: 30,
-                        margin: EdgeInsets.only(top: 5),
-                        alignment: Alignment.topCenter,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          image: DecorationImage(
-                            image: NetworkImage(commentInfo.user.avatarUrl),
+              Container(
+                margin: EdgeInsets.only(top: 30),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  children: [
+                    Container(
+                      child: InkWell(
+                        onTap: () {
+                          toUserDetail(context, commentInfo.user.userId);
+                        },
+                        child: Container(
+                          width: 30,
+                          height: 30,
+                          margin: EdgeInsets.only(top: 5),
+                          alignment: Alignment.topCenter,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: NetworkImage(commentInfo.user.avatarUrl),
+                            ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    child: InkWell(
-                      onTap: () {
-                        toUserDetail(context, commentInfo.user.userId);
-                      },
-                      child: Text(commentInfo.user.nickname),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 15),
+                        child: InkWell(
+                          onTap: () {
+                            toUserDetail(context, commentInfo.user.userId);
+                          },
+                          child: Text(commentInfo.user.nickname),
+                        ),
+                      ),
                     ),
-                  ),
-                  Container(
-                    child: Text('收到了' +
-                        (commentInfo.hugInfo?.hugTotalCounts.toString() ?? '') +
-                        '个[抱抱]'),
-                  )
-                ],
+                    Container(
+                      width: 150,
+                      alignment: Alignment.centerRight,
+                      child: Text('收到了' +
+                          (commentInfo.hugInfo?.hugTotalCounts.toString() ??
+                              '') +
+                          '个[抱抱]'),
+                    ),
+                  ],
+                ),
               ),
               Container(
+                padding: EdgeInsets.only(top: 20),
                 child: Text(commentInfo.content),
               ),
               Container(
+                padding: EdgeInsets.only(top: 20, bottom: 20),
                 child: Text('来自歌单' + playListInfo.title),
               ),
-              Container(
-                height: 100,
-                child: ListView(
-                  children: commentInfo.hugInfo != null
-                      ? commentInfo.hugInfo!.hugComments
-                          .map<Widget>((ele) => Container(
-                                alignment: Alignment.center,
-                                child: Row(
-                                  children: [
-                                    TextButton(
-                                      onPressed: () {
-                                        toUserDetail(context, ele.user.userId);
-                                      },
-                                      child: Text(ele.user.nickname),
+              Expanded(
+                flex: 1,
+                child: ScrollConfiguration(
+                  behavior: PrimaryScrollBehavior(),
+                  child: NotificationListener(
+                    onNotification: (notification) {
+                      if (notification.runtimeType == OverscrollNotification) {
+                        if (_scrollController.offset > 0) {
+                          getMoreHugList();
+                        }
+                      }
+                      return true;
+                    },
+                    child: ListView(
+                      controller: _scrollController,
+                      children: commentInfo.hugInfo != null
+                          ? commentInfo.hugInfo!.hugComments
+                              .map<Widget>((ele) => Container(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        TextButton(
+                                          onPressed: () {
+                                            toUserDetail(
+                                                context, ele.user.userId);
+                                          },
+                                          child: Text(ele.user.nickname),
+                                        ),
+                                        Text(ele.hugContent)
+                                      ],
                                     ),
-                                    Text(ele.hugContent)
-                                  ],
-                                ),
-                              ))
-                          .toList()
-                      : [],
+                                  ))
+                              .toList()
+                          : [],
+                    ),
+                  ),
                 ),
               )
             ],
