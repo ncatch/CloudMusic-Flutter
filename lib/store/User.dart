@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-20 10:50:32
+ * @LastEditTime: 2021-05-27 19:30:06
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/model/Level.dart';
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,7 +13,7 @@ import '../utils/preference.dart';
 
 class User with ChangeNotifier {
   UserInfo userInfo = new UserInfo();
-  var levelInfo;
+  Level levelInfo = new Level();
 
   User() {
     initUserInfo();
@@ -53,8 +54,10 @@ class User with ChangeNotifier {
     if (userInfo.userId > 0) {
       // 获取用户等级信息
       getUserLevel().then((res) {
-        levelInfo = res;
-        notifyListeners();
+        if (res['code'] == 200) {
+          levelInfo = Level.fromJson(res['data']);
+          notifyListeners();
+        }
       });
       // 用户详情
       getUserDetail(userInfo.userId).then((res) {});

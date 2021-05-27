@@ -2,19 +2,18 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-27 17:58:48
+ * @LastEditTime: 2021-05-27 19:21:13
  * @LastEditors: Walker
  */
 import 'dart:ui';
 
+import 'package:cloudmusic_flutter/components/ModelComponent.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
+import 'package:cloudmusic_flutter/components/SongListItem.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
-import 'package:cloudmusic_flutter/pages/playList/index.dart';
-import 'package:cloudmusic_flutter/services/music.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
-import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
 import 'package:flutter/material.dart';
 import '../model/UserInfo.dart' as model;
 import '../libs/extends/IntExtend.dart';
@@ -407,6 +406,7 @@ class UserInfoState extends State<UserInfo>
                       Container(
                         width: size.width,
                         height: contentHeight,
+                        color: bgColor,
                         child: TabBarView(
                           controller: _tabController,
                           children: [
@@ -553,64 +553,6 @@ class UserInfoState extends State<UserInfo>
   }
 }
 
-class SongListItem extends StatelessWidget {
-  final PlayListModel info;
-
-  SongListItem({Key? key, required this.info});
-
-  songClick(context, id) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return PlayList(
-        songId: id,
-      );
-    }));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(bottom: 5),
-      child: InkWell(
-        onTap: () {
-          songClick(context, info.id);
-        },
-        child: Row(
-          children: [
-            Container(
-              width: 80,
-              height: 55,
-              padding: EdgeInsets.fromLTRB(15, 5, 15, 0),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6),
-                child: Image.network(
-                  info.coverImgUrl,
-                  fit: BoxFit.fill,
-                ),
-              ),
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  info.title.overFlowString(12),
-                  style: TextStyle(fontSize: 16),
-                ),
-                Text(
-                  '${info.trackCount}首, 播放${info.playCount.toMyriadString(1)}次',
-                  style: TextStyle(
-                    color: Colors.black54,
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class ShowAllBtn extends StatelessWidget {
   final void Function() onTap;
   final String text;
@@ -628,7 +570,7 @@ class ShowAllBtn extends StatelessWidget {
         border: Border(
           top: BorderSide(
             width: 1,
-            color: Colors.grey.withOpacity(0.3),
+            color: Colors.grey.withOpacity(0.1),
           ),
         ),
       ),
@@ -642,50 +584,6 @@ class ShowAllBtn extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class ModelComponent extends StatelessWidget {
-  final List<Widget> children;
-  final String title;
-  final String descript;
-
-  ModelComponent(
-      {Key? key,
-      required this.children,
-      required this.title,
-      this.descript = ''});
-
-  @override
-  Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
-    return Container(
-      width: size.width,
-      margin: EdgeInsets.fromLTRB(20, 0, 20, 15),
-      padding: EdgeInsets.only(bottom: 15),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(15, 15, 15, 0),
-            margin: EdgeInsets.only(bottom: 10),
-            child: Text(
-              title,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          ...children,
-        ],
       ),
     );
   }

@@ -2,10 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-27 16:55:03
+ * @LastEditTime: 2021-05-27 19:40:30
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
+import 'package:cloudmusic_flutter/components/ModelComponent.dart';
+import 'package:cloudmusic_flutter/components/SongListItem.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
@@ -71,27 +73,62 @@ class MyState extends State<My> {
               widget.mainScaffoldKey.currentState?.openDrawer();
             },
           ),
-          title: Container(
-            child: Column(
-              children: [
-                Container(
-                  width: 30,
-                  height: 30,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    image: DecorationImage(
-                      image: NetworkImage(userStore.userInfo.avatarUrl),
-                    ),
-                  ),
-                ),
-                Text(userStore.userInfo.nickname),
-              ],
-            ),
-          ),
+          title: Text('用户信息'),
           backgroundColor: Colors.white.withOpacity(appbarOpacity),
+          elevation: 0,
           brightness: systemInfo.brightNess,
         ),
-        body: Container(),
+        backgroundColor: Colors.grey.shade100,
+        body: Container(
+          child: ListView(
+            children: [
+              Container(
+                child: Flex(
+                  direction: Axis.horizontal,
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Image.network(
+                            userStore.userInfo.avatarUrl,
+                            fit: BoxFit.fill,
+                            width: 30,
+                            height: 30,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(userStore.userInfo.nickname),
+                          Text('Lv${userStore.levelInfo.level}'),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              ModelComponent(
+                title: '收藏歌单(${playList.length}个)',
+                titleStyle: TextStyle(
+                  color: Colors.grey,
+                ),
+                children: [
+                  ...playList.take(10).map(
+                        (ele) => SongListItem(
+                          info: ele,
+                        ),
+                      ),
+                ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
