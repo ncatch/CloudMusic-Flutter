@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 13:51:53
- * @LastEditTime: 2021-05-19 16:45:35
+ * @LastEditTime: 2021-05-27 14:37:18
  * @LastEditors: Walker
  */
 
@@ -51,6 +51,14 @@ Future<dynamic> getUserLevel() {
 
 Future<dynamic> attentionUser(int id, int type) {
   return DioUtil.dio.get('/follow?id=$id&t=$type').then((value) {
+    return value.data;
+  });
+}
+
+Future<dynamic> getUserEvent(id, {limit = 20, lasttime = ''}) {
+  return DioUtil.dio
+      .get('/user/event?uid=$id&limit=$limit&lasttime=$lasttime')
+      .then((value) {
     return value.data;
   });
 }
