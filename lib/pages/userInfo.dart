@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-27 17:54:41
+ * @LastEditTime: 2021-05-27 17:58:48
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -628,7 +628,7 @@ class ShowAllBtn extends StatelessWidget {
         border: Border(
           top: BorderSide(
             width: 1,
-            color: Colors.grey.shade400,
+            color: Colors.grey.withOpacity(0.3),
           ),
         ),
       ),
