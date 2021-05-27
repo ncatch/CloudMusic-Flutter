@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-27 17:45:56
+ * @LastEditTime: 2021-05-27 17:50:39
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -52,8 +52,8 @@ class UserInfoState extends State<UserInfo>
     super.initState();
 
     _controller.addListener(() {
-      if (_controller.offset > 150) {
-        if (_controller.offset < 400) {
+      if (_controller.offset > 200) {
+        if (_controller.offset < 350) {
           this.setState(() {
             scrollTop = _controller.offset;
           });
