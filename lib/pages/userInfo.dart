@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-24 19:33:24
+ * @LastEditTime: 2021-05-27 14:16:30
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -159,14 +159,14 @@ class UserInfoState extends State<UserInfo>
     var likeList;
     List<PlayListModel> createList = [];
     List<PlayListModel> collectList = [];
-    double contentHeight = 250;
+    double contentHeight = 260;
 
     if (playListModes.length > 0) {
       likeList =
           playListModes.firstWhere((element) => element.specialType == 5);
       likeList.title = "我喜欢的音乐";
 
-      contentHeight += 65;
+      contentHeight += 150;
 
       createList = playListModes
           .where((element) =>
@@ -179,7 +179,7 @@ class UserInfoState extends State<UserInfo>
 
       if (createList.length > 0) {
         contentHeight +=
-            65 + 65 * (createList.length > 10 ? 10 : createList.length);
+            60 + 60 * (createList.length > 10 ? 10 : createList.length);
 
         if (createList.length > 10) {
           contentHeight += 40;
@@ -187,7 +187,8 @@ class UserInfoState extends State<UserInfo>
       }
       if (collectList.length > 0) {
         contentHeight +=
-            65 + 65 * (collectList.length > 10 ? 10 : collectList.length);
+            60 + 60 * (collectList.length > 10 ? 10 : collectList.length);
+
         if (collectList.length > 10) {
           contentHeight += 40;
         }
@@ -236,245 +237,242 @@ class UserInfoState extends State<UserInfo>
                       ),
                     ),
                   ),
-                  Container(
-                    width: size.width,
-                    child: ListView(
-                      controller: _controller,
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: headHeight - 60),
-                          height: 90,
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            children: [
-                              Container(
-                                width: 80,
-                                height: 80,
-                                margin: EdgeInsets.symmetric(horizontal: 20),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(40),
-                                  child: Image.network(
-                                    userInfo.avatarUrl,
-                                    fit: BoxFit.fill,
-                                  ),
+                  ListView(
+                    controller: _controller,
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        margin: EdgeInsets.only(top: headHeight - 60),
+                        height: 90,
+                        child: Flex(
+                          direction: Axis.horizontal,
+                          children: [
+                            Container(
+                              width: 80,
+                              height: 80,
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(40),
+                                child: Image.network(
+                                  userInfo.avatarUrl,
+                                  fit: BoxFit.fill,
                                 ),
                               ),
-                              Expanded(
-                                flex: 1,
-                                child: Wrap(
-                                  children: [
-                                    Flex(
-                                      direction: Axis.horizontal,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                '${userInfo.followeds.toMyriadString(1)}',
-                                                style: numStyle,
-                                              ),
-                                              Text('粉丝')
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                '${userInfo.follows}',
-                                                style: numStyle,
-                                              ),
-                                              Text('关注')
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Lv.${userInfo.level}',
-                                                style: numStyle,
-                                              ),
-                                              Text('等级')
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Flex(
-                                      direction: Axis.horizontal,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 10),
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: userInfo.followed
-                                                  ? Colors.grey.shade300
-                                                  : primaryColor,
-                                            ),
-                                            child: InkWell(
-                                              onTap: attention,
-                                              child: Text(
-                                                userInfo.followed
-                                                    ? '已关注'
-                                                    : '+ 关注',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: userInfo.followed
-                                                      ? Colors.grey
-                                                      : Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 8),
-                                          child: IconButton(
-                                            icon: Icon(Icons.email_outlined),
-                                            onPressed: dynamicClick,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: userInfo.mainAuthType.desc != "" ? 40 : 0,
-                          padding: EdgeInsets.only(left: 20),
-                          alignment: Alignment.centerLeft,
-                          child: descRow,
-                        ),
-                        Container(
-                          height: 40,
-                          width: size.width / 2,
-                          child: TabBar(
-                            controller: _tabController,
-                            indicatorColor: Colors.transparent,
-                            labelColor: Colors.black,
-                            tabs: [
-                              Tab(text: '主页'),
-                              Tab(text: '动态'),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: contentHeight,
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: [
-                              Column(
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Wrap(
                                 children: [
-                                  ModelComponent(
-                                    title: '基本信息',
+                                  Flex(
+                                    direction: Axis.horizontal,
                                     children: [
-                                      userInfo.mainAuthType.desc != ''
-                                          ? Container(
-                                              padding:
-                                                  EdgeInsets.only(left: 15),
-                                              child: descRow,
-                                            )
-                                          : Container(),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                        child: Text(
-                                          '村龄：${now.year - createTime.year} (${createTime.format('yyyy年MM月注册')})',
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              '${userInfo.followeds.toMyriadString(1)}',
+                                              style: numStyle,
+                                            ),
+                                            Text('粉丝')
+                                          ],
                                         ),
                                       ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                        child: Text(
-                                            '年龄：${now.year - birthday.year}'),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              '${userInfo.follows}',
+                                              style: numStyle,
+                                            ),
+                                            Text('关注')
+                                          ],
+                                        ),
                                       ),
-                                      Container(
-                                        padding:
-                                            EdgeInsets.fromLTRB(15, 10, 15, 0),
-                                        child: Text('地区：${userInfo.city}'),
-                                      ),
-                                      ShowAllBtn(
-                                        onTap: showAllBasicInfo,
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'Lv.${userInfo.level}',
+                                              style: numStyle,
+                                            ),
+                                            Text('等级')
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                  likeList != null
-                                      ? ModelComponent(
-                                          title: '音乐品味',
-                                          children: [
-                                            SongListItem(
-                                              info: likeList,
+                                  Flex(
+                                    direction: Axis.horizontal,
+                                    children: [
+                                      Expanded(
+                                        flex: 1,
+                                        child: Container(
+                                          margin: EdgeInsets.only(top: 10),
+                                          padding:
+                                              EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            color: userInfo.followed
+                                                ? Colors.grey.shade300
+                                                : primaryColor,
+                                          ),
+                                          child: InkWell(
+                                            onTap: attention,
+                                            child: Text(
+                                              userInfo.followed
+                                                  ? '已关注'
+                                                  : '+ 关注',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                color: userInfo.followed
+                                                    ? Colors.grey
+                                                    : Colors.white,
+                                                fontWeight: FontWeight.w600,
+                                              ),
                                             ),
-                                          ],
-                                        )
-                                      : Container(),
-                                  createList.length > 0
-                                      ? ModelComponent(
-                                          title: '创建的歌单',
-                                          children: [
-                                            ...createList.take(10).map(
-                                                  (ele) => SongListItem(
-                                                    info: ele,
-                                                  ),
-                                                ),
-                                            createList.length > 10
-                                                ? ShowAllBtn(
-                                                    onTap: () {
-                                                      showAllSongList(1);
-                                                    },
-                                                  )
-                                                : Container()
-                                          ],
-                                        )
-                                      : Container(),
-                                  collectList.length > 0
-                                      ? ModelComponent(
-                                          title: '收藏的歌单',
-                                          children: [
-                                            ...collectList.take(10).map(
-                                                  (ele) => SongListItem(
-                                                    info: ele,
-                                                  ),
-                                                ),
-                                            collectList.length > 10
-                                                ? ShowAllBtn(
-                                                    onTap: () {
-                                                      showAllSongList(2);
-                                                    },
-                                                  )
-                                                : Container()
-                                          ],
-                                        )
-                                      : Container(),
+                                          ),
+                                        ),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(top: 8),
+                                        child: IconButton(
+                                          icon: Icon(Icons.email_outlined),
+                                          onPressed: dynamicClick,
+                                        ),
+                                      ),
+                                    ],
+                                  )
                                 ],
                               ),
-                              Column(
-                                children: [
-                                  ModelComponent(
-                                    title: '动态',
-                                    children: [],
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+                      Container(
+                        height: userInfo.mainAuthType.desc != "" ? 40 : 0,
+                        padding: EdgeInsets.only(left: 20),
+                        alignment: Alignment.centerLeft,
+                        child: descRow,
+                      ),
+                      Container(
+                        height: 40,
+                        width: size.width / 2,
+                        child: TabBar(
+                          controller: _tabController,
+                          indicatorColor: Colors.transparent,
+                          labelColor: Colors.black,
+                          tabs: [
+                            Tab(text: '主页'),
+                            Tab(text: '动态'),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: size.width,
+                        height: contentHeight,
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            Column(
+                              children: [
+                                ModelComponent(
+                                  title: '基本信息',
+                                  children: [
+                                    userInfo.mainAuthType.desc != ''
+                                        ? Container(
+                                            padding: EdgeInsets.only(left: 15),
+                                            child: descRow,
+                                          )
+                                        : Container(),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                      child: Text(
+                                        '村龄：${now.year - createTime.year} (${createTime.format('yyyy年MM月注册')})',
+                                      ),
+                                    ),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                      child: Text(
+                                          '年龄：${now.year - birthday.year}'),
+                                    ),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.fromLTRB(15, 10, 15, 0),
+                                      child: Text('地区：${userInfo.city}'),
+                                    ),
+                                    ShowAllBtn(
+                                      onTap: showAllBasicInfo,
+                                    ),
+                                  ],
+                                ),
+                                likeList != null
+                                    ? ModelComponent(
+                                        title: '音乐品味',
+                                        children: [
+                                          SongListItem(
+                                            info: likeList,
+                                          ),
+                                        ],
+                                      )
+                                    : Container(),
+                                createList.length > 0
+                                    ? ModelComponent(
+                                        title: '创建的歌单',
+                                        children: [
+                                          ...createList.take(10).map(
+                                                (ele) => SongListItem(
+                                                  info: ele,
+                                                ),
+                                              ),
+                                          createList.length > 10
+                                              ? ShowAllBtn(
+                                                  onTap: () {
+                                                    showAllSongList(1);
+                                                  },
+                                                )
+                                              : Container()
+                                        ],
+                                      )
+                                    : Container(),
+                                collectList.length > 0
+                                    ? ModelComponent(
+                                        title: '收藏的歌单',
+                                        children: [
+                                          ...collectList.take(10).map(
+                                                (ele) => SongListItem(
+                                                  info: ele,
+                                                ),
+                                              ),
+                                          collectList.length > 10
+                                              ? ShowAllBtn(
+                                                  onTap: () {
+                                                    showAllSongList(2);
+                                                  },
+                                                )
+                                              : Container()
+                                        ],
+                                      )
+                                    : Container(),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                ModelComponent(
+                                  title: '动态',
+                                  children: [],
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   // appbar
                   Positioned(
@@ -522,41 +520,44 @@ class SongListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        songClick(context, info.id);
-      },
-      child: Row(
-        children: [
-          Container(
-            width: 80,
-            height: 55,
-            padding: EdgeInsets.fromLTRB(15, 5, 15, 0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.network(
-                info.coverImgUrl,
-                fit: BoxFit.fill,
-              ),
-            ),
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                info.title.overFlowString(12),
-                style: TextStyle(fontSize: 16),
-              ),
-              Text(
-                '${info.trackCount}首, 播放${info.playCount.toMyriadString(1)}次',
-                style: TextStyle(
-                  color: Colors.black54,
+    return Container(
+      margin: EdgeInsets.only(bottom: 5),
+      child: InkWell(
+        onTap: () {
+          songClick(context, info.id);
+        },
+        child: Row(
+          children: [
+            Container(
+              width: 80,
+              height: 55,
+              padding: EdgeInsets.fromLTRB(15, 5, 15, 0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6),
+                child: Image.network(
+                  info.coverImgUrl,
+                  fit: BoxFit.fill,
                 ),
               ),
-            ],
-          ),
-        ],
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  info.title.overFlowString(12),
+                  style: TextStyle(fontSize: 16),
+                ),
+                Text(
+                  '${info.trackCount}首, 播放${info.playCount.toMyriadString(1)}次',
+                  style: TextStyle(
+                    color: Colors.black54,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

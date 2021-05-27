@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-21 17:46:08
+ * @LastEditTime: 2021-05-27 13:48:45
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -180,6 +180,12 @@ class CommentListState extends State<CommentList>
     //     .then((res) {});
   }
 
+  userClick(id) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return UserInfo(id: id);
+    }));
+  }
+
   sortTypeClick(CommentSortType type) {
     this.setState(() {
       this.sortType = type;
@@ -206,18 +212,26 @@ class CommentListState extends State<CommentList>
         ),
         child: Flex(
           direction: Axis.horizontal,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               width: 50,
-              padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-              child: Container(
-                width: 30,
-                height: 30,
-                alignment: Alignment.topCenter,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
-                    image: NetworkImage(ele.user.avatarUrl),
+              padding: EdgeInsets.fromLTRB(15, 0, 10, 0),
+              alignment: Alignment.topCenter,
+              child: InkWell(
+                onTap: () {
+                  userClick(ele.user.userId);
+                },
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  alignment: Alignment.topCenter,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    image: DecorationImage(
+                      image: NetworkImage(ele.user.avatarUrl),
+                    ),
                   ),
                 ),
               ),
