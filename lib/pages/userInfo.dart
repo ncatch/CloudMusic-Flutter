@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-27 17:50:39
+ * @LastEditTime: 2021-05-27 17:54:41
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -163,7 +163,7 @@ class UserInfoState extends State<UserInfo>
         Colors.white10,
         Colors.white,
       ];
-      bgColor = Colors.grey.shade100;
+      bgColor = Colors.white;
     }
 
     var now = DateTime.now();
@@ -510,9 +510,7 @@ class UserInfoState extends State<UserInfo>
                         : 90,
                     child: Container(
                       width: size.width / 2,
-                      color: scrollTop < headHeight
-                          ? Colors.transparent
-                          : Colors.white,
+                      color: scrollTop < headHeight ? bgColor : Colors.white,
                       child: TabBar(
                         controller: _tabController,
                         indicatorColor: Colors.transparent,
