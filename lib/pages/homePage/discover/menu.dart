@@ -2,7 +2,7 @@
  * @Description: 轮播图下方菜单按钮
  * @Author: Walker
  * @Date: 2021-04-02 15:41:58
- * @LastEditTime: 2021-04-02 16:24:31
+ * @LastEditTime: 2021-05-28 15:22:48
  * @LastEditors: Walker
  */
 
@@ -11,14 +11,14 @@ import 'package:flutter/material.dart';
 import '../../../model/MenuInfo.dart';
 
 var menuInfo = [
-  MenuInfoModel("每日推荐", "assets/icon.png", ""),
-  MenuInfoModel("私人FM", "assets/icon.png", ""),
-  MenuInfoModel("歌单", "assets/icon.png", ""),
-  MenuInfoModel("排行榜", "assets/icon.png", ""),
-  MenuInfoModel("直播", "assets/icon.png", ""),
-  MenuInfoModel("数字专辑", "assets/icon.png", ""),
-  MenuInfoModel("歌房", "assets/icon.png", ""),
-  MenuInfoModel("游戏专区", "assets/icon.png", "")
+  MenuInfoModel("每日推荐", iconUrl: "assets/icon.png"),
+  MenuInfoModel("私人FM", iconUrl: "assets/icon.png"),
+  MenuInfoModel("歌单", iconUrl: "assets/icon.png"),
+  MenuInfoModel("排行榜", iconUrl: "assets/icon.png"),
+  MenuInfoModel("直播", iconUrl: "assets/icon.png"),
+  MenuInfoModel("数字专辑", iconUrl: "assets/icon.png"),
+  MenuInfoModel("歌房", iconUrl: "assets/icon.png"),
+  MenuInfoModel("游戏专区", iconUrl: "assets/icon.png")
 ];
 
 class DiscoverMenu extends StatelessWidget {
@@ -40,7 +40,7 @@ class DiscoverMenu extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                   ),
                   child: Image.asset(
-                    ele.icon,
+                    ele.iconUrl,
                     width: 25,
                     height: 25,
                   ),

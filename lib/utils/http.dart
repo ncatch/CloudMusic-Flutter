@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-19 19:56:34
+ * @LastEditTime: 2021-05-28 16:39:25
  * @LastEditors: Walker
  */
 
@@ -30,9 +30,7 @@ class DioUtil {
       var cj = PersistCookieJar(
           ignoreExpires: true, storage: FileStorage(appDocPath + "/.cookies/"));
       dio.interceptors.add(CookieManager(cj));
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
 
     dio.interceptors
         .add(InterceptorsWrapper(onRequest: (options, handler) async {

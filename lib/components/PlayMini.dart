@@ -2,7 +2,7 @@
  * @Description: 播放控件
  * @Author: Walker
  * @Date: 2021-04-29 16:19:03
- * @LastEditTime: 2021-05-27 15:39:09
+ * @LastEditTime: 2021-05-28 15:00:20
  * @LastEditors: Walker
  */
 
@@ -12,7 +12,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'Base/showModalBottomSheetTools.dart';
+import 'Base/ShowModalBottomSheetTools.dart';
 
 class PlayMini extends StatefulWidget {
   PlayMini({Key? key}) : super(key: key);

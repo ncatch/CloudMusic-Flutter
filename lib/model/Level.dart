@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-27 19:24:35
- * @LastEditTime: 2021-05-27 19:26:31
+ * @LastEditTime: 2021-05-28 16:26:54
  * @LastEditors: Walker
  */
 class Level {
@@ -12,7 +12,7 @@ class Level {
   int nextPlayCount = 0;
   int nowLoginCount = 0;
   int nowPlayCount = 0;
-  int progress = 0;
+  double progress = 0;
   int userId = 0;
 
   Level() {}

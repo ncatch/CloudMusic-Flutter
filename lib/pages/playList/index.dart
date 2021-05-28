@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-24 10:16:13
+ * @LastEditTime: 2021-05-28 16:41:21
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -74,7 +74,9 @@ class PlayListState extends State<PlayList> {
     pageIndex = 1;
     getPlayListById(widget.songId).then((res) {
       if (res['code'] == 200) {
-        playListInfo = PlayListModel.fromData(res['playlist']);
+        setState(() {
+          playListInfo = PlayListModel.fromData(res['playlist']);
+        });
 
         this.getMusicList();
       } else {

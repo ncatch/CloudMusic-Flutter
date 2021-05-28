@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-27 19:09:24
- * @LastEditTime: 2021-05-27 19:10:39
+ * @LastEditTime: 2021-05-28 14:51:55
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/PlayList.dart';
@@ -17,11 +17,13 @@ class SongListItem extends StatelessWidget {
   SongListItem({Key? key, required this.info});
 
   songClick(context, id) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return PlayList(
-        songId: id,
-      );
-    }));
+    if (id > 0) {
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+        return PlayList(
+          songId: id,
+        );
+      }));
+    }
   }
 
   @override

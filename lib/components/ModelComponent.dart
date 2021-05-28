@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-27 19:20:49
- * @LastEditTime: 2021-05-27 19:39:57
+ * @LastEditTime: 2021-05-28 14:49:28
  * @LastEditors: Walker
  */
 import 'package:flutter/material.dart';
@@ -49,7 +49,9 @@ class ModelComponent extends StatelessWidget {
                         ),
                   ),
                 )
-              : Container(),
+              : Container(
+                  padding: EdgeInsets.only(top: 15),
+                ),
           ...children,
         ],
       ),

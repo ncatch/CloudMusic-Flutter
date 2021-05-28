@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-21 17:34:49
+ * @LastEditTime: 2021-05-28 16:25:50
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/store/User.dart';
@@ -98,7 +98,7 @@ class DrawerMenuState extends State<DrawerMenu> {
             leading: Icon(Icons.settings),
             title: Text('设置'),
             onTap: toSetting,
-          )
+          ),
         ],
       ),
     );

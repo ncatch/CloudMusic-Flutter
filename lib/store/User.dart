@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-27 19:30:06
+ * @LastEditTime: 2021-05-28 16:38:28
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/Level.dart';
@@ -41,14 +41,15 @@ class User with ChangeNotifier {
     // data['token']
     // data['bindings']
     // data['account']
+    print(data);
 
     if (data != null) {
-      var tmp = UserInfo.fromJson(data['profile']);
-      userInfo = tmp;
-      notifyListeners();
-      PreferenceUtils.saveJSON(PreferencesKey.USER_INFO, tmp);
+      userInfo = UserInfo.fromJson(data['profile']);
+
+      PreferenceUtils.saveJSON(PreferencesKey.USER_INFO, data['profile']);
       PreferenceUtils.saveString(PreferencesKey.USER_COOKIE, data['cookie']);
       PreferenceUtils.saveString(PreferencesKey.USER_TOKEN, data['token']);
+      notifyListeners();
     }
 
     if (userInfo.userId > 0) {
@@ -56,11 +57,12 @@ class User with ChangeNotifier {
       getUserLevel().then((res) {
         if (res['code'] == 200) {
           levelInfo = Level.fromJson(res['data']);
+          userInfo.level = levelInfo.level;
           notifyListeners();
         }
       });
       // 用户详情
-      getUserDetail(userInfo.userId).then((res) {});
+      // getUserDetail(userInfo.userId).then((res) {});
     }
   }
 }
