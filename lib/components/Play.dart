@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 import './Lyric.dart';
 import '../store/PlayInfo.dart';
-import 'Base/showModalBottomSheetTools.dart';
+import 'Base/ShowModalBottomSheetTools.dart';
 import 'PlayMode.dart';
 
 class Play extends StatefulWidget {

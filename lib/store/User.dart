@@ -41,7 +41,6 @@ class User with ChangeNotifier {
     // data['token']
     // data['bindings']
     // data['account']
-    print(data);
 
     if (data != null) {
       userInfo = UserInfo.fromJson(data['profile']);
