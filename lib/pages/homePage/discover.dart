@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-24 15:57:12
+ * @LastEditTime: 2021-05-31 16:06:13
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -14,6 +14,7 @@ import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
 import 'package:cloudmusic_flutter/services/home.dart';
+import 'package:cloudmusic_flutter/services/songList.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,9 +57,11 @@ class DiscoverState extends State<Discover> {
     return getHomeData().then((value) {
       if (value['code'] == 200) {
         PreferenceUtils.saveJSON(PreferencesKey.HOME_DATA, value['data']);
-        setState(() {
-          homeData = value['data']['blocks'];
-        });
+        if (this.mounted) {
+          this.setState(() {
+            homeData = value['data']['blocks'];
+          });
+        }
       } else {
         Toast(value['message'] ?? '网络异常');
       }

@@ -2,18 +2,17 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-28 20:26:24
+ * @LastEditTime: 2021-05-31 16:27:26
  * @LastEditors: Walker
  */
 import 'dart:ui';
 
-import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
-import 'package:cloudmusic_flutter/components/Play.dart';
+import 'package:cloudmusic_flutter/components/MusicList.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/components/UserLabel.dart';
-import 'package:cloudmusic_flutter/libs/config.dart';
+import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
@@ -24,18 +23,18 @@ import 'package:cloudmusic_flutter/pages/playList/subscribers.dart';
 import 'package:cloudmusic_flutter/pages/playList/HeadClipPath.dart';
 import 'package:cloudmusic_flutter/services/music.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
-import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
-import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:provider/provider.dart';
 
 class PlayList extends StatefulWidget {
   final songId;
+  final PlayListType playlistType;
 
-  PlayList({Key? key, this.songId}) : super(key: key);
+  PlayList({Key? key, this.songId, this.playlistType = PlayListType.common})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => PlayListState();
@@ -72,6 +71,26 @@ class PlayListState extends State<PlayList> {
     });
 
     pageIndex = 1;
+
+    switch (widget.playlistType) {
+      case PlayListType.recommend:
+        initRecommend();
+        break;
+      default:
+        initDefault();
+    }
+
+    getRecommendSongs();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  // 初始化正常歌单
+  initDefault() {
     getPlayListById(widget.songId).then((res) {
       if (res['code'] == 200) {
         setState(() {
@@ -83,14 +102,22 @@ class PlayListState extends State<PlayList> {
         Toast(res['msg'] ?? '网络异常');
       }
     });
-
-    getRecommendSongs();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
+  // 初始化每日推荐歌单
+  initRecommend() {
+    getRecommendSongs().then((res) {
+      if (res['code'] == 200) {
+        var tmp = new PlayListModel();
+        tmp.title = '每日推荐';
+        tmp.musicList = List<MusicInfo>.from(res['data']['dailySongs']
+            .map<MusicInfo>((ele) => MusicInfo.fromData(ele)));
+
+        this.setState(() {
+          playListInfo = tmp;
+        });
+      }
+    });
   }
 
   getMusicList() {
@@ -132,77 +159,9 @@ class PlayListState extends State<PlayList> {
   // 选择
   selectClich() {}
 
-  musicMenu() {}
-
-  musicClick(playInfoStore, index) {
-    playInfoStore.setPlayList(playListInfo.musicList, index);
-
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return Play();
-    }));
-  }
-
-  List<Widget> getMusicListWidget(playInfoStore) {
-    List<Widget> result = [];
-    for (var i = 0; i < playListInfo.musicList.length; i++) {
-      var ele = playListInfo.musicList[i];
-
-      result.add(Container(
-        height: 50,
-        padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-        ),
-        child: InkWell(
-          onTap: () {
-            musicClick(playInfoStore, i);
-          },
-          child: Flex(
-            direction: Axis.horizontal,
-            children: [
-              Container(
-                width: 40,
-                padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
-                child: Text(
-                  (i + 1).toString(),
-                  style: TextStyle(color: Colors.grey),
-                ),
-              ),
-              Expanded(
-                flex: 1,
-                child: Wrap(
-                  direction: Axis.vertical,
-                  children: [
-                    Text(
-                      ele.musicName.overFlowString(18),
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    Text(
-                      ele.singerName + '-' + ele.tip.overFlowString(15),
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              IconButton(
-                onPressed: musicMenu,
-                icon: Icon(Icons.more_vert),
-              )
-            ],
-          ),
-        ),
-      ));
-    }
-    return result;
-  }
-
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var playInfoStore = Provider.of<PlayInfoStore>(context);
     var systemInfo = Provider.of<SystemInfo>(context);
     var playMenuComponent = PlayMenu(playListInfo: playListInfo);
     var hasHeadImg = playListInfo.headBgUrl != "";
@@ -424,7 +383,9 @@ class PlayListState extends State<PlayList> {
                                 ),
                               ),
                               playMenuComponent,
-                              ...getMusicListWidget(playInfoStore),
+                              MusicList(
+                                musicList: playListInfo.musicList,
+                              ),
                               Subscribers(
                                 playListInfo: playListInfo,
                               ),

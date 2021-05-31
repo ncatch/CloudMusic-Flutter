@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-28 16:40:09
+ * @LastEditTime: 2021-05-31 15:48:37
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -29,9 +29,6 @@ class My extends StatefulWidget {
 }
 
 class MyState extends State<My> {
-  bool isInit = false;
-  PlayListModel likePlayList = PlayListModel();
-  List<PlayListModel> playList = [];
   double appbarOpacity = 0;
 
   List<List<MenuInfoModel>> menus = [];
@@ -57,29 +54,6 @@ class MyState extends State<My> {
     ];
   }
 
-  init(userStore) {
-    // 获取用户歌单
-    getPayList(userStore.userInfo.userId);
-    isInit = true;
-  }
-
-  getPayList(id) {
-    getUserPlayList(id).then((res) {
-      if (res['code'] == 200) {
-        var tmp = List<PlayListModel>.from(res['playlist']
-            .map<PlayListModel>((ele) => PlayListModel.fromData(ele)));
-
-        this.setState(() {
-          playList = tmp.where((element) => element.specialType != 5).toList();
-
-          likePlayList = tmp.firstWhere((element) => element.specialType == 5);
-
-          likePlayList.title = "我喜欢的音乐";
-        });
-      }
-    });
-  }
-
   userClick(User userStore) {
     if (userStore.userInfo.userId > 0) {
       // 跳转用户信息页面
@@ -97,9 +71,28 @@ class MyState extends State<My> {
     var userStore = Provider.of<User>(context);
     var systemInfo = Provider.of<SystemInfo>(context);
 
-    if (!isInit) {
-      init(userStore);
+    var playList = [];
+    var createList = [];
+    var likePlayList = new PlayListModel();
+
+    if (userStore.playList.length > 0) {
+      playList = userStore.playList
+          .where((element) =>
+              element.creator.userId != userStore.userInfo.userId &&
+              element.specialType != 5)
+          .toList();
+
+      createList = userStore.playList
+          .where((element) =>
+              element.creator.userId == userStore.userInfo.userId &&
+              element.specialType != 5)
+          .toList();
+
+      likePlayList =
+          userStore.playList.firstWhere((element) => element.specialType == 5);
     }
+
+    likePlayList.title = "我喜欢的音乐";
 
     return HeightRefresh(
       child: Scaffold(
@@ -202,7 +195,7 @@ class MyState extends State<My> {
                                           icon: Icon(
                                             e.icon,
                                             color: e.color ?? primaryColor,
-                                            size: 36,
+                                            size: 30,
                                           ),
                                           text: e.text,
                                           onPressed: () {
@@ -224,16 +217,29 @@ class MyState extends State<My> {
                 ],
               ),
               ModelComponent(
+                title: '创建歌单(${createList.length}个)',
+                titleStyle: TextStyle(
+                  color: Colors.grey,
+                ),
+                children: [
+                  ...createList.map(
+                    (ele) => SongListItem(
+                      info: ele,
+                    ),
+                  ),
+                ],
+              ),
+              ModelComponent(
                 title: '收藏歌单(${playList.length}个)',
                 titleStyle: TextStyle(
                   color: Colors.grey,
                 ),
                 children: [
-                  ...playList.take(10).map(
-                        (ele) => SongListItem(
-                          info: ele,
-                        ),
-                      ),
+                  ...playList.map(
+                    (ele) => SongListItem(
+                      info: ele,
+                    ),
+                  ),
                 ],
               )
             ],
@@ -262,12 +268,18 @@ class MenuComponent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: width,
+      alignment: Alignment.center,
       child: InkWell(
         onTap: onPressed,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             icon ?? Container(),
-            Text(text),
+            Text(
+              text,
+              style: TextStyle(color: Colors.black87, fontSize: 12),
+            ),
           ],
         ),
       ),

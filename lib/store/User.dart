@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-28 16:38:28
+ * @LastEditTime: 2021-05-31 15:41:50
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/Level.dart';
+import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,6 +15,7 @@ import '../utils/preference.dart';
 class User with ChangeNotifier {
   UserInfo userInfo = new UserInfo();
   Level levelInfo = new Level();
+  List<PlayListModel> playList = [];
 
   User() {
     initUserInfo();
@@ -31,7 +33,12 @@ class User with ChangeNotifier {
 
   clearUserInfo() {
     PreferenceUtils.saveString(PreferencesKey.USER_INFO, '');
+    PreferenceUtils.saveString(PreferencesKey.USER_COOKIE, '');
+    PreferenceUtils.saveString(PreferencesKey.USER_TOKEN, '');
+
     userInfo = new UserInfo();
+    levelInfo = new Level();
+    playList = [];
 
     notifyListeners();
   }
@@ -60,8 +67,14 @@ class User with ChangeNotifier {
           notifyListeners();
         }
       });
-      // 用户详情
-      // getUserDetail(userInfo.userId).then((res) {});
+      // 获取用户歌单
+      getUserPlayList(userInfo.userId).then((res) {
+        if (res['code'] == 200) {
+          playList = List<PlayListModel>.from(res['playlist']
+              .map<PlayListModel>((ele) => PlayListModel.fromData(ele)));
+          notifyListeners();
+        }
+      });
     }
   }
 }
