@@ -2,7 +2,7 @@
  * @Description: 收藏用户列表
  * @Author: Walker
  * @Date: 2021-05-13 13:49:07
- * @LastEditTime: 2021-05-13 19:56:34
+ * @LastEditTime: 2021-05-31 16:38:45
  * @LastEditors: Walker
  */
 
@@ -12,15 +12,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Subscribers extends StatelessWidget {
-  PlayListModel? playListInfo = PlayListModel();
+  final List<UserInfo> subscribers;
+  final int? subscribedCount;
 
-  Subscribers({Key? key, this.playListInfo});
+  Subscribers({Key? key, required this.subscribers, this.subscribedCount});
 
   @override
   Widget build(BuildContext context) {
     List<Widget> items = [];
-
-    List<UserInfo> subscribers = playListInfo?.subscribers ?? [];
 
     int length = subscribers.length > 5 ? 5 : subscribers.length;
 
@@ -53,7 +52,7 @@ class Subscribers extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(0, 0, 15, 0),
               alignment: Alignment.centerRight,
               child: Text(
-                (playListInfo?.subscribedCount ?? 0).toString() + '人收藏 >',
+                (subscribedCount ?? subscribers.length).toString() + '人收藏 >',
                 style: TextStyle(
                   color: Colors.grey,
                 ),

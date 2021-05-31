@@ -2,10 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-31 16:06:13
+ * @LastEditTime: 2021-05-31 17:49:23
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
+import 'package:cloudmusic_flutter/components/MusicCalendar.dart';
+import 'package:cloudmusic_flutter/components/MusicMlog.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
@@ -15,6 +17,7 @@ import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
 import 'package:cloudmusic_flutter/services/home.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
+import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/cupertino.dart';
@@ -84,6 +87,8 @@ class DiscoverState extends State<Discover> {
         var data = SongMusicListModel.fromJson(ele);
 
         return SongMusicList(model: data);
+      // case "HOMEPAGE_SLIDE_PLAYABLE_MLOG":
+      //   return MusicMlog();
       default:
         return Container();
     }
@@ -144,7 +149,10 @@ class DiscoverState extends State<Discover> {
             return refreshHomeData();
           },
           child: ListView(
-            children: tmp,
+            children: [
+              ...tmp,
+              MusicCalendar(),
+            ],
           ),
         ),
       ),

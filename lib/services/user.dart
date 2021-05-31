@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 13:51:53
- * @LastEditTime: 2021-05-27 14:37:18
+ * @LastEditTime: 2021-05-31 17:39:10
  * @LastEditors: Walker
  */
 
@@ -58,6 +58,14 @@ Future<dynamic> attentionUser(int id, int type) {
 Future<dynamic> getUserEvent(id, {limit = 20, lasttime = ''}) {
   return DioUtil.dio
       .get('/user/event?uid=$id&limit=$limit&lasttime=$lasttime')
+      .then((value) {
+    return value.data;
+  });
+}
+
+Future<dynamic> getCalendar(startTime, endTime) {
+  return DioUtil.dio
+      .get('/calendar?startTime=$startTime&endTime=$endTime')
       .then((value) {
     return value.data;
   });

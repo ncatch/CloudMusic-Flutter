@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 13:46:30
- * @LastEditTime: 2021-05-19 11:00:14
+ * @LastEditTime: 2021-05-31 16:45:27
  * @LastEditors: Walker
  */
 
@@ -53,8 +53,14 @@ class PlayMenu extends StatelessWidget {
                 child: Row(
                   children: [
                     Icon(Icons.play_circle_fill, color: primaryColor),
-                    Text(' 播放全部'),
-                    Text(playListInfo.musicList.length.toString()),
+                    Text(
+                      ' 播放全部',
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      '（${playListInfo.trackCount}）',
+                      style: TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
                   ],
                 ),
               ),

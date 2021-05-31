@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-31 16:27:26
+ * @LastEditTime: 2021-05-31 16:43:40
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -79,8 +79,6 @@ class PlayListState extends State<PlayList> {
       default:
         initDefault();
     }
-
-    getRecommendSongs();
   }
 
   @override
@@ -112,6 +110,8 @@ class PlayListState extends State<PlayList> {
         tmp.title = '每日推荐';
         tmp.musicList = List<MusicInfo>.from(res['data']['dailySongs']
             .map<MusicInfo>((ele) => MusicInfo.fromData(ele)));
+
+        tmp.trackCount = tmp.musicList.length;
 
         this.setState(() {
           playListInfo = tmp;
@@ -386,9 +386,13 @@ class PlayListState extends State<PlayList> {
                               MusicList(
                                 musicList: playListInfo.musicList,
                               ),
-                              Subscribers(
-                                playListInfo: playListInfo,
-                              ),
+                              playListInfo.subscribedCount > 0
+                                  ? Subscribers(
+                                      subscribers: playListInfo.subscribers,
+                                      subscribedCount:
+                                          playListInfo.subscribedCount,
+                                    )
+                                  : Container(),
                             ],
                           ),
                         ),
