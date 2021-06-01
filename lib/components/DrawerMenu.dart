@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-31 15:25:59
+ * @LastEditTime: 2021-06-01 19:29:40
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/store/User.dart';
@@ -21,10 +21,12 @@ class DrawerMenu extends StatefulWidget {
 
 class DrawerMenuState extends State<DrawerMenu> {
   toLogin() {
+    Navigator.pop(context);
     Navigator.pushNamed(context, '/login');
   }
 
   toSetting() {
+    Navigator.pop(context);
     Navigator.pushNamed(context, '/setting');
   }
 

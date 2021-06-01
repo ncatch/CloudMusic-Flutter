@@ -2,13 +2,18 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-01 17:54:01
+ * @LastEditTime: 2021-06-01 19:27:45
  * @LastEditors: Walker
  */
+import 'dart:io';
+
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
 import 'package:cloudmusic_flutter/components/DrawerMenu.dart';
+import 'package:cloudmusic_flutter/store/PlayInfo.dart';
+import 'package:cloudmusic_flutter/store/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './homePage/blogs.dart';
 import './homePage/cloudVillage.dart';
@@ -28,6 +33,7 @@ class Home extends StatefulWidget {
 }
 
 class HomeState extends State<Home> {
+  bool isInit = false;
   int _selectedIndex = 0;
   List<Widget> pages = [];
 
@@ -48,47 +54,90 @@ class HomeState extends State<Home> {
     });
   }
 
+  init(context) {
+    var playInfoStore = Provider.of<PlayInfoStore>(context);
+    playInfoStore.init();
+
+    var userStore = Provider.of<User>(context);
+    userStore.init().then((userInfo) {
+      if (userInfo.userId == 0) {
+        Navigator.pushNamed(context, '/login');
+      }
+    });
+
+    isInit = true;
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
 
+  Future<bool> _onBackPressed() {
+    showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('确定退出程序吗?'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                    '暂不',
+                    style: TextStyle(color: primaryColor),
+                  ),
+                  onPressed: () => Navigator.pop(context, false),
+                ),
+                TextButton(
+                  child: Text(
+                    '确定',
+                    style: TextStyle(color: primaryColor),
+                  ),
+                  onPressed: () => exit(0),
+                ),
+              ],
+            ));
+    return Future.sync(() => false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    // AnnotatedRegion<SystemUiOverlayStyle>(
-    //   value: SystemUiOverlayStyle.light,
-    //   child: Material(child:Scaffold(),),);
-    // }
-    return Scaffold(
-      key: mainScaffoldKey,
-      drawer: DrawerMenu(),
-      body: Flex(
-        direction: Axis.vertical,
-        children: [
-          Expanded(
-            flex: 1,
-            child: ScrollConfiguration(
-              behavior: PrimaryScrollBehavior(show: false),
-              child: pages.length > 0 ? pages[_selectedIndex] : Text('加载中...'),
+    if (!isInit) {
+      init(context);
+    }
+
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        key: mainScaffoldKey,
+        drawer: DrawerMenu(),
+        body: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(
+              flex: 1,
+              child: ScrollConfiguration(
+                behavior: PrimaryScrollBehavior(show: false),
+                child:
+                    pages.length > 0 ? pages[_selectedIndex] : Text('加载中...'),
+              ),
             ),
-          ),
-          PlayMini()
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '发现'),
-          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '博客'),
-          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '我的'),
-          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: 'K歌'),
-          BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '云村'),
-        ],
-        currentIndex: _selectedIndex,
-        showUnselectedLabels: true,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: Colors.grey,
-        onTap: _onItemTapped,
+            PlayMini()
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '发现'),
+            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '博客'),
+            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '我的'),
+            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: 'K歌'),
+            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '云村'),
+          ],
+          currentIndex: _selectedIndex,
+          showUnselectedLabels: true,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: Colors.grey,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

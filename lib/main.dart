@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-06-01 17:57:07
+ * @LastEditTime: 2021-06-01 19:27:30
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -66,8 +66,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isInit = false;
-
   @override
   void initState() {
     super.initState();
@@ -90,26 +88,8 @@ class _MyAppState extends State<MyApp> {
     ].request();
   }
 
-  init(context) {
-    var playInfoStore = Provider.of<PlayInfoStore>(context);
-    playInfoStore.init();
-
-    var userStore = Provider.of<User>(context);
-    userStore.init().then((userInfo) {
-      if (userInfo.userId == 0) {
-        Navigator.pushNamed(context, '/login');
-      }
-    });
-
-    isInit = true;
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (!isInit) {
-      init(context);
-    }
-
     return MaterialApp(
       title: '网抑云',
       theme: ThemeData(
