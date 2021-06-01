@@ -2,10 +2,11 @@
  * @Description: 轮播图
  * @Author: Walker
  * @Date: 2021-04-02 16:17:32
- * @LastEditTime: 2021-05-10 21:43:20
+ * @LastEditTime: 2021-06-01 15:50:31
  * @LastEditors: Walker
  */
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/pages/webView.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
@@ -56,8 +57,8 @@ class BannerState extends State<Banner> {
               padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  widget.banners[index].imageUrl,
+                child: CachedNetworkImage(
+                  imageUrl: widget.banners[index].imageUrl,
                   fit: BoxFit.fill,
                 ),
               ),

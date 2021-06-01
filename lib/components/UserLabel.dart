@@ -2,10 +2,11 @@
  * @Description: 用户标签 【头像 昵称 关注按钮】
  * @Author: Walker
  * @Date: 2021-05-19 15:15:35
- * @LastEditTime: 2021-05-20 17:19:37
+ * @LastEditTime: 2021-06-01 15:53:38
  * @LastEditors: Walker
  */
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/model/Creator.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
@@ -71,8 +72,9 @@ class UserLabelState extends State<UserLabel> {
                           right: 0,
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: Image.network(
-                              widget.userInfo.avatarDetail.identityIconUrl,
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  widget.userInfo.avatarDetail.identityIconUrl,
                               fit: BoxFit.fill,
                               width: 12,
                               height: 12,

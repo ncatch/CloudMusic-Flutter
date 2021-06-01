@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-05-13 13:45:50
+ * @LastEditTime: 2021-06-01 15:51:34
  * @LastEditors: Walker
  */
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:flutter/cupertino.dart';
@@ -64,8 +65,8 @@ class SongListState extends State<SongList> {
                   padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
-                    child: Image.network(
-                      ele.imageUrl,
+                    child: CachedNetworkImage(
+                      imageUrl: ele.imageUrl,
                       fit: BoxFit.fill,
                       width: 100,
                       height: 100,

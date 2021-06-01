@@ -2,10 +2,11 @@
  * @Description: 播放控件
  * @Author: Walker
  * @Date: 2021-04-29 16:19:03
- * @LastEditTime: 2021-05-28 15:00:20
+ * @LastEditTime: 2021-06-01 15:57:52
  * @LastEditors: Walker
  */
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
@@ -50,7 +51,9 @@ class PlayMiniState extends State<PlayMini> with ShowCurrMusicList {
                 margin: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   image: new DecorationImage(
-                    image: new NetworkImage(playInfoStore.musicInfo.iconUrl),
+                    image: CachedNetworkImageProvider(
+                      playInfoStore.musicInfo.iconUrl,
+                    ),
                     fit: BoxFit.cover,
                   ),
                   borderRadius: BorderRadius.circular(5),

@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-27 19:09:24
- * @LastEditTime: 2021-05-28 14:51:55
+ * @LastEditTime: 2021-06-01 15:52:58
  * @LastEditors: Walker
  */
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,8 @@ class SongListItem extends StatelessWidget {
               padding: EdgeInsets.fromLTRB(15, 5, 15, 0),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(6),
-                child: Image.network(
-                  info.coverImgUrl,
+                child: CachedNetworkImage(
+                  imageUrl: info.coverImgUrl,
                   fit: BoxFit.fill,
                 ),
               ),

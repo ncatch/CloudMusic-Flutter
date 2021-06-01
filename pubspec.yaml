@@ -43,6 +43,7 @@ dependencies:
   permission_handler: ^7.1.0
   flutter_displaymode: ^0.3.1-nullsafety.0
   video_player: ^2.1.4
+  cached_network_image: ^3.0.0
 
 dev_dependencies:
   flutter_test:
