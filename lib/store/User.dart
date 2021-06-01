@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-05-31 15:41:50
+ * @LastEditTime: 2021-06-01 17:55:38
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/Level.dart';
@@ -21,13 +21,14 @@ class User with ChangeNotifier {
     initUserInfo();
   }
 
-  init() {
-    PreferenceUtils.getJSON(PreferencesKey.USER_INFO).then((data) {
+  Future<UserInfo> init() {
+    return PreferenceUtils.getJSON(PreferencesKey.USER_INFO).then((data) {
       if (data != null) {
         userInfo = UserInfo.fromJson(data);
         initUserInfo();
         notifyListeners();
       }
+      return userInfo;
     });
   }
 

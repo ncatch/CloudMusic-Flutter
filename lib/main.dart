@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:03:55
- * @LastEditTime: 2021-05-14 20:38:49
+ * @LastEditTime: 2021-06-01 17:57:07
  * @LastEditors: Walker
  */
 // @dart=2.9
@@ -95,7 +95,11 @@ class _MyAppState extends State<MyApp> {
     playInfoStore.init();
 
     var userStore = Provider.of<User>(context);
-    userStore.init();
+    userStore.init().then((userInfo) {
+      if (userInfo.userId == 0) {
+        Navigator.pushNamed(context, '/login');
+      }
+    });
 
     isInit = true;
   }
@@ -113,7 +117,7 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Colors.white,
         scaffoldBackgroundColor: Colors.white,
       ),
-      home: HomeStatefulWidget(),
+      home: Home(),
       routes: routes,
       navigatorObservers: [BotToastNavigatorObserver()],
       builder: BotToastInit(),

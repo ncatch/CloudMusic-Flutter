@@ -2,7 +2,7 @@
  * @Description: 本地音乐
  * @Author: Walker
  * @Date: 2021-06-01 15:14:44
- * @LastEditTime: 2021-06-01 15:19:54
+ * @LastEditTime: 2021-06-01 17:24:24
  * @LastEditors: Walker
  */
 
@@ -13,14 +13,14 @@ import 'package:flutter/material.dart';
 
 //
 
-class localMusic extends StatefulWidget {
-  localMusic({Key? key}) : super(key: key);
+class LocalMusic extends StatefulWidget {
+  LocalMusic({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => localMusicState();
+  State<StatefulWidget> createState() => LocalMusicState();
 }
 
-class localMusicState extends State<localMusic> {
+class LocalMusicState extends State<LocalMusic> {
   List<String> names = [];
 
   @override

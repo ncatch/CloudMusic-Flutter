@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-27 16:50:05
+ * @LastEditTime: 2021-06-01 17:54:01
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
@@ -20,14 +20,14 @@ import '../components/PlayMini.dart';
 
 import '../libs/theme.dart';
 
-class HomeStatefulWidget extends StatefulWidget {
-  HomeStatefulWidget({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key? key}) : super(key: key);
 
   @override
-  _HomeStatefulWidgetState createState() => _HomeStatefulWidgetState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
+class HomeState extends State<Home> {
   int _selectedIndex = 0;
   List<Widget> pages = [];
 

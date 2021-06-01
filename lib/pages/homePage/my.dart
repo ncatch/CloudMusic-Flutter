@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-01 15:28:34
+ * @LastEditTime: 2021-06-01 17:25:00
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -57,9 +57,7 @@ class MyState extends State<My> {
   }
 
   localMusicClick(context) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return localMusic();
-    }));
+    Navigator.pushNamed(context, '/localMusic');
   }
 
   userClick(User userStore) {
@@ -77,7 +75,6 @@ class MyState extends State<My> {
   @override
   Widget build(BuildContext context) {
     var userStore = Provider.of<User>(context);
-    var systemInfo = Provider.of<SystemInfo>(context);
 
     var playList = [];
     var createList = [];
@@ -117,7 +114,7 @@ class MyState extends State<My> {
           title: Text(''),
           backgroundColor: Colors.white.withOpacity(appbarOpacity),
           elevation: 0,
-          brightness: systemInfo.brightNess,
+          brightness: Brightness.light,
         ),
         backgroundColor: Colors.grey.shade100,
         body: Container(
