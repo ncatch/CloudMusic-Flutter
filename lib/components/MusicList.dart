@@ -2,12 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-31 16:17:19
- * @LastEditTime: 2021-05-31 16:26:07
+ * @LastEditTime: 2021-06-01 11:49:34
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Play.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
+import 'package:cloudmusic_flutter/utils/file.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
@@ -78,10 +80,7 @@ class MusicListState extends State<MusicList> {
                   ],
                 ),
               ),
-              IconButton(
-                onPressed: musicMenu,
-                icon: Icon(Icons.more_vert),
-              )
+              RightMenu(info: ele),
             ],
           ),
         ),
@@ -98,6 +97,37 @@ class MusicListState extends State<MusicList> {
       child: Wrap(
         children: getMusicListWidget(playInfoStore),
       ),
+    );
+  }
+}
+
+class RightMenu extends StatelessWidget {
+  MusicInfo info;
+  RightMenu({Key? key, required this.info});
+
+  onReceiveProgress(a, b) {
+    Toast('$a : $b');
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      onSelected: (val) {
+        switch (val) {
+          case 'download':
+            FileUtil.downloadMusic(info, onReceiveProgress: onReceiveProgress);
+            break;
+          default:
+        }
+      },
+      itemBuilder: (context) {
+        return <PopupMenuEntry<String>>[
+          PopupMenuItem<String>(
+            value: 'download',
+            child: Text('下载'),
+          ),
+        ];
+      },
     );
   }
 }

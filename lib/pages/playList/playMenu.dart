@@ -2,12 +2,13 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 13:46:30
- * @LastEditTime: 2021-05-31 16:45:27
+ * @LastEditTime: 2021-06-01 11:47:24
  * @LastEditors: Walker
  */
 
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
+import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
@@ -19,7 +20,8 @@ class PlayMenu extends StatelessWidget {
 
   PlayMenu({Key? key, required this.playListInfo}) : super(key: key);
 
-  downloadMusic() {}
+  downloadAllMusic() {}
+
   selectClich() {}
 
   playAll(context) {
@@ -70,7 +72,7 @@ class PlayMenu extends StatelessWidget {
             child: Row(
               children: [
                 IconButton(
-                  onPressed: downloadMusic,
+                  onPressed: downloadAllMusic,
                   icon: Icon(Icons.cloud_download_outlined),
                 ),
                 IconButton(

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-31 15:48:37
+ * @LastEditTime: 2021-06-01 15:28:34
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -11,6 +11,7 @@ import 'package:cloudmusic_flutter/components/SongListItem.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/MenuInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/pages/localMusic.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
@@ -39,7 +40,8 @@ class MyState extends State<My> {
 
     menus = [
       [
-        MenuInfoModel('本地/下载', icon: Icons.library_music),
+        MenuInfoModel('本地/下载',
+            icon: Icons.library_music, onPressed: localMusicClick),
         MenuInfoModel('云盘', icon: Icons.cloud_upload),
         MenuInfoModel('已购', icon: Icons.shopping_bag),
         MenuInfoModel('最近播放', icon: Icons.play_circle),
@@ -52,6 +54,12 @@ class MyState extends State<My> {
             icon: Icons.add_circle_outlined, color: Colors.grey.shade200),
       ],
     ];
+  }
+
+  localMusicClick(context) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return localMusic();
+    }));
   }
 
   userClick(User userStore) {
@@ -199,7 +207,7 @@ class MyState extends State<My> {
                                           ),
                                           text: e.text,
                                           onPressed: () {
-                                            e.onPressed();
+                                            e.onPressed(context);
                                           },
                                         ),
                                       ))

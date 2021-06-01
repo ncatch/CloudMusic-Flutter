@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-05-31 16:43:40
+ * @LastEditTime: 2021-06-01 11:29:41
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -149,15 +149,6 @@ class PlayListState extends State<PlayList> {
       );
     }));
   }
-
-  // 关注
-  attention() {}
-
-  // 下载音乐
-  downloadMusic() {}
-
-  // 选择
-  selectClich() {}
 
   @override
   Widget build(BuildContext context) {
