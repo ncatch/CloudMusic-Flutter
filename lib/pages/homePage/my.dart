@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-01 17:25:00
+ * @LastEditTime: 2021-06-01 22:27:46
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -11,10 +11,7 @@ import 'package:cloudmusic_flutter/components/SongListItem.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/MenuInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
-import 'package:cloudmusic_flutter/pages/localMusic.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart';
-import 'package:cloudmusic_flutter/services/user.dart';
-import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:cloudmusic_flutter/store/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

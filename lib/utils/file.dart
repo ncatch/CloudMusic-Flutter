@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-06-01 11:15:30
- * @LastEditTime: 2021-06-01 15:14:24
+ * @LastEditTime: 2021-06-01 22:37:13
  * @LastEditors: Walker
  */
 
@@ -35,9 +35,13 @@ class FileUtil {
   }) async {
     await checkPath();
 
-    DioUtil.dio.download(url, basePath + '$path$fileName',
-        onReceiveProgress: onReceiveProgress);
-    return "";
+    String saveUrl = basePath + '$path/$fileName.mp3';
+
+    return DioUtil.dio
+        .download(url, saveUrl, onReceiveProgress: onReceiveProgress)
+        .then((value) {
+      return saveUrl;
+    });
   }
 
   static downloadMusic(
@@ -46,6 +50,7 @@ class FileUtil {
   }) {
     getMusicUrl(info.id).then((result) {
       if (result[0]['url'] != null) {
+        // TODO 写入存储 下载的歌曲信息
         downloadFile(
           info.musicName,
           result[0]['url'],
@@ -61,6 +66,11 @@ class FileUtil {
 
     var musicDir = new Directory('$basePath$downloadMusicPath');
 
-    return musicDir.list().toList();
+    if (await musicDir.exists()) {
+      return musicDir.list().toList();
+    } else {
+      musicDir.create();
+      return [];
+    }
   }
 }

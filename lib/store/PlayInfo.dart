@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-05-19 16:48:27
+ * @LastEditTime: 2021-06-01 22:19:57
  * @LastEditors: Walker
  */
 
@@ -184,7 +184,7 @@ class PlayInfoStore with ChangeNotifier {
 
   setPlayMusic(String url) {
     audioPlayer.setUrl(url);
-    audioPlayer.setVolume(_volume);
+    audioPlayer.setVolume(_volume * 1.2);
   }
 
   Future<int> playMusic(id) async {
