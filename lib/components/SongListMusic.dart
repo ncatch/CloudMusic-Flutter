@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-06-01 15:53:19
+ * @LastEditTime: 2021-06-02 15:37:41
  * @LastEditors: Walker
  */
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloudmusic_flutter/components/Base/HomeBlock.dart';
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
@@ -60,91 +61,73 @@ class SongListMusicState extends State<SongMusicList> {
     musicClick(context);
   }
 
+  moreClick() {}
+
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return HomeBlock(
       height: 200,
-      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          Text(
-            widget.model.title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Positioned(
-            child: TextButton(
-              child: Text(
-                widget.model.btnText,
-                style: TextStyle(color: Colors.black),
-              ),
-              onPressed: () {
-                btnClick(context);
-              },
-            ),
-            top: -3,
-            right: 0,
-          ),
-          Container(
-            child: Container(
-              height: 180,
-              margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-              child: Swiper(
-                key: UniqueKey(),
-                itemBuilder: (BuildContext context, int page) {
-                  var pageData = widget.model.musicList[page];
-                  return Column(
-                    children: pageData.map<Widget>(
-                      (tmp) {
-                        return InkWell(
-                          onTap: () {
-                            musicClick(context, tmp.id);
-                          },
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            children: [
-                              Container(
-                                width: 45,
-                                height: 40,
-                                margin: EdgeInsets.fromLTRB(0, 0, 15, 10),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl: tmp.iconUrl,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
+      title: widget.model.title,
+      btnText: widget.model.btnText,
+      onPressed: moreClick,
+      child: Container(
+        child: Container(
+          height: 180,
+          margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+          child: Swiper(
+            key: UniqueKey(),
+            itemBuilder: (BuildContext context, int page) {
+              var pageData = widget.model.musicList[page];
+              return Column(
+                children: pageData.map<Widget>(
+                  (tmp) {
+                    return InkWell(
+                      onTap: () {
+                        musicClick(context, tmp.id);
+                      },
+                      child: Flex(
+                        direction: Axis.horizontal,
+                        children: [
+                          Container(
+                            width: 45,
+                            height: 40,
+                            margin: EdgeInsets.fromLTRB(0, 0, 15, 10),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: CachedNetworkImage(
+                                imageUrl: tmp.iconUrl,
+                                fit: BoxFit.fill,
                               ),
-                              Wrap(
-                                direction: Axis.vertical,
+                            ),
+                          ),
+                          Wrap(
+                            direction: Axis.vertical,
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Text(handleSongName(tmp.musicName)),
-                                      Text(
-                                        ' - ' + tmp.singerName,
-                                        style: TextStyle(color: Colors.grey),
-                                      )
-                                    ],
-                                  ),
-                                  Container(
-                                    child: Text(tmp.descript),
+                                  Text(handleSongName(tmp.musicName)),
+                                  Text(
+                                    ' - ' + tmp.singerName,
+                                    style: TextStyle(color: Colors.grey),
                                   )
                                 ],
+                              ),
+                              Container(
+                                child: Text(tmp.descript),
                               )
                             ],
-                          ),
-                        );
-                      },
-                    ).toList(),
-                  );
-                },
-                index: 0,
-                itemCount: widget.model.musicList.length,
-              ),
-            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ).toList(),
+              );
+            },
+            index: 0,
+            itemCount: widget.model.musicList.length,
           ),
-        ],
+        ),
       ),
     );
   }

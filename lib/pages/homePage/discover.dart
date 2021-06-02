@@ -2,12 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-01 17:21:51
+ * @LastEditTime: 2021-06-02 14:18:34
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/components/MusicCalendar.dart';
-import 'package:cloudmusic_flutter/components/MusicMlog.dart';
 import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/components/SongListMusic.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
@@ -15,9 +14,8 @@ import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/Banner.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
+import 'package:cloudmusic_flutter/model/MusicCalendar.dart';
 import 'package:cloudmusic_flutter/services/home.dart';
-import 'package:cloudmusic_flutter/services/songList.dart';
-import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/cupertino.dart';
@@ -53,11 +51,11 @@ class DiscoverState extends State<Discover> {
       }
     });
 
-    refreshHomeData();
+    refreshHomeData(false);
   }
 
-  refreshHomeData() {
-    return getHomeData().then((value) {
+  refreshHomeData(refresh) {
+    return getHomeData(refresh).then((value) {
       if (value['code'] == 200) {
         PreferenceUtils.saveJSON(PreferencesKey.HOME_DATA, value['data']);
         if (this.mounted) {
@@ -87,6 +85,10 @@ class DiscoverState extends State<Discover> {
         var data = SongMusicListModel.fromJson(ele);
 
         return SongMusicList(model: data);
+      case "SHUFFLE_MUSIC_CALENDAR":
+        var data = MusicCalendarModel.fromJson(ele);
+
+        return MusicCalendar(model: data);
       // case "HOMEPAGE_SLIDE_PLAYABLE_MLOG":
       //   return MusicMlog();
       default:
@@ -146,7 +148,7 @@ class DiscoverState extends State<Discover> {
         body: RefreshIndicator(
           color: primaryColor,
           onRefresh: () async {
-            return refreshHomeData();
+            return refreshHomeData(true);
           },
           child: ListView(
             children: [

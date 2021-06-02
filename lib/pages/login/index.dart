@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-06-01 17:56:31
+ * @LastEditTime: 2021-06-02 14:36:45
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -24,45 +24,9 @@ class Login extends StatefulWidget {
 }
 
 class LoginState extends State<Login> {
-  bool passwordVisible = false;
-
-  TextEditingController? phoneText;
-  TextEditingController? passwordText;
-
   @override
   initState() {
     super.initState();
-
-    phoneText = TextEditingController();
-    passwordText = TextEditingController();
-
-    phoneText?.value = TextEditingValue(text: '15083525898');
-    passwordText?.value = TextEditingValue(text: 'nocatch.96');
-  }
-
-  @override
-  dispose() {
-    super.dispose();
-
-    phoneText?.dispose();
-    passwordText?.dispose();
-  }
-
-  login(User userStore) {
-    if (phoneText?.text == "") {
-      return Toast('请输入账号');
-    } else if (passwordText?.text == "") {
-      return Toast('请输入密码');
-    }
-
-    loginByPhone(phoneText?.text, passwordText?.text).then((data) {
-      if (data['code'] == 200) {
-        userStore.initUserInfo(data);
-        Navigator.pop(context);
-      } else {
-        Toast(data['msg'] ?? '网络异常');
-      }
-    });
   }
 
   @override
@@ -92,6 +56,9 @@ class LoginState extends State<Login> {
               child: Column(
                 children: [
                   InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/AccountLogin');
+                    },
                     child: Container(
                       width: size.width * 0.7,
                       alignment: Alignment.center,

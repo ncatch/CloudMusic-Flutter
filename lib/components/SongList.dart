@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-06-01 15:51:34
+ * @LastEditTime: 2021-06-02 15:33:53
  * @LastEditors: Walker
  */
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloudmusic_flutter/components/Base/HomeBlock.dart';
 import 'package:cloudmusic_flutter/model/Song.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:flutter/cupertino.dart';
@@ -102,34 +103,17 @@ class SongListState extends State<SongList> {
       ));
     }
 
-    return Container(
+    return HomeBlock(
       height: 200,
-      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-      child: Stack(
-        children: [
-          Text(
-            widget.songList.title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Positioned(
-            child: TextButton(
-              child: Text(
-                widget.songList.btnText,
-                style: TextStyle(color: Colors.black),
-              ),
-              onPressed: moreSongList,
-            ),
-            top: -3,
-            right: 0,
-          ),
-          Container(
-            margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
-            child: ListView(
-              scrollDirection: Axis.horizontal,
-              children: list,
-            ),
-          ),
-        ],
+      title: widget.songList.title,
+      btnText: widget.songList.btnText,
+      onPressed: moreSongList,
+      child: Container(
+        margin: EdgeInsets.fromLTRB(0, 40, 0, 0),
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: list,
+        ),
       ),
     );
   }

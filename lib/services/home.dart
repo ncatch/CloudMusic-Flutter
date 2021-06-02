@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-05-08 14:15:12
+ * @LastEditTime: 2021-06-02 14:03:17
  * @LastEditors: Walker
  */
 
@@ -13,8 +13,10 @@ import '../libs/config.dart';
 
 // import '../utils/preference.dart';
 
-Future<dynamic> getHomeData() async {
-  return await DioUtil.dio.post(server + '/homepage/block/page').then((value) {
+Future<dynamic> getHomeData([refresh = false]) async {
+  return await DioUtil.dio
+      .post(server + '/homepage/block/page?refresh=$refresh')
+      .then((value) {
     return value.data;
   });
 }

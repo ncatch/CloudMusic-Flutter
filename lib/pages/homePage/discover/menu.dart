@@ -2,7 +2,7 @@
  * @Description: 轮播图下方菜单按钮
  * @Author: Walker
  * @Date: 2021-04-02 15:41:58
- * @LastEditTime: 2021-06-02 11:16:34
+ * @LastEditTime: 2021-06-02 13:59:13
  * @LastEditors: Walker
  */
 
@@ -13,7 +13,7 @@ import 'package:flutter/material.dart';
 import '../../../model/MenuInfo.dart';
 
 var menuInfo = [
-  MenuInfoModel("每日推荐", iconUrl: "assets/icon.png", onPressed: (context) {
+  MenuInfoModel("每日推荐", iconUrl: "assets/icon_red.png", onPressed: (context) {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
       return PlayList(
         playlistType: PlayListType.recommend,

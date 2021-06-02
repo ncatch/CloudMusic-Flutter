@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-06-01 17:25:27
+ * @LastEditTime: 2021-06-02 14:39:47
  * @LastEditors: Walker
  */
 import 'package:bot_toast/bot_toast.dart';
@@ -58,7 +58,7 @@ class LoginState extends State<Login> {
     loginByPhone(phoneText?.text, passwordText?.text).then((data) {
       if (data['code'] == 200) {
         userStore.initUserInfo(data);
-        Navigator.pop(context);
+        Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
       } else {
         Toast(data['msg'] ?? '网络异常');
       }

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-01 19:27:45
+ * @LastEditTime: 2021-06-02 14:52:44
  * @LastEditors: Walker
  */
 import 'dart:io';
@@ -61,7 +61,8 @@ class HomeState extends State<Home> {
     var userStore = Provider.of<User>(context);
     userStore.init().then((userInfo) {
       if (userInfo.userId == 0) {
-        Navigator.pushNamed(context, '/login');
+        // TODO 调试注释
+        // Navigator.pushNamed(context, '/login');
       }
     });
 

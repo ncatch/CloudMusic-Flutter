@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:34:13
- * @LastEditTime: 2021-06-01 17:26:39
+ * @LastEditTime: 2021-06-02 14:41:05
  * @LastEditors: Walker
  */
 
@@ -12,11 +12,13 @@ import 'package:flutter/cupertino.dart';
 
 import '../components/SearchPage.dart';
 import '../pages/login/index.dart';
+import '../pages/login/login.dart' as AccountLogin;
 import '../pages/setting.dart';
 
 var routes = <String, WidgetBuilder>{
   '/search': (BuildContext context) => SearchPage(),
   '/login': (BuildContext context) => Login(),
+  '/AccountLogin': (BuildContext context) => AccountLogin.Login(),
   '/playList': (BuildContext context) => PlayList(),
   '/setting': (BuildContext context) => Setting(),
   '/localMusic': (BuildContext context) => LocalMusic(),
