@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-06-02 15:37:41
+ * @LastEditTime: 2021-06-02 19:21:30
  * @LastEditors: Walker
  */
 import 'package:cached_network_image/cached_network_image.dart';
@@ -113,7 +113,13 @@ class SongListMusicState extends State<SongMusicList> {
                                 ],
                               ),
                               Container(
-                                child: Text(tmp.descript),
+                                child: Text(
+                                  tmp.descript,
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               )
                             ],
                           )

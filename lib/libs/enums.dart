@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 11:24:30
- * @LastEditTime: 2021-06-02 10:59:50
+ * @LastEditTime: 2021-06-02 19:28:00
  * @LastEditors: Walker
  */
 const ClientType = {
@@ -61,4 +61,9 @@ enum PlayListType {
 enum MusicListTye {
   online, //
   local, // 本地音乐列表
+}
+
+enum FriendType {
+  follow, // 关注
+  followed, // 粉丝
 }

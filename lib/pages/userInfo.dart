@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-06-02 16:52:30
+ * @LastEditTime: 2021-06-02 19:36:24
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -10,9 +10,11 @@ import 'dart:ui';
 import 'package:cloudmusic_flutter/components/ModelComponent.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/components/SongListItem.dart';
+import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/pages/friend.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/material.dart';
 import '../model/UserInfo.dart' as model;
@@ -121,9 +123,9 @@ class UserInfoState extends State<UserInfo>
       if (res['code'] == 200) {
         this.setState(() {
           if (userInfo.followed) {
-            Toast('谢谢关注');
-          } else {
             Toast('已取消关注');
+          } else {
+            Toast('谢谢关注');
           }
           if (userInfo.followeds < 10000) {
             userInfo.followeds += userInfo.followed ? -1 : 1;
@@ -146,6 +148,24 @@ class UserInfoState extends State<UserInfo>
   showAllBasicInfo() {}
 
   showAllSongList(type) {}
+
+  followClick() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return Friend(
+        userId: userInfo.userId,
+        type: FriendType.follow,
+      );
+    }));
+  }
+
+  followedClick() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return Friend(
+        userId: userInfo.userId,
+        type: FriendType.followed,
+      );
+    }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -231,6 +251,8 @@ class UserInfoState extends State<UserInfo>
       }
     }
 
+    bool menuFlow = scrollTop < headHeight - 50;
+
     return Scaffold(
       body: Container(
         color: bgColor,
@@ -268,133 +290,6 @@ class UserInfoState extends State<UserInfo>
                           colors: headColors,
                         ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    width: size.width,
-                    height: headHeight + 100,
-                    top: -scrollTop,
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          margin: EdgeInsets.only(top: headHeight - 60),
-                          height: 90,
-                          child: Flex(
-                            direction: Axis.horizontal,
-                            children: [
-                              Container(
-                                width: 80,
-                                height: 80,
-                                margin: EdgeInsets.symmetric(horizontal: 20),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(40),
-                                  child: Image.network(
-                                    userInfo.avatarUrl,
-                                    fit: BoxFit.fill,
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Wrap(
-                                  children: [
-                                    Flex(
-                                      direction: Axis.horizontal,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                '${userInfo.followeds.toMyriadString(1)}',
-                                                style: numStyle,
-                                              ),
-                                              Text('粉丝')
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                '${userInfo.follows}',
-                                                style: numStyle,
-                                              ),
-                                              Text('关注')
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: [
-                                              Text(
-                                                'Lv.${userInfo.level}',
-                                                style: numStyle,
-                                              ),
-                                              Text('等级')
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Flex(
-                                      direction: Axis.horizontal,
-                                      children: [
-                                        Expanded(
-                                          flex: 1,
-                                          child: Container(
-                                            margin: EdgeInsets.only(top: 10),
-                                            padding:
-                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(15),
-                                              color: userInfo.followed
-                                                  ? Colors.grey.shade300
-                                                  : primaryColor,
-                                            ),
-                                            child: InkWell(
-                                              onTap: attention,
-                                              child: Text(
-                                                userInfo.followed
-                                                    ? '已关注'
-                                                    : '+ 关注',
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  color: userInfo.followed
-                                                      ? Colors.grey
-                                                      : Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                          padding: EdgeInsets.only(top: 8),
-                                          child: IconButton(
-                                            icon: Icon(Icons.email_outlined),
-                                            onPressed: dynamicClick,
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          height: userInfo.mainAuthType.desc != "" ? 40 : 0,
-                          padding: EdgeInsets.only(left: 20),
-                          alignment: Alignment.centerLeft,
-                          child: descRow,
-                        ),
-                      ],
                     ),
                   ),
                   ListView(
@@ -504,13 +399,143 @@ class UserInfoState extends State<UserInfo>
                   ),
                   Positioned(
                     width: size.width,
+                    height: headHeight + 100,
+                    top: -scrollTop,
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          margin: EdgeInsets.only(top: headHeight - 60),
+                          height: 90,
+                          child: Flex(
+                            direction: Axis.horizontal,
+                            children: [
+                              Container(
+                                width: 80,
+                                height: 80,
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: Image.network(
+                                    userInfo.avatarUrl,
+                                    fit: BoxFit.fill,
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Wrap(
+                                  children: [
+                                    Flex(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Expanded(
+                                            flex: 1,
+                                            child: InkWell(
+                                              onTap: followedClick,
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    '${userInfo.followeds.toMyriadString(1)}',
+                                                    style: numStyle,
+                                                  ),
+                                                  Text('粉丝')
+                                                ],
+                                              ),
+                                            )),
+                                        Expanded(
+                                          flex: 1,
+                                          child: InkWell(
+                                            onTap: followClick,
+                                            child: Column(
+                                              children: [
+                                                Text(
+                                                  '${userInfo.follows}',
+                                                  style: numStyle,
+                                                ),
+                                                Text('关注')
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            children: [
+                                              Text(
+                                                'Lv.${userInfo.level}',
+                                                style: numStyle,
+                                              ),
+                                              Text('等级')
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Flex(
+                                      direction: Axis.horizontal,
+                                      children: [
+                                        Expanded(
+                                          flex: 1,
+                                          child: Container(
+                                            margin: EdgeInsets.only(top: 10),
+                                            padding:
+                                                EdgeInsets.fromLTRB(0, 5, 0, 5),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                              color: userInfo.followed
+                                                  ? Colors.grey.shade300
+                                                  : primaryColor,
+                                            ),
+                                            child: InkWell(
+                                              onTap: attention,
+                                              child: Text(
+                                                userInfo.followed
+                                                    ? '已关注'
+                                                    : '+ 关注',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  color: userInfo.followed
+                                                      ? Colors.grey
+                                                      : Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: EdgeInsets.only(top: 8),
+                                          child: IconButton(
+                                            icon: Icon(Icons.email_outlined),
+                                            onPressed: dynamicClick,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Container(
+                          height: userInfo.mainAuthType.desc != "" ? 40 : 0,
+                          padding: EdgeInsets.only(left: 20),
+                          alignment: Alignment.centerLeft,
+                          child: descRow,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    width: size.width,
                     height: 40,
-                    top: scrollTop < headHeight - 10
-                        ? (headHeight + 40) - scrollTop
-                        : 90,
+                    top: menuFlow ? (headHeight + 40) - scrollTop : 90,
                     child: Container(
                       width: size.width / 2,
-                      color: scrollTop < headHeight ? bgColor : Colors.white,
+                      color: menuFlow ? bgColor : Colors.white,
                       child: TabBar(
                         controller: _tabController,
                         indicatorColor: Colors.transparent,

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-31 17:46:41
- * @LastEditTime: 2021-06-02 15:41:46
+ * @LastEditTime: 2021-06-02 19:18:54
  * @LastEditors: Walker
  */
 
@@ -32,20 +32,29 @@ class HomeBlock extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 15),
       child: Stack(
         children: [
-          Text(
-            title,
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          Positioned(
-            child: TextButton(
-              child: Text(
-                btnText,
-                style: TextStyle(color: Colors.black),
-              ),
-              onPressed: onPressed,
+          Container(
+            height: 40,
+            child: Flex(
+              direction: Axis.horizontal,
+              children: [
+                Expanded(
+                  child: Text(
+                    title,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
+                ),
+                Container(
+                  width: 80,
+                  child: TextButton(
+                    child: Text(
+                      btnText,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                    onPressed: onPressed,
+                  ),
+                )
+              ],
             ),
-            top: -3,
-            right: 0,
           ),
           child
         ],

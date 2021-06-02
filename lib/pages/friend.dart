@@ -2,12 +2,13 @@
  * @Description: 朋友页面
  * @Author: Walker
  * @Date: 2021-06-02 17:02:08
- * @LastEditTime: 2021-06-02 17:59:35
+ * @LastEditTime: 2021-06-02 19:29:09
  * @LastEditors: Walker
  */
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/components/UserPhoto.dart';
+import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart' as page;
@@ -16,9 +17,10 @@ import 'package:flutter/material.dart';
 
 class Friend extends StatefulWidget {
   final int userId;
-  int type = 1;
+  FriendType type = FriendType.follow;
 
-  Friend({Key? key, this.type = 1, required this.userId}) : super(key: key);
+  Friend({Key? key, this.type = FriendType.follow, required this.userId})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() => FriendState();
@@ -34,9 +36,9 @@ class FriendState extends State<Friend> with SingleTickerProviderStateMixin {
   initState() {
     super.initState();
 
-    _tabController = new TabController(length: 3, vsync: this);
+    _tabController = new TabController(length: 2, vsync: this);
 
-    _tabController?.index = widget.type;
+    _tabController?.index = widget.type.index;
 
     getUserFollows(widget.userId).then((res) {
       if (res['code'] == 200) {
@@ -80,13 +82,13 @@ class FriendState extends State<Friend> with SingleTickerProviderStateMixin {
               Expanded(
                 flex: 1,
                 child: Container(
-                  padding: EdgeInsets.fromLTRB(70, 0, 70, 0),
+                  padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   child: TabBar(
                     controller: _tabController,
                     indicatorColor: Colors.transparent,
                     labelColor: Colors.black,
                     tabs: [
-                      Tab(text: '推荐'),
+                      // Tab(text: '推荐'),
                       Tab(text: '关注'),
                       Tab(text: '粉丝'),
                     ],
@@ -109,9 +111,9 @@ class FriendState extends State<Friend> with SingleTickerProviderStateMixin {
         body: TabBarView(
           controller: _tabController,
           children: [
-            Container(
-              child: Text('推荐'),
-            ),
+            // Container(
+            //   child: Text('推荐'),
+            // ),
             Container(
               child: FollowList(
                 list: flowList,
