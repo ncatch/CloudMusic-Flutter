@@ -2,7 +2,7 @@
  * @Description: 轮播图下方菜单按钮
  * @Author: Walker
  * @Date: 2021-04-02 15:41:58
- * @LastEditTime: 2021-06-02 16:08:20
+ * @LastEditTime: 2021-06-02 16:15:07
  * @LastEditors: Walker
  */
 
@@ -32,14 +32,18 @@ class DiscoverMenuState extends State<DiscoverMenu> {
       MenuInfoModel("每日推荐",
           iconUrl: "assets/icon_red.png", onPressed: recommendClick),
       MenuInfoModel("私人FM", iconUrl: "assets/icon_red.png", onPressed: fmClick),
-      MenuInfoModel("歌单", iconUrl: "assets/icon_red.png"),
-      MenuInfoModel("排行榜", iconUrl: "assets/icon_red.png"),
+      MenuInfoModel("歌单",
+          iconUrl: "assets/icon_red.png", onPressed: songListClick),
+      MenuInfoModel("排行榜",
+          iconUrl: "assets/icon_red.png", onPressed: rankListClick),
       MenuInfoModel("直播", iconUrl: "assets/icon_red.png"),
       MenuInfoModel("数字专辑", iconUrl: "assets/icon_red.png"),
       MenuInfoModel("歌房", iconUrl: "assets/icon_red.png"),
       MenuInfoModel("游戏专区", iconUrl: "assets/icon_red.png")
     ];
   }
+
+  // 每日推荐
   recommendClick([playInfoStore]) {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
       return PlayList(
@@ -48,7 +52,8 @@ class DiscoverMenuState extends State<DiscoverMenu> {
     }));
   }
 
-  void fmClick([playInfoStore]) {
+  // 私人FM
+  fmClick([playInfoStore]) {
     getPersonalFM().then((res) {
       if (res['code'] == 200) {
         var list = List<MusicInfo>.from(
@@ -63,6 +68,12 @@ class DiscoverMenuState extends State<DiscoverMenu> {
       }
     });
   }
+
+  // 歌单
+  songListClick([playInfoStore]) {}
+
+  // 排行榜
+  rankListClick([playInfoStore]) {}
 
   @override
   Widget build(BuildContext context) {

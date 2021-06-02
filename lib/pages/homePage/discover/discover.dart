@@ -23,8 +23,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 // 当前页面组件
-import '../../../components/Banner.dart' as BannerComponent;
-import './discover/menu.dart';
+import '../../../../components/Banner.dart' as BannerComponent;
+import 'menu.dart';
 
 class Discover extends StatefulWidget {
   final GlobalKey<ScaffoldState> mainScaffoldKey;

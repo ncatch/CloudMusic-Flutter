@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 
 import './homePage/blogs.dart';
 import './homePage/cloudVillage.dart';
-import './homePage/discover.dart';
+import 'homePage/discover/discover.dart';
 import './homePage/my.dart';
 import './homePage/sing.dart';
 
