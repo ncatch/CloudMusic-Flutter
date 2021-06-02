@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-05-27 19:21:13
+ * @LastEditTime: 2021-06-02 16:52:30
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -272,7 +272,7 @@ class UserInfoState extends State<UserInfo>
                   ),
                   Positioned(
                     width: size.width,
-                    height: headHeight + 120,
+                    height: headHeight + 100,
                     top: -scrollTop,
                     child: Column(
                       children: [
@@ -401,7 +401,7 @@ class UserInfoState extends State<UserInfo>
                     controller: _controller,
                     children: [
                       Container(
-                        height: headHeight + 100,
+                        height: headHeight + 80,
                       ),
                       Container(
                         width: size.width,
@@ -505,8 +505,8 @@ class UserInfoState extends State<UserInfo>
                   Positioned(
                     width: size.width,
                     height: 40,
-                    top: scrollTop < headHeight - 30
-                        ? (headHeight + 60) - scrollTop
+                    top: scrollTop < headHeight - 10
+                        ? (headHeight + 40) - scrollTop
                         : 90,
                     child: Container(
                       width: size.width / 2,

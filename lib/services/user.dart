@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 13:51:53
- * @LastEditTime: 2021-06-02 15:49:08
+ * @LastEditTime: 2021-06-02 17:31:12
  * @LastEditors: Walker
  */
 
@@ -37,24 +37,28 @@ Future<dynamic> getUserSubCount() {
   });
 }
 
+// 获取用户歌单
 Future<dynamic> getUserPlayList(id, [offset]) {
   return DioUtil.dio.get('/user/playlist?uid=$id').then((value) {
     return value.data;
   });
 }
 
+// 获取用户等级信息
 Future<dynamic> getUserLevel() {
   return DioUtil.dio.get(server + '/user/level').then((value) {
     return value.data;
   });
 }
 
+// 关注用户
 Future<dynamic> attentionUser(int id, int type) {
   return DioUtil.dio.get('/follow?id=$id&t=$type').then((value) {
     return value.data;
   });
 }
 
+// 用户动态
 Future<dynamic> getUserEvent(id, {limit = 20, lasttime = ''}) {
   return DioUtil.dio
       .get('/user/event?uid=$id&limit=$limit&lasttime=$lasttime')
@@ -63,6 +67,7 @@ Future<dynamic> getUserEvent(id, {limit = 20, lasttime = ''}) {
   });
 }
 
+// 音乐日历
 Future<dynamic> getCalendar(startTime, endTime) {
   return DioUtil.dio
       .get('/calendar?startTime=$startTime&endTime=$endTime')
@@ -71,8 +76,25 @@ Future<dynamic> getCalendar(startTime, endTime) {
   });
 }
 
+// FM
 Future<dynamic> getPersonalFM() {
   return DioUtil.dio.get('/personal_fm').then((value) {
+    return value.data;
+  });
+}
+
+// 获取用户关注列表
+Future<dynamic> getUserFollows(uid, [offset = 0]) {
+  return DioUtil.dio.get('/user/follows?uid=$uid&offset=$offset').then((value) {
+    return value.data;
+  });
+}
+
+// 获取用户粉丝列表
+Future<dynamic> getUserFolloweds(uid, [offset = 0, limit = 20]) {
+  return DioUtil.dio
+      .get('/user/followeds?uid=$uid&limit=$limit&offset=$offset')
+      .then((value) {
     return value.data;
   });
 }

@@ -2,11 +2,12 @@
  * @Description: 用户标签 【头像 昵称 关注按钮】
  * @Author: Walker
  * @Date: 2021-05-19 15:15:35
- * @LastEditTime: 2021-06-01 15:53:38
+ * @LastEditTime: 2021-06-02 17:51:16
  * @LastEditors: Walker
  */
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloudmusic_flutter/components/UserPhoto.dart';
 import 'package:cloudmusic_flutter/model/Creator.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
@@ -51,38 +52,11 @@ class UserLabelState extends State<UserLabel> {
         child: Row(
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(0, 0, 6, 0),
-              child: Stack(
-                children: [
-                  Container(
-                    padding: EdgeInsets.only(right: 4),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        widget.userInfo.avatarUrl,
-                        fit: BoxFit.fill,
-                        width: 24,
-                        height: 24,
-                      ),
-                    ),
-                  ),
-                  widget.userInfo.avatarDetail.identityIconUrl != ""
-                      ? Positioned(
-                          bottom: 0,
-                          right: 0,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: CachedNetworkImage(
-                              imageUrl:
-                                  widget.userInfo.avatarDetail.identityIconUrl,
-                              fit: BoxFit.fill,
-                              width: 12,
-                              height: 12,
-                            ),
-                          ),
-                        )
-                      : Container(),
-                ],
+              margin: EdgeInsets.only(right: 6),
+              child: UserPhoto(
+                userInfo: widget.userInfo,
+                size: 24,
+                iconSize: 12,
               ),
             ),
             Text(

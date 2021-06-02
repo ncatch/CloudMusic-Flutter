@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-01 22:27:46
+ * @LastEditTime: 2021-06-02 17:27:58
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -11,6 +11,7 @@ import 'package:cloudmusic_flutter/components/SongListItem.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/MenuInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
+import 'package:cloudmusic_flutter/pages/friend.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart';
 import 'package:cloudmusic_flutter/store/User.dart';
 import 'package:flutter/cupertino.dart';
@@ -44,7 +45,8 @@ class MyState extends State<My> {
         MenuInfoModel('最近播放', icon: Icons.play_circle),
       ],
       [
-        MenuInfoModel('我的好友', icon: Icons.supervised_user_circle),
+        MenuInfoModel('我的好友',
+            icon: Icons.supervised_user_circle, onPressed: myFriendClick),
         MenuInfoModel('收藏和赞', icon: Icons.star_rounded),
         MenuInfoModel('我的博客', icon: Icons.rss_feed_outlined),
         MenuInfoModel('音乐应用',
@@ -55,6 +57,14 @@ class MyState extends State<My> {
 
   localMusicClick(context) {
     Navigator.pushNamed(context, '/localMusic');
+  }
+
+  myFriendClick(context, User userStore) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+      return Friend(
+        userId: userStore.userInfo.userId,
+      );
+    }));
   }
 
   userClick(User userStore) {
@@ -201,7 +211,7 @@ class MyState extends State<My> {
                                           ),
                                           text: e.text,
                                           onPressed: () {
-                                            e.onPressed(context);
+                                            e.onPressed(context, userStore);
                                           },
                                         ),
                                       ))
