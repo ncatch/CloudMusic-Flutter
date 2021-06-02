@@ -2,7 +2,7 @@
  * @Description: 轮播图下方菜单按钮
  * @Author: Walker
  * @Date: 2021-04-02 15:41:58
- * @LastEditTime: 2021-05-31 16:11:29
+ * @LastEditTime: 2021-06-02 11:16:34
  * @LastEditors: Walker
  */
 
@@ -20,13 +20,13 @@ var menuInfo = [
       );
     }));
   }),
-  MenuInfoModel("私人FM", iconUrl: "assets/icon.png"),
-  MenuInfoModel("歌单", iconUrl: "assets/icon.png"),
-  MenuInfoModel("排行榜", iconUrl: "assets/icon.png"),
-  MenuInfoModel("直播", iconUrl: "assets/icon.png"),
-  MenuInfoModel("数字专辑", iconUrl: "assets/icon.png"),
-  MenuInfoModel("歌房", iconUrl: "assets/icon.png"),
-  MenuInfoModel("游戏专区", iconUrl: "assets/icon.png")
+  MenuInfoModel("私人FM", iconUrl: "assets/icon_red.png"),
+  MenuInfoModel("歌单", iconUrl: "assets/icon_red.png"),
+  MenuInfoModel("排行榜", iconUrl: "assets/icon_red.png"),
+  MenuInfoModel("直播", iconUrl: "assets/icon_red.png"),
+  MenuInfoModel("数字专辑", iconUrl: "assets/icon_red.png"),
+  MenuInfoModel("歌房", iconUrl: "assets/icon_red.png"),
+  MenuInfoModel("游戏专区", iconUrl: "assets/icon_red.png")
 ];
 
 class DiscoverMenu extends StatelessWidget {

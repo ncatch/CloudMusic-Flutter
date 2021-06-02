@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-06-01 11:15:30
- * @LastEditTime: 2021-06-01 22:37:13
+ * @LastEditTime: 2021-06-02 10:56:40
  * @LastEditors: Walker
  */
 
@@ -13,6 +13,7 @@ import 'dart:io';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/services/music.dart';
 import 'package:cloudmusic_flutter/utils/http.dart';
+import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:path_provider/path_provider.dart';
 
 class FileUtil {
@@ -50,13 +51,23 @@ class FileUtil {
   }) {
     getMusicUrl(info.id).then((result) {
       if (result[0]['url'] != null) {
-        // TODO 写入存储 下载的歌曲信息
+        // TODO 下载歌词
         downloadFile(
-          info.musicName,
+          info.id.toString(),
           result[0]['url'],
           downloadMusicPath,
           onReceiveProgress: onReceiveProgress,
-        );
+        ).then((value) async {
+          info.localUrl = value;
+
+          var downloadMusics = List<MusicInfo>.from(
+              await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC));
+
+          downloadMusics.add(info);
+
+          PreferenceUtils.saveJSON(
+              PreferencesKey.DOWNLOAD_MUSIC, downloadMusics);
+        });
       }
     });
   }

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-06 17:39:01
- * @LastEditTime: 2021-05-13 21:43:52
+ * @LastEditTime: 2021-06-02 10:35:46
  * @LastEditors: Walker
  */
 import 'dart:convert';
@@ -13,11 +13,14 @@ class PreferencesKey {
   static const HOME_DATA = 'home_data'; // 主页数据
   static const HOME_BANNER = 'home_banner'; // banner 图
   static const HOME_SONGLIST = 'home_songlist'; // 刷新头部跟随
+
   static const PLAY_INFO = 'play_music_list'; // 播放信息
 
   static const USER_INFO = 'user_info'; // 用户信息
   static const USER_TOKEN = 'user_token'; // 用户信息
   static const USER_COOKIE = 'user_cookie'; // 用户信息
+
+  static const DOWNLOAD_MUSIC = 'download_music'; // 下载的音乐
 }
 
 /// shared_preferences 管理类

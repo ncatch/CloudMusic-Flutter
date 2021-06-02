@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-06-01 22:19:57
+ * @LastEditTime: 2021-06-02 10:53:11
  * @LastEditors: Walker
  */
 
@@ -134,11 +134,12 @@ class PlayInfoStore with ChangeNotifier {
   }
 
   // 初始化播放信息 歌词 播放链接
-  Future<List<dynamic>> initPalyInfo(id) {
+  initPalyInfo(id) async {
     musicLoading = true;
     lyricLoading = true;
     notifyListeners();
 
+    // TODO 如果是本地音乐 使用下载的歌词
     getMusicLyric(id).then((lyric) {
       var tmp = "歌曲暂无歌词";
       if (lyric != null &&
@@ -153,33 +154,37 @@ class PlayInfoStore with ChangeNotifier {
       notifyListeners();
     });
 
-    getMusicDetail([id]).then((res) {
-      if (res.length > 0) {
-        // musicInfo.id = id;
-        // musicInfo.iconUrl = res[0]['al']['picUrl'];
-        // musicInfo.musicName = res[0]['name'];
-        // musicInfo.singerName = res[0]['ar'][0]['name'];
+    if (musicInfo.localUrl != "") {
+      // TODO 处理歌词
 
-        musicInfo = MusicInfo.fromData(res[0]);
+      setPlayMusic(musicInfo.localUrl);
+    } else {
+      getMusicDetail([id]).then((res) {
+        if (res.length > 0) {
+          // musicInfo.id = id;
+          // musicInfo.iconUrl = res[0]['al']['picUrl'];
+          // musicInfo.musicName = res[0]['name'];
+          // musicInfo.singerName = res[0]['ar'][0]['name'];
 
-        if (musicList.indexWhere((ele) => ele.id == id) < 0) {
-          musicList.add(musicInfo);
+          musicInfo = MusicInfo.fromData(res[0]);
+
+          if (musicList.indexWhere((ele) => ele.id == id) < 0) {
+            musicList.add(musicInfo);
+          }
+
+          notifyListeners();
         }
+      });
 
-        notifyListeners();
-      }
-    });
+      var result = await getMusicUrl(id);
 
-    return getMusicUrl(id).then((result) {
       musicLoading = false;
       if (result[0]['url'] != null) {
         setPlayMusic(result[0]['url']);
       }
+    }
 
-      notifyListeners();
-
-      return result;
-    });
+    notifyListeners();
   }
 
   setPlayMusic(String url) {

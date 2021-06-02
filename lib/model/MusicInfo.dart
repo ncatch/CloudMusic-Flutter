@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:47
- * @LastEditTime: 2021-05-11 16:46:00
+ * @LastEditTime: 2021-06-02 10:32:51
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -13,6 +13,7 @@ class MusicInfo {
   String bgImgUrl = "";
   String iconUrl = "";
   String tip = "";
+  String localUrl = "";
   int id = 0;
 
   MusicInfo(
@@ -37,6 +38,7 @@ class MusicInfo {
     this.bgImgUrl = jsonstr["bgImgUrl"];
     this.iconUrl = jsonstr["iconUrl"];
     this.tip = jsonstr["tip"];
+    this.localUrl = jsonstr["localUrl"] ?? "";
   }
 
   MusicInfo.fromData(Map<String, dynamic> data) {
@@ -45,6 +47,8 @@ class MusicInfo {
     this.tip = data['al']['name'];
     this.musicName = data['name'];
     this.singerName = data['ar'][0]['name'];
+    this.bgImgUrl = data["bgImgUrl"];
+    this.localUrl = data["localUrl"] ?? "";
   }
 
   Map toJson() {
@@ -54,6 +58,8 @@ class MusicInfo {
     map["singerName"] = this.singerName;
     map["bgImgUrl"] = this.bgImgUrl;
     map["iconUrl"] = this.iconUrl;
+    map["tip"] = this.tip;
+    map["localUrl"] = this.localUrl;
     return map;
   }
 }

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 11:24:30
- * @LastEditTime: 2021-05-31 16:04:15
+ * @LastEditTime: 2021-06-02 10:59:50
  * @LastEditors: Walker
  */
 const ClientType = {
@@ -56,4 +56,9 @@ enum CommentSortType {
 enum PlayListType {
   recommend, // 每日推荐
   common, // 正常歌单
+}
+
+enum MusicListTye {
+  online, //
+  local, // 本地音乐列表
 }

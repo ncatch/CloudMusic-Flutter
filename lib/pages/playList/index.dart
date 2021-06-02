@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-06-01 11:29:41
+ * @LastEditTime: 2021-06-02 11:36:05
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -377,7 +377,10 @@ class PlayListState extends State<PlayList> {
                               MusicList(
                                 musicList: playListInfo.musicList,
                               ),
-                              playListInfo.subscribedCount > 0
+                              // 有收藏的人 并且歌单全部加载完成才显示
+                              playListInfo.subscribedCount > 0 &&
+                                      playListInfo.musicList.length >=
+                                          playListInfo.trackCount
                                   ? Subscribers(
                                       subscribers: playListInfo.subscribers,
                                       subscribedCount:

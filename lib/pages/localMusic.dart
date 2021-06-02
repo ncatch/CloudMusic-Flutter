@@ -2,17 +2,16 @@
  * @Description: 本地音乐
  * @Author: Walker
  * @Date: 2021-06-01 15:14:44
- * @LastEditTime: 2021-06-01 22:31:59
+ * @LastEditTime: 2021-06-02 11:17:16
  * @LastEditors: Walker
  */
 
-import 'dart:io';
-
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
-import 'package:cloudmusic_flutter/store/PlayInfo.dart';
-import 'package:cloudmusic_flutter/utils/file.dart';
+import 'package:cloudmusic_flutter/components/MusicList.dart';
+import 'package:cloudmusic_flutter/libs/enums.dart';
+import 'package:cloudmusic_flutter/model/MusicInfo.dart';
+import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class LocalMusic extends StatefulWidget {
   LocalMusic({Key? key}) : super(key: key);
@@ -22,7 +21,7 @@ class LocalMusic extends StatefulWidget {
 }
 
 class LocalMusicState extends State<LocalMusic> {
-  List<String> names = [];
+  List<MusicInfo> musicLic = [];
 
   @override
   void initState() {
@@ -32,29 +31,25 @@ class LocalMusicState extends State<LocalMusic> {
   }
 
   getLocalMusicList() async {
-    var tmp = await FileUtil.getDownloadMusicList();
+    var downloadMusics = List<MusicInfo>.from(
+        await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC));
 
     setState(() {
-      names = tmp.map((e) => e.path).toList();
+      musicLic = downloadMusics;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    var playInfoStore = Provider.of<PlayInfoStore>(context);
-
     return HeightRefresh(
       child: Scaffold(
         appBar: AppBar(
           title: Text('本地音乐'),
         ),
         body: Container(
-          child: InkWell(
-            onTap: () {
-              // playInfoStore.setPlayMusic(names[0]);
-              playInfoStore.audioPlayer.play(names[0]);
-            },
-            child: Text('123'),
+          child: MusicList(
+            type: MusicListTye.local,
+            musicList: musicLic,
           ),
         ),
       ),
