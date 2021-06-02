@@ -2,44 +2,79 @@
  * @Description: 轮播图下方菜单按钮
  * @Author: Walker
  * @Date: 2021-04-02 15:41:58
- * @LastEditTime: 2021-06-02 13:59:13
+ * @LastEditTime: 2021-06-02 16:08:20
  * @LastEditors: Walker
  */
 
+import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
+import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
+import 'package:cloudmusic_flutter/services/user.dart';
+import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../../../model/MenuInfo.dart';
 
-var menuInfo = [
-  MenuInfoModel("每日推荐", iconUrl: "assets/icon_red.png", onPressed: (context) {
+class DiscoverMenu extends StatefulWidget {
+  DiscoverMenu({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => DiscoverMenuState();
+}
+
+class DiscoverMenuState extends State<DiscoverMenu> {
+  var menuInfo;
+
+  DiscoverMenuState() {
+    menuInfo = [
+      MenuInfoModel("每日推荐",
+          iconUrl: "assets/icon_red.png", onPressed: recommendClick),
+      MenuInfoModel("私人FM", iconUrl: "assets/icon_red.png", onPressed: fmClick),
+      MenuInfoModel("歌单", iconUrl: "assets/icon_red.png"),
+      MenuInfoModel("排行榜", iconUrl: "assets/icon_red.png"),
+      MenuInfoModel("直播", iconUrl: "assets/icon_red.png"),
+      MenuInfoModel("数字专辑", iconUrl: "assets/icon_red.png"),
+      MenuInfoModel("歌房", iconUrl: "assets/icon_red.png"),
+      MenuInfoModel("游戏专区", iconUrl: "assets/icon_red.png")
+    ];
+  }
+  recommendClick([playInfoStore]) {
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
       return PlayList(
         playlistType: PlayListType.recommend,
       );
     }));
-  }),
-  MenuInfoModel("私人FM", iconUrl: "assets/icon_red.png"),
-  MenuInfoModel("歌单", iconUrl: "assets/icon_red.png"),
-  MenuInfoModel("排行榜", iconUrl: "assets/icon_red.png"),
-  MenuInfoModel("直播", iconUrl: "assets/icon_red.png"),
-  MenuInfoModel("数字专辑", iconUrl: "assets/icon_red.png"),
-  MenuInfoModel("歌房", iconUrl: "assets/icon_red.png"),
-  MenuInfoModel("游戏专区", iconUrl: "assets/icon_red.png")
-];
+  }
 
-class DiscoverMenu extends StatelessWidget {
+  void fmClick([playInfoStore]) {
+    getPersonalFM().then((res) {
+      if (res['code'] == 200) {
+        var list = List<MusicInfo>.from(
+            res['data'].map((ele) => MusicInfo.fromData(ele)));
+
+        playInfoStore.setPlayList(list);
+
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext ctx) {
+          return Play();
+        }));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var menus = <Widget>[];
+    var playInfoStore = Provider.of<PlayInfoStore>(context);
 
     menuInfo.forEach((ele) {
       menus.add(Container(
           padding: EdgeInsets.fromLTRB(12, 0, 12, 0),
           child: InkWell(
             onTap: () {
-              ele.onPressed(context);
+              ele.onPressed(playInfoStore);
             },
             child: Column(
               children: [

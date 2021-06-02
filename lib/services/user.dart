@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 13:51:53
- * @LastEditTime: 2021-05-31 17:39:10
+ * @LastEditTime: 2021-06-02 15:49:08
  * @LastEditors: Walker
  */
 
@@ -67,6 +67,12 @@ Future<dynamic> getCalendar(startTime, endTime) {
   return DioUtil.dio
       .get('/calendar?startTime=$startTime&endTime=$endTime')
       .then((value) {
+    return value.data;
+  });
+}
+
+Future<dynamic> getPersonalFM() {
+  return DioUtil.dio.get('/personal_fm').then((value) {
     return value.data;
   });
 }

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:47
- * @LastEditTime: 2021-06-02 10:32:51
+ * @LastEditTime: 2021-06-02 16:10:07
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -43,11 +43,23 @@ class MusicInfo {
 
   MusicInfo.fromData(Map<String, dynamic> data) {
     this.id = data['id'];
-    this.iconUrl = data['al']['picUrl'];
-    this.tip = data['al']['name'];
+    if (data['al'] != null) {
+      this.iconUrl = data['al']['picUrl'];
+      this.tip = data['al']['name'];
+    } else {
+      this.iconUrl = data['album']['picUrl'];
+      this.tip = data['album']['name'];
+    }
+
+    if (data['ar'] != null) {
+      this.singerName = data['ar'][0]['name'];
+    } else {
+      this.singerName = data['artists'][0]['name'];
+    }
+
     this.musicName = data['name'];
-    this.singerName = data['ar'][0]['name'];
-    this.bgImgUrl = data["bgImgUrl"];
+
+    this.bgImgUrl = data["bgImgUrl"] ?? play_img_url_default;
     this.localUrl = data["localUrl"] ?? "";
   }
 
