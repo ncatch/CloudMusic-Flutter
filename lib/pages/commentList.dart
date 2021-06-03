@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-05-27 15:47:01
+ * @LastEditTime: 2021-06-03 10:08:27
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -188,7 +188,7 @@ class CommentListState extends State<CommentList>
       });
     }
 
-    ShowHugInfoModal(context, comment, widget.info);
+    showHugInfoModal(context, comment, widget.info);
   }
 
   sortTypeClick(CommentSortType type) {

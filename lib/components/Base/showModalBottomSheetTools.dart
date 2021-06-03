@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-08 17:16:45
- * @LastEditTime: 2021-05-27 16:21:29
+ * @LastEditTime: 2021-06-03 10:08:17
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/model/Comments.dart';
@@ -107,8 +107,11 @@ class ShowHugInfo {
 
   getMoreHugList() {}
 
-  ShowHugInfoModal(
-      context, CommentInfo commentInfo, PlayListModel playListInfo) {
+  showHugInfoModal(
+    context,
+    CommentInfo commentInfo,
+    PlayListModel playListInfo,
+  ) {
     ScrollController _scrollController = new ScrollController();
 
     showModalBottomSheet(
