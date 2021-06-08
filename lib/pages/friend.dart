@@ -2,10 +2,9 @@
  * @Description: 朋友页面
  * @Author: Walker
  * @Date: 2021-06-02 17:02:08
- * @LastEditTime: 2021-06-02 19:29:09
+ * @LastEditTime: 2021-06-08 17:30:24
  * @LastEditors: Walker
  */
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/components/UserPhoto.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
@@ -87,6 +86,7 @@ class FriendState extends State<Friend> with SingleTickerProviderStateMixin {
                     controller: _tabController,
                     indicatorColor: Colors.transparent,
                     labelColor: Colors.black,
+                    unselectedLabelColor: Colors.grey,
                     tabs: [
                       // Tab(text: '推荐'),
                       Tab(text: '关注'),
