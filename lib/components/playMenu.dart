@@ -2,32 +2,36 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-14 13:46:30
- * @LastEditTime: 2021-06-01 11:47:24
+ * @LastEditTime: 2021-06-09 16:53:00
  * @LastEditors: Walker
  */
 
 import 'package:cloudmusic_flutter/components/Play.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
-import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PlayMenu extends StatelessWidget {
-  PlayListModel playListInfo;
+  List<MusicInfo> musicList = [];
+  int? musicCount;
+  PlayInfoStore playInfoStore;
 
-  PlayMenu({Key? key, required this.playListInfo}) : super(key: key);
+  PlayMenu(
+      {Key? key,
+      required this.musicList,
+      required this.playInfoStore,
+      this.musicCount})
+      : super(key: key);
 
   downloadAllMusic() {}
 
   selectClich() {}
 
   playAll(context) {
-    var playInfoStore = Provider.of<PlayInfoStore>(context);
-
-    playInfoStore.setPlayList(playListInfo.musicList);
+    playInfoStore.setPlayList(musicList);
 
     Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
       return Play();
@@ -60,7 +64,7 @@ class PlayMenu extends StatelessWidget {
                       style: TextStyle(fontSize: 16),
                     ),
                     Text(
-                      '（${playListInfo.trackCount}）',
+                      '（${musicCount ?? musicList.length}）',
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
                   ],

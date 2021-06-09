@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-06-02 11:36:05
+ * @LastEditTime: 2021-06-09 16:53:33
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -12,17 +12,18 @@ import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/components/MusicList.dart';
 import 'package:cloudmusic_flutter/components/PlayMini.dart';
 import 'package:cloudmusic_flutter/components/UserLabel.dart';
+import 'package:cloudmusic_flutter/components/playMenu.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/detail.dart';
 import 'package:cloudmusic_flutter/pages/playList/playListMenu.dart';
-import 'package:cloudmusic_flutter/pages/playList/playMenu.dart';
 import 'package:cloudmusic_flutter/pages/playList/subscribers.dart';
 import 'package:cloudmusic_flutter/pages/playList/HeadClipPath.dart';
 import 'package:cloudmusic_flutter/services/music.dart';
 import 'package:cloudmusic_flutter/services/songList.dart';
+import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:cloudmusic_flutter/store/SystemInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +155,13 @@ class PlayListState extends State<PlayList> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var systemInfo = Provider.of<SystemInfo>(context);
-    var playMenuComponent = PlayMenu(playListInfo: playListInfo);
+    var playInfoStore = Provider.of<PlayInfoStore>(context);
+
+    var playMenuComponent = PlayMenu(
+      musicList: playListInfo.musicList,
+      musicCount: playListInfo.trackCount,
+      playInfoStore: playInfoStore,
+    );
     var hasHeadImg = playListInfo.headBgUrl != "";
     var bgUrl = hasHeadImg ? playListInfo.headBgUrl : playListInfo.coverImgUrl;
 

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 16:45:47
- * @LastEditTime: 2021-06-02 16:10:07
+ * @LastEditTime: 2021-06-09 16:24:23
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/config.dart';
@@ -46,14 +46,14 @@ class MusicInfo {
     if (data['al'] != null) {
       this.iconUrl = data['al']['picUrl'];
       this.tip = data['al']['name'];
-    } else {
+    } else if (data['album'] != null) {
       this.iconUrl = data['album']['picUrl'];
       this.tip = data['album']['name'];
     }
 
     if (data['ar'] != null) {
       this.singerName = data['ar'][0]['name'];
-    } else {
+    } else if (data['artists'] != null) {
       this.singerName = data['artists'][0]['name'];
     }
 

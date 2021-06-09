@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-02 17:27:58
+ * @LastEditTime: 2021-06-09 16:13:13
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -40,7 +40,8 @@ class MyState extends State<My> {
       [
         MenuInfoModel('本地/下载',
             icon: Icons.library_music, onPressed: localMusicClick),
-        MenuInfoModel('云盘', icon: Icons.cloud_upload),
+        MenuInfoModel('云盘',
+            icon: Icons.cloud_upload, onPressed: cloudStorageClick),
         MenuInfoModel('已购', icon: Icons.shopping_bag),
         MenuInfoModel('最近播放', icon: Icons.play_circle),
       ],
@@ -55,8 +56,12 @@ class MyState extends State<My> {
     ];
   }
 
-  localMusicClick(context) {
+  localMusicClick(context, User userStore) {
     Navigator.pushNamed(context, '/localMusic');
+  }
+
+  cloudStorageClick(context, User userStore) {
+    Navigator.pushNamed(context, '/cloudStorage');
   }
 
   myFriendClick(context, User userStore) {
