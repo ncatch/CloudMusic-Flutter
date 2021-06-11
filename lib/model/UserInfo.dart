@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:36:18
- * @LastEditTime: 2021-05-20 19:46:52
+ * @LastEditTime: 2021-06-11 15:02:57
  * @LastEditors: Walker
  */
 
@@ -15,6 +15,7 @@ class UserInfo {
   String backgroundUrl = "";
 
   bool followed = false; // 是否关注
+  String followTime = ""; // 关注时长
   int followeds = 0; // 粉丝数
   int follows = 0; // 关注数
 
@@ -52,6 +53,7 @@ class UserInfo {
     this.backgroundUrl = jsonstr["backgroundUrl"];
     this.followeds = jsonstr["followeds"];
     this.followed = jsonstr["followed"];
+    this.followTime = jsonstr["followTime"] ?? "";
     this.follows = jsonstr["follows"];
     this.createTime = jsonstr["createTime"];
     this.birthday = jsonstr["birthday"];
@@ -83,6 +85,7 @@ class UserInfo {
     map["createTime"] = this.createTime;
     map["birthday"] = this.birthday;
     map["city"] = this.city;
+    map["followTime"] = this.followTime;
     return map;
   }
 }

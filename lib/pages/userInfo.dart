@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-06-02 19:36:24
+ * @LastEditTime: 2021-06-11 15:08:58
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -119,14 +119,17 @@ class UserInfoState extends State<UserInfo>
   }
 
   attention() {
-    attentionUser(userInfo.userId, userInfo.followed ? 2 : 1).then((res) {
+    // TODO 取消关注提示 从新计算关注天数
+
+    attentionUser(userInfo.userId, userInfo.followed ? 0 : 1).then((res) {
       if (res['code'] == 200) {
+        if (userInfo.followed) {
+          Toast('已取消关注');
+        } else {
+          Toast('谢谢关注');
+        }
+
         this.setState(() {
-          if (userInfo.followed) {
-            Toast('已取消关注');
-          } else {
-            Toast('谢谢关注');
-          }
           if (userInfo.followeds < 10000) {
             userInfo.followeds += userInfo.followed ? -1 : 1;
           }

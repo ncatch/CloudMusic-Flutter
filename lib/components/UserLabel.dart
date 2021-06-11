@@ -2,7 +2,7 @@
  * @Description: 用户标签 【头像 昵称 关注按钮】
  * @Author: Walker
  * @Date: 2021-05-19 15:15:35
- * @LastEditTime: 2021-06-02 19:35:53
+ * @LastEditTime: 2021-06-11 15:01:11
  * @LastEditors: Walker
  */
 
@@ -31,8 +31,14 @@ class UserLabel extends StatefulWidget {
 
 class UserLabelState extends State<UserLabel> {
   // 关注 anchor
-  attention() {
-    attentionUser(widget.userInfo.userId, 1);
+  attentionHandler() {
+    attentionUser(widget.userInfo.userId, 1).then((res) {
+      if (res['code'] == 200) {
+        setState(() {
+          widget.userInfo.followed = true;
+        });
+      }
+    });
   }
 
   // 跳转用户信息页
@@ -62,23 +68,27 @@ class UserLabelState extends State<UserLabel> {
               widget.userInfo.nickname.overFlowString(10),
               style: TextStyle(color: Colors.white70),
             ),
-            // 暂时无法判断有没有关注 先注释
-            // InkWell(
-            //   onTap: attention,
-            //   child: Container(
-            //     margin: EdgeInsets.fromLTRB(5, 2, 0, 0),
-            //     padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
-            //     decoration: BoxDecoration(
-            //       borderRadius: BorderRadius.circular(10),
-            //       color: Colors.grey.shade300,
-            //     ),
-            //     child: Icon(
-            //       Icons.add,
-            //       color: Colors.white,
-            //       size: 16,
-            //     ),
-            //   ),
-            // ),
+            widget.userInfo.followed
+                ? Icon(
+                    Icons.chevron_right_sharp,
+                    color: Colors.white70,
+                  )
+                : InkWell(
+                    onTap: attentionHandler,
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(5, 2, 0, 0),
+                      padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Colors.grey.shade300,
+                      ),
+                      child: Icon(
+                        Icons.add,
+                        color: Colors.white,
+                        size: 16,
+                      ),
+                    ),
+                  )
           ],
         ),
       ),

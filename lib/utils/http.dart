@@ -2,11 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-11 14:02:35
+ * @LastEditTime: 2021-06-11 14:59:52
  * @LastEditors: Walker
  */
 
 import 'dart:io';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
@@ -19,6 +20,7 @@ class DioUtil {
   static Dio dio = new Dio();
   static var cookieJar = CookieJar();
   static String? cookie;
+  static bool cache = false;
 
   //拦截器部分
   static tokenInter() async {
@@ -39,6 +41,10 @@ class DioUtil {
       // 用户身份
       if (cookie == null || cookie == "") {
         cookie = await PreferenceUtils.getString(PreferencesKey.USER_COOKIE);
+      }
+
+      if (!cache) {
+        options.queryParameters['v'] = Random().nextInt(100000);
       }
 
       options.queryParameters['cookie'] = Uri.encodeComponent(cookie ?? "");
