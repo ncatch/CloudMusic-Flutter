@@ -2,11 +2,10 @@
  * @Description: 收藏用户列表
  * @Author: Walker
  * @Date: 2021-05-13 13:49:07
- * @LastEditTime: 2021-05-31 16:38:45
+ * @LastEditTime: 2021-06-11 14:03:50
  * @LastEditors: Walker
  */
 
-import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

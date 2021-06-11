@@ -2,11 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-31 16:48:48
- * @LastEditTime: 2021-05-31 17:32:59
+ * @LastEditTime: 2021-06-11 14:05:17
  * @LastEditors: Walker
  */
 
-import 'package:cloudmusic_flutter/services/video.dart';
 import 'package:video_player/video_player.dart';
 import 'package:flutter/material.dart';
 

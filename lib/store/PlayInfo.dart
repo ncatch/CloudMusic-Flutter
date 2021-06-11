@@ -2,23 +2,19 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-06-09 17:40:38
+ * @LastEditTime: 2021-06-11 14:02:25
  * @LastEditors: Walker
  */
 
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
 import 'package:volume_controller/volume_controller.dart';
-import '../model/PlayInfo.dart';
 import '../model/MusicInfo.dart';
 
-import '../libs/config.dart';
 import '../utils/preference.dart';
 
 import '../services/music.dart';

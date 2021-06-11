@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-06-02 15:33:53
+ * @LastEditTime: 2021-06-11 14:05:37
  * @LastEditors: Walker
  */
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,8 +13,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../libs/extends/IntExtend.dart';
-
-import '../../../services/home.dart';
 
 // ignore: must_be_immutable
 class SongList extends StatefulWidget {

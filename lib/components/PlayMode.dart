@@ -2,11 +2,10 @@
  * @Description: 播放模式组件
  * @Author: Walker
  * @Date: 2021-05-08 18:00:16
- * @LastEditTime: 2021-05-24 15:25:52
+ * @LastEditTime: 2021-06-11 14:05:29
  * @LastEditors: Walker
  */
 
-import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';

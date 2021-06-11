@@ -15,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:cloudmusic_flutter/components/play.dart';
 import 'package:provider/provider.dart';
 
-import '../model/PlayInfo.dart';
 import '../services/search.dart';
 
 class SearchPage extends StatefulWidget {

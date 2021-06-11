@@ -6,7 +6,6 @@
  * @LastEditors: Walker
  */
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/components/UserPhoto.dart';
 import 'package:cloudmusic_flutter/model/Creator.dart';
 import 'package:cloudmusic_flutter/pages/userInfo.dart';

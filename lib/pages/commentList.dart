@@ -2,7 +2,7 @@
  * @Description: 评论页面
  * @Author: Walker
  * @Date: 2021-05-14 15:29:00
- * @LastEditTime: 2021-06-03 10:08:27
+ * @LastEditTime: 2021-06-11 14:03:18
  * @LastEditors: Walker
  */
 import 'dart:async';
@@ -20,7 +20,6 @@ import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:cloudmusic_flutter/services/comment.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import './userInfo.dart';
 import '../libs/enums.dart';
 
 class CommentList extends StatefulWidget {

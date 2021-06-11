@@ -12,7 +12,6 @@ import 'package:cloudmusic_flutter/model/MusicInfo.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class PlayMenu extends StatelessWidget {
   List<MusicInfo> musicList = [];

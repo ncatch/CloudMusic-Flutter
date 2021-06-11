@@ -2,13 +2,12 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-06-02 19:21:30
+ * @LastEditTime: 2021-06-11 14:05:48
  * @LastEditors: Walker
  */
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/components/Base/HomeBlock.dart';
 import 'package:cloudmusic_flutter/components/Play.dart';
-import 'package:cloudmusic_flutter/components/SongList.dart';
 import 'package:cloudmusic_flutter/model/SongMusicList.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/cupertino.dart';
