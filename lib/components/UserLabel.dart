@@ -2,7 +2,7 @@
  * @Description: 用户标签 【头像 昵称 关注按钮】
  * @Author: Walker
  * @Date: 2021-05-19 15:15:35
- * @LastEditTime: 2021-06-11 15:01:11
+ * @LastEditTime: 2021-06-11 15:15:38
  * @LastEditors: Walker
  */
 
@@ -12,7 +12,7 @@ import 'package:cloudmusic_flutter/pages/userInfo.dart';
 import 'package:cloudmusic_flutter/services/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import '../libs/enums.dart';
 import '../libs/extends/StringExtend.dart';
 
 class UserLabel extends StatefulWidget {
@@ -32,7 +32,10 @@ class UserLabel extends StatefulWidget {
 class UserLabelState extends State<UserLabel> {
   // 关注 anchor
   attentionHandler() {
-    attentionUser(widget.userInfo.userId, 1).then((res) {
+    attentionUser(
+      widget.userInfo.userId,
+      attentionType.attention.index,
+    ).then((res) {
       if (res['code'] == 200) {
         setState(() {
           widget.userInfo.followed = true;

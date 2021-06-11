@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 11:24:30
- * @LastEditTime: 2021-06-02 19:28:00
+ * @LastEditTime: 2021-06-11 15:14:14
  * @LastEditors: Walker
  */
 const ClientType = {
@@ -66,4 +66,9 @@ enum MusicListTye {
 enum FriendType {
   follow, // 关注
   followed, // 粉丝
+}
+
+enum attentionType {
+  cancle, // 取消关注
+  attention, // 关注
 }
