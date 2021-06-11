@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-29 11:53:57
- * @LastEditTime: 2021-06-02 10:53:11
+ * @LastEditTime: 2021-06-09 17:40:38
  * @LastEditors: Walker
  */
 
@@ -26,6 +26,7 @@ import '../services/music.dart';
 class PlayInfoStore with ChangeNotifier {
   //1
   AudioPlayer audioPlayer = new AudioPlayer();
+  VolumeController volumeController = new VolumeController();
 
   double sliderValue = 0.0;
   Duration duration = new Duration();
@@ -49,7 +50,7 @@ class PlayInfoStore with ChangeNotifier {
     try {
       if (Platform.isAndroid || Platform.isIOS) {
         // 监听系统声音变化 调整播放声音
-        VolumeController.volumeListener.listen((volume) {
+        volumeController.listener((volume) {
           audioPlayer.setVolume(volume);
           _volume = volume;
         });
@@ -194,7 +195,7 @@ class PlayInfoStore with ChangeNotifier {
 
   Future<int> playMusic(id) async {
     try {
-      VolumeController.getVolume().then((volume) => _volume = volume);
+      volumeController.getVolume().then((volume) => _volume = volume);
     } catch (e) {}
 
     await initPalyInfo(id);
