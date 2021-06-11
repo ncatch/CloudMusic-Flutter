@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-20 10:35:17
- * @LastEditTime: 2021-06-11 15:14:36
+ * @LastEditTime: 2021-06-11 15:38:51
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -220,7 +220,7 @@ class UserInfoState extends State<UserInfo>
           )
         : null;
 
-    var likeList;
+    PlayListModel? likeList;
     List<PlayListModel> createList = [];
     List<PlayListModel> collectList = [];
     double contentHeight = 260;
