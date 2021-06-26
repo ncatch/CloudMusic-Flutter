@@ -47,10 +47,10 @@ class MusicListState extends State<MusicList> {
     }));
   }
 
-  callback(type, value) {
+  callback(String type, double value) {
     switch (type) {
       case 'download':
-        if (value >= 0.99) {
+        if (value >= 1) {
           value = 0;
           Toast('下载完成');
         }
@@ -154,7 +154,7 @@ class RightMenu extends StatelessWidget {
     this.menus,
   });
 
-  onReceiveProgress(a, b) {
+  onReceiveProgress(int a, int b) {
     if (callback != null) {
       callback!('download', a / b);
     }

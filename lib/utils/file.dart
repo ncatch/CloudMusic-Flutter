@@ -41,6 +41,9 @@ class FileUtil {
     return DioUtil.dio
         .download(url, saveUrl, onReceiveProgress: onReceiveProgress)
         .then((value) {
+          if(onReceiveProgress != null){
+            onReceiveProgress(1, 1);
+          }
       return saveUrl;
     });
   }

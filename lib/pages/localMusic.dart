@@ -21,12 +21,16 @@ class LocalMusic extends StatefulWidget {
 }
 
 class LocalMusicState extends State<LocalMusic> {
+  bool isInit = false;
   List<MusicInfo> musicLic = [];
 
   @override
   void initState() {
     super.initState();
+  }
 
+  init() {
+    isInit = true;
     getLocalMusicList();
   }
 
@@ -41,6 +45,10 @@ class LocalMusicState extends State<LocalMusic> {
 
   @override
   Widget build(BuildContext context) {
+    if (!isInit) {
+      init();
+    }
+
     return HeightRefresh(
       child: Scaffold(
         appBar: AppBar(
