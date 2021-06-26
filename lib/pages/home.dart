@@ -1,23 +1,73 @@
+/*
+ * @Description: 
+ * @Author: Walker
+ * @Date: 2021-04-01 14:05:41
+ * @LastEditTime: 2021-06-08 17:30:36
+ * @LastEditors: Walker
+ */
+import 'dart:io';
+
+import 'package:cloudmusic_flutter/components/Base/PrimaryScrollBehavior.dart';
+import 'package:cloudmusic_flutter/components/DrawerMenu.dart';
+import 'package:cloudmusic_flutter/store/PlayInfo.dart';
+import 'package:cloudmusic_flutter/store/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './homePage/blogs.dart';
 import './homePage/cloudVillage.dart';
-import './homePage/discover.dart';
+import 'homePage/discover/discover.dart';
 import './homePage/my.dart';
 import './homePage/sing.dart';
 
+import '../components/PlayMini.dart';
+
 import '../libs/theme.dart';
 
-class HomeStatefulWidget extends StatefulWidget {
-  HomeStatefulWidget({Key? key}) : super(key: key);
+class Home extends StatefulWidget {
+  Home({Key? key}) : super(key: key);
 
   @override
-  _HomeStatefulWidgetState createState() => _HomeStatefulWidgetState();
+  HomeState createState() => HomeState();
 }
 
-class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
+class HomeState extends State<Home> {
+  bool isInit = false;
   int _selectedIndex = 0;
+  List<Widget> pages = [];
+
+  GlobalKey<ScaffoldState> mainScaffoldKey = new GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    this.setState(() {
+      pages = [
+        Discover(mainScaffoldKey: mainScaffoldKey),
+        Blogs(),
+        My(mainScaffoldKey: mainScaffoldKey),
+        Sing(),
+        CloudVillage(),
+      ];
+    });
+  }
+
+  init(context) {
+    var playInfoStore = Provider.of<PlayInfoStore>(context);
+    playInfoStore.init();
+
+    var userStore = Provider.of<User>(context);
+    userStore.init().then((userInfo) {
+      if (userInfo.userId == 0) {
+        // TODO 调试注释
+        Navigator.pushNamed(context, '/login');
+      }
+    });
+
+    isInit = true;
+  }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -25,66 +75,56 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
     });
   }
 
+  Future<bool> _onBackPressed() {
+    showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text('确定退出程序吗?'),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(
+                    '暂不',
+                    style: TextStyle(color: primaryColor),
+                  ),
+                  onPressed: () => Navigator.pop(context, false),
+                ),
+                TextButton(
+                  child: Text(
+                    '确定',
+                    style: TextStyle(color: primaryColor),
+                  ),
+                  onPressed: () => exit(0),
+                ),
+              ],
+            ));
+    return Future.sync(() => false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        drawer: Drawer(
-          child: ListView(
-            padding: EdgeInsets.zero,
-            children: const <Widget>[
-              DrawerHeader(
-                decoration: BoxDecoration(
-                  color: primaryColor,
-                ),
-                child: Text(
-                  'Drawer Header',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                  ),
-                ),
+    if (!isInit) {
+      init(context);
+    }
+
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        key: mainScaffoldKey,
+        drawer: DrawerMenu(),
+        body: Flex(
+          direction: Axis.vertical,
+          children: [
+            Expanded(
+              flex: 1,
+              child: ScrollConfiguration(
+                behavior: PrimaryScrollBehavior(show: false),
+                child:
+                    pages.length > 0 ? pages[_selectedIndex] : Text('加载中...'),
               ),
-              ListTile(
-                leading: Icon(Icons.message),
-                title: Text('Messages'),
-              ),
-              ListTile(
-                leading: Icon(Icons.account_circle),
-                title: Text('Profile'),
-              ),
-              ListTile(
-                leading: Icon(Icons.settings),
-                title: Text('Settings'),
-              ),
-            ],
-          ),
+            ),
+            PlayMini()
+          ],
         ),
-        appBar: AppBar(
-            backgroundColor: primaryColor,
-            title: Container(
-              height: 38,
-              padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: Colors.grey),
-                  Text(
-                    '搜索',
-                    style: TextStyle(color: Colors.grey),
-                  )
-                ],
-              ),
-            )),
-        body: [
-          Discover(),
-          Blogs(),
-          My(),
-          Sing(),
-          CloudVillage(),
-        ][_selectedIndex],
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '发现'),
@@ -98,6 +138,8 @@ class _HomeStatefulWidgetState extends State<HomeStatefulWidget> {
           selectedItemColor: primaryColor,
           unselectedItemColor: Colors.grey,
           onTap: _onItemTapped,
-        ));
+        ),
+      ),
+    );
   }
 }
