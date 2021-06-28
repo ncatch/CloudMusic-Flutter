@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 11:22:42
- * @LastEditTime: 2021-06-02 14:39:47
+ * @LastEditTime: 2021-06-28 19:34:42
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
@@ -33,9 +33,6 @@ class LoginState extends State<Login> {
 
     phoneText = TextEditingController();
     passwordText = TextEditingController();
-
-    phoneText?.value = TextEditingValue(text: '15083525898');
-    passwordText?.value = TextEditingValue(text: 'nocatch.96');
   }
 
   @override
