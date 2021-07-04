@@ -27,7 +27,7 @@ class PlayInfoStore with ChangeNotifier {
   double sliderValue = 0.0;
   Duration duration = new Duration();
   Duration position = new Duration();
-  double _volume = 0.2;
+  double _volume = 2;
 
   bool isPlayer = false;
 
@@ -43,15 +43,15 @@ class PlayInfoStore with ChangeNotifier {
   var playMode = PlayModes.repeat;
 
   PlayInfoStore() {
-    try {
-      if (Platform.isAndroid || Platform.isIOS) {
-        // 监听系统声音变化 调整播放声音
-        volumeController.listener((volume) {
-          audioPlayer.setVolume(volume);
-          _volume = volume;
-        });
-      }
-    } catch (e) {}
+    // try {
+    //   if (Platform.isAndroid || Platform.isIOS) {
+    //     // 监听系统声音变化 调整播放声音
+    //     volumeController.listener((volume) {
+    //       audioPlayer.setVolume(volume);
+    //       _volume = volume;
+    //     });
+    //   }
+    // } catch (e) {}
 
     audioPlayer
       ..onDurationChanged.listen((e) {
@@ -186,13 +186,13 @@ class PlayInfoStore with ChangeNotifier {
 
   setPlayMusic(String url) {
     audioPlayer.setUrl(url);
-    audioPlayer.setVolume(_volume * 1.2);
+    audioPlayer.setVolume(_volume);
   }
 
   Future<int> playMusic(id) async {
-    try {
-      volumeController.getVolume().then((volume) => _volume = volume);
-    } catch (e) {}
+    // try {
+    //   volumeController.getVolume().then((volume) => _volume = volume);
+    // } catch (e) {}
 
     await initPalyInfo(id);
 
