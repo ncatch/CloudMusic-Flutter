@@ -41,9 +41,9 @@ class FileUtil {
     return DioUtil.dio
         .download(url, saveUrl, onReceiveProgress: onReceiveProgress)
         .then((value) {
-          if(onReceiveProgress != null){
-            onReceiveProgress(1, 1);
-          }
+      if (onReceiveProgress != null) {
+        onReceiveProgress(1, 1);
+      }
       return saveUrl;
     });
   }
@@ -63,13 +63,18 @@ class FileUtil {
         ).then((value) async {
           info.localUrl = value;
 
-          var downloadMusics = List<MusicInfo>.from(
-              await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC));
+          List<MusicInfo> list = [];
 
-          downloadMusics.add(info);
+          var storage =
+              await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC);
+          if (storage != null) {
+            list = List<MusicInfo>.from(
+                storage.map<MusicInfo>((ele) => MusicInfo.fromJson(ele)));
+          }
 
-          PreferenceUtils.saveJSON(
-              PreferencesKey.DOWNLOAD_MUSIC, downloadMusics);
+          list.add(info);
+
+          PreferenceUtils.saveJSON(PreferencesKey.DOWNLOAD_MUSIC, list);
         });
       }
     });

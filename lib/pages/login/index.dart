@@ -39,7 +39,7 @@ class LoginState extends State<Login> {
               height: 100,
               width: size.width,
               child: Image.asset(
-                'icon.png',
+                '/icon.png',
                 width: 100,
                 height: 100,
               ),

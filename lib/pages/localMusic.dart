@@ -35,8 +35,13 @@ class LocalMusicState extends State<LocalMusic> {
   }
 
   getLocalMusicList() async {
-    var downloadMusics = List<MusicInfo>.from(
-        await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC));
+    List<MusicInfo> downloadMusics = [];
+    var storage = await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC);
+
+    if (storage != null) {
+      downloadMusics = List<MusicInfo>.from(
+          storage.map<MusicInfo>((ele) => MusicInfo.fromJson(ele)));
+    }
 
     setState(() {
       musicLic = downloadMusics;
