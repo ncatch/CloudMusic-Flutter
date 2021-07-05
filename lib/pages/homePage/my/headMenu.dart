@@ -2,10 +2,11 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-07-05 13:47:59
- * @LastEditTime: 2021-07-05 13:52:47
+ * @LastEditTime: 2021-07-05 15:46:17
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/ModelComponent.dart';
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/libs/theme.dart';
 import 'package:cloudmusic_flutter/model/MenuInfo.dart';
 import 'package:cloudmusic_flutter/pages/friend.dart';
@@ -52,23 +53,24 @@ class HeadMenuState extends State<HeadMenu> {
   }
 
   localMusicClick(context, User userStore) {
-    Navigator.pushNamed(context, '/localMusic');
+    if (userStore.checkLogin()) Navigator.pushNamed(context, '/localMusic');
   }
 
   cloudStorageClick(context, User userStore) {
-    Navigator.pushNamed(context, '/cloudStorage');
+    if (userStore.checkLogin()) Navigator.pushNamed(context, '/cloudStorage');
   }
 
   subListClick(context, User userStore) {
-    Navigator.pushNamed(context, '/subList');
+    if (userStore.checkLogin()) Navigator.pushNamed(context, '/subList');
   }
 
   myFriendClick(context, User userStore) {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-      return Friend(
-        userId: userStore.userInfo.userId,
-      );
-    }));
+    if (userStore.checkLogin())
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
+        return Friend(
+          userId: userStore.userInfo.userId,
+        );
+      }));
   }
 
   @override

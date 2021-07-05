@@ -2,9 +2,10 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 14:02:58
- * @LastEditTime: 2021-06-01 17:55:38
+ * @LastEditTime: 2021-07-05 15:43:58
  * @LastEditors: Walker
  */
+import 'package:cloudmusic_flutter/libs/extends/Toast.dart';
 import 'package:cloudmusic_flutter/model/Level.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/model/UserInfo.dart';
@@ -42,6 +43,15 @@ class User with ChangeNotifier {
     playList = [];
 
     notifyListeners();
+  }
+
+  checkLogin() {
+    if (userInfo.userId == 0) {
+      Toast('请先登录');
+      return false;
+    }
+
+    return true;
   }
 
   initUserInfo([data]) {

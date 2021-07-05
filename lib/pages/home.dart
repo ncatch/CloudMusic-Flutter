@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-08 17:30:36
+ * @LastEditTime: 2021-07-05 15:33:59
  * @LastEditors: Walker
  */
 import 'dart:io';
@@ -18,7 +18,7 @@ import 'package:provider/provider.dart';
 import './homePage/blogs.dart';
 import './homePage/cloudVillage.dart';
 import 'homePage/discover/discover.dart';
-import './homePage/my.dart';
+import './homePage/my/my.dart';
 import './homePage/sing.dart';
 
 import '../components/PlayMini.dart';

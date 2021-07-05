@@ -2,19 +2,17 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-07-05 13:56:38
+ * @LastEditTime: 2021-07-05 15:35:49
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
-import 'package:cloudmusic_flutter/components/Base/IconRow.dart';
 import 'package:cloudmusic_flutter/components/ModelComponent.dart';
 import 'package:cloudmusic_flutter/components/SongListItem.dart';
 import 'package:cloudmusic_flutter/model/MenuInfo.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/homePage/my/headMenu.dart';
 import 'package:cloudmusic_flutter/pages/homePage/my/userInfo.dart'
-    as Component;
-import 'package:cloudmusic_flutter/pages/playList/index.dart';
+    as UserInfoWidget;
 import 'package:cloudmusic_flutter/store/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -37,27 +35,6 @@ class MyState extends State<My> {
   @override
   void initState() {
     super.initState();
-  }
-
-  songClick(context, id) {
-    if (id > 0) {
-      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext ctx) {
-        return PlayList(
-          songId: id,
-        );
-      }));
-    }
-  }
-
-  getRowObject(ele) {
-    return IconRow(
-      image: ele.coverImgUrl,
-      title: ele.title.overFlowString(12),
-      descript: '${ele.trackCount}首, 播放${ele.playCount.toMyriadString(1)}次',
-      onTap: () {
-        songClick(context, ele.id);
-      },
-    );
   }
 
   @override
@@ -108,11 +85,11 @@ class MyState extends State<My> {
         body: Container(
           child: ListView(
             children: [
-              Component.UserInfoWidget(),
+              UserInfoWidget.UserInfoWidget(),
               HeadMenu(),
               ModelComponent(
                 children: [
-                  getRowObject(likePlayList),
+                  SongListItem(info: likePlayList),
                 ],
               ),
               ModelComponent(
@@ -121,7 +98,7 @@ class MyState extends State<My> {
                   color: Colors.grey,
                 ),
                 children: [
-                  ...createList.map((ele) => getRowObject(ele)),
+                  ...createList.map((ele) => SongListItem(info: ele)),
                 ],
               ),
               ModelComponent(
@@ -131,7 +108,7 @@ class MyState extends State<My> {
                 ),
                 children: [
                   ...playList.map(
-                    (ele) => getRowObject(ele),
+                    (ele) => SongListItem(info: ele),
                   ),
                 ],
               )

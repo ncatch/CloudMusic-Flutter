@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-07-05 13:43:47
- * @LastEditTime: 2021-07-05 13:45:51
+ * @LastEditTime: 2021-07-05 15:34:19
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/pages/userInfo.dart';
@@ -11,7 +11,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class HeadMenu extends StatelessWidget {
+class UserInfoWidget extends StatelessWidget {
   userClick(context, User userStore) {
     if (userStore.userInfo.userId > 0) {
       // 跳转用户信息页面

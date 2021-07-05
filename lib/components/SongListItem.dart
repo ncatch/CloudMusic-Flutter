@@ -2,10 +2,9 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-27 19:09:24
- * @LastEditTime: 2021-07-05 13:42:28
+ * @LastEditTime: 2021-07-05 14:32:55
  * @LastEditors: Walker
  */
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloudmusic_flutter/components/Base/IconRow.dart';
 import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
