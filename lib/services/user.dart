@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-06 13:51:53
- * @LastEditTime: 2021-06-02 17:31:12
+ * @LastEditTime: 2021-07-02 10:38:48
  * @LastEditors: Walker
  */
 
@@ -94,6 +94,15 @@ Future<dynamic> getUserFollows(uid, [offset = 0]) {
 Future<dynamic> getUserFolloweds(uid, [offset = 0, limit = 20]) {
   return DioUtil.dio
       .get('/user/followeds?uid=$uid&limit=$limit&offset=$offset')
+      .then((value) {
+    return value.data;
+  });
+}
+
+// 获取用户收藏的专辑
+Future<dynamic> getUserSublist([offset = 0, limit = 20]) {
+  return DioUtil.dio
+      .get('/album/sublist?limit=$limit&offset=$offset')
       .then((value) {
     return value.data;
   });

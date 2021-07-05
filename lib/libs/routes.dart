@@ -2,13 +2,14 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-08 10:34:13
- * @LastEditTime: 2021-06-09 16:10:28
+ * @LastEditTime: 2021-07-02 10:42:45
  * @LastEditors: Walker
  */
 
 import 'package:cloudmusic_flutter/pages/cloudStorage/index.dart';
 import 'package:cloudmusic_flutter/pages/localMusic.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
+import 'package:cloudmusic_flutter/pages/subList.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../components/SearchPage.dart';
@@ -24,4 +25,5 @@ var routes = <String, WidgetBuilder>{
   '/setting': (BuildContext context) => Setting(),
   '/localMusic': (BuildContext context) => LocalMusic(),
   '/cloudStorage': (BuildContext context) => CloudStorage(),
+  '/subList': (BuildContext context) => SubList(),
 };

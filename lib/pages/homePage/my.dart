@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-09 16:13:13
+ * @LastEditTime: 2021-07-02 10:43:54
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -48,7 +48,8 @@ class MyState extends State<My> {
       [
         MenuInfoModel('我的好友',
             icon: Icons.supervised_user_circle, onPressed: myFriendClick),
-        MenuInfoModel('收藏和赞', icon: Icons.star_rounded),
+        MenuInfoModel('收藏和赞',
+            icon: Icons.star_rounded, onPressed: subListClick),
         MenuInfoModel('我的博客', icon: Icons.rss_feed_outlined),
         MenuInfoModel('音乐应用',
             icon: Icons.add_circle_outlined, color: Colors.grey.shade200),
@@ -62,6 +63,10 @@ class MyState extends State<My> {
 
   cloudStorageClick(context, User userStore) {
     Navigator.pushNamed(context, '/cloudStorage');
+  }
+
+  subListClick(context, User userStore) {
+    Navigator.pushNamed(context, '/subList');
   }
 
   myFriendClick(context, User userStore) {
