@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-02 16:09:03
- * @LastEditTime: 2021-06-11 14:05:48
+ * @LastEditTime: 2021-07-05 17:58:23
  * @LastEditors: Walker
  */
 import 'package:cached_network_image/cached_network_image.dart';
@@ -65,7 +65,7 @@ class SongListMusicState extends State<SongMusicList> {
   @override
   Widget build(BuildContext context) {
     return HomeBlock(
-      height: 200,
+      height: 220,
       title: widget.model.title,
       btnText: widget.model.btnText,
       onPressed: moreClick,
@@ -90,7 +90,7 @@ class SongListMusicState extends State<SongMusicList> {
                           Container(
                             width: 45,
                             height: 40,
-                            margin: EdgeInsets.fromLTRB(0, 0, 15, 10),
+                            margin: EdgeInsets.fromLTRB(0, 10, 15, 10),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10),
                               child: CachedNetworkImage(
@@ -102,14 +102,16 @@ class SongListMusicState extends State<SongMusicList> {
                           Wrap(
                             direction: Axis.vertical,
                             children: [
-                              Row(
-                                children: [
-                                  Text(handleSongName(tmp.musicName)),
-                                  Text(
-                                    ' - ' + tmp.singerName,
-                                    style: TextStyle(color: Colors.grey),
-                                  )
-                                ],
+                              Container(
+                                child: Row(
+                                  children: [
+                                    Text(handleSongName(tmp.musicName)),
+                                    Text(
+                                      ' - ' + tmp.singerName,
+                                      style: TextStyle(color: Colors.grey),
+                                    )
+                                  ],
+                                ),
                               ),
                               Container(
                                 child: Text(

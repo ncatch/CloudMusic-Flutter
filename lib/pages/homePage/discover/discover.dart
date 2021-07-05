@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-06-02 14:18:34
+ * @LastEditTime: 2021-07-05 17:45:14
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -137,7 +137,10 @@ class DiscoverState extends State<Discover> {
                   Icon(Icons.search, color: Colors.grey),
                   Text(
                     '搜索',
-                    style: TextStyle(color: Colors.grey),
+                    style: TextStyle(
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w200,
+                    ),
                   )
                 ],
               ),

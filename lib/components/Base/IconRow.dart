@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-07-05 13:39:18
- * @LastEditTime: 2021-07-05 13:41:21
+ * @LastEditTime: 2021-07-05 17:52:10
  * @LastEditors: Walker
  */
 
@@ -61,16 +61,20 @@ class IconRow extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 16, color: Colors.black87),
-                ),
-                Text(
-                  descript,
-                  style: TextStyle(
-                    color: Colors.grey,
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+                  child: Text(
+                    title,
+                    style: TextStyle(fontSize: 14, color: Colors.black87),
                   ),
                 ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                  child: Text(
+                    descript,
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                )
               ],
             ),
           ],

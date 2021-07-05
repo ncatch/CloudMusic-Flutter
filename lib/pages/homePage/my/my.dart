@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-07-05 15:35:49
+ * @LastEditTime: 2021-07-05 16:15:42
  * @LastEditors: Walker
  */
 import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
@@ -107,9 +107,7 @@ class MyState extends State<My> {
                   color: Colors.grey,
                 ),
                 children: [
-                  ...playList.map(
-                    (ele) => SongListItem(info: ele),
-                  ),
+                  ...playList.map((ele) => SongListItem(info: ele)),
                 ],
               )
             ],
