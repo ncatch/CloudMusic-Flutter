@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-04-01 14:05:41
- * @LastEditTime: 2021-07-05 15:33:59
+ * @LastEditTime: 2021-07-12 15:49:20
  * @LastEditors: Walker
  */
 import 'dart:io';
@@ -46,10 +46,10 @@ class HomeState extends State<Home> {
     this.setState(() {
       pages = [
         Discover(mainScaffoldKey: mainScaffoldKey),
-        Blogs(),
+        // Blogs(),
         My(mainScaffoldKey: mainScaffoldKey),
-        Sing(),
-        CloudVillage(),
+        // Sing(),
+        // CloudVillage(),
       ];
     });
   }
@@ -128,10 +128,10 @@ class HomeState extends State<Home> {
         bottomNavigationBar: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '发现'),
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '博客'),
+            // BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '博客'),
             BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '我的'),
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: 'K歌'),
-            BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '云村'),
+            // BottomNavigationBarItem(icon: Icon(Icons.adjust), label: 'K歌'),
+            // BottomNavigationBarItem(icon: Icon(Icons.adjust), label: '云村'),
           ],
           currentIndex: _selectedIndex,
           showUnselectedLabels: true,

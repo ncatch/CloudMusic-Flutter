@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-05-11 15:56:11
- * @LastEditTime: 2021-07-05 11:32:17
+ * @LastEditTime: 2021-07-12 15:57:09
  * @LastEditors: Walker
  */
 import 'dart:ui';
@@ -59,17 +59,19 @@ class PlayListState extends State<PlayList> {
   void initState() {
     super.initState();
     _scrollController.addListener(() {
-      double t = _scrollController.offset / 200;
-      if (t < 0.0) {
-        t = 0.0;
-      } else if (t > 1.0) {
-        t = 1.0;
+      if (_scrollController.offset < 450) {
+        double t = _scrollController.offset / 200;
+        if (t < 0.0) {
+          t = 0.0;
+        } else if (t > 1.0) {
+          t = 1.0;
+        }
+        setState(() {
+          appBarImgOper = t;
+          headImgTop = _scrollController.offset;
+          sunkenHeight = 20 - 20 * t;
+        });
       }
-      setState(() {
-        appBarImgOper = t;
-        headImgTop = _scrollController.offset;
-        sunkenHeight = 20 - 20 * t;
-      });
     });
 
     pageIndex = 1;

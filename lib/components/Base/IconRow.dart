@@ -2,22 +2,19 @@
  * @Description: 
  * @Author: Walker
  * @Date: 2021-07-05 13:39:18
- * @LastEditTime: 2021-07-05 17:52:10
+ * @LastEditTime: 2021-07-12 15:45:03
  * @LastEditors: Walker
  */
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloudmusic_flutter/model/PlayList.dart';
 import 'package:cloudmusic_flutter/pages/playList/index.dart';
 import 'package:flutter/material.dart';
-import 'package:cloudmusic_flutter/libs/extends/StringExtend.dart';
-import 'package:cloudmusic_flutter/libs/extends/IntExtend.dart';
 
 class IconRow extends StatelessWidget {
-  String image;
-  String title;
-  String descript;
-  Function()? onTap;
+  final String image;
+  final String title;
+  final String descript;
+  final Function()? onTap;
 
   IconRow({
     Key? key,
