@@ -12,6 +12,7 @@ import 'dart:io';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:cloudmusic_flutter/store/PlayInfo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -93,10 +94,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: '网抑云',
       theme: ThemeData(
-        primaryColor: primaryColor,
-        backgroundColor: Colors.white,
-        scaffoldBackgroundColor: Colors.white,
-      ),
+          primaryColor: primaryColor,
+          backgroundColor: Colors.white,
+          appBarTheme: new AppBarTheme(backgroundColor: primaryColor)),
       home: Home(),
       routes: routes,
       navigatorObservers: [BotToastNavigatorObserver()],
