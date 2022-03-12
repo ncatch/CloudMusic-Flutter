@@ -83,6 +83,23 @@ class LyricState extends State<Lyric> {
     return 0;
   }
 
+  // 歌词滚动到指定位置
+  lyricScrollTo() {
+    int tmpIndex = getCurrIndex() - 1;
+
+    if (tmpIndex != currIndex) {
+      currIndex = tmpIndex;
+
+      if (_scrollController.hasClients) {
+        _scrollController.animateTo(
+          currIndex * 40, // 具体高度待调试
+          duration: new Duration(milliseconds: 400),
+          curve: Curves.linear,
+        );
+      }
+    }
+  }
+
   List<Widget> getLyric() {
     List<Widget> result = [];
     PlayInfoStore playInfoStore = Provider.of<PlayInfoStore>(context);
@@ -126,19 +143,14 @@ class LyricState extends State<Lyric> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    int tmpIndex = getCurrIndex() - 1;
+    lyricScrollTo();
+  }
 
-    if (tmpIndex != currIndex) {
-      currIndex = tmpIndex;
+  @override
+  void activate() {
+    super.activate();
 
-      if (_scrollController.hasClients) {
-        _scrollController.animateTo(
-          currIndex * 40, // 具体高度待调试
-          duration: new Duration(milliseconds: 400),
-          curve: Curves.linear,
-        );
-      }
-    }
+    lyricScrollTo();
   }
 
   @override

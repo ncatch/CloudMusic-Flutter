@@ -27,7 +27,7 @@ class PlayInfoStore with ChangeNotifier {
   double sliderValue = 0.0;
   Duration duration = new Duration();
   Duration position = new Duration();
-  double _volume = 2;
+  double _volume = 100;
 
   bool isPlayer = false;
 
