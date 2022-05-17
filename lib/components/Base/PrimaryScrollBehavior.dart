@@ -10,8 +10,9 @@ import 'package:flutter/material.dart';
 
 class PrimaryScrollBehavior extends ScrollBehavior {
   final bool show;
+  final Color? color;
 
-  PrimaryScrollBehavior({Key? key, this.show = true});
+  PrimaryScrollBehavior({Key? key, this.show = true, this.color});
 
   @override
   Widget buildViewportChrome(
@@ -28,7 +29,7 @@ class PrimaryScrollBehavior extends ScrollBehavior {
           // 不显示尾部水波纹
           showTrailing: show,
           axisDirection: axisDirection,
-          color: primaryColor,
+          color: color ?? primaryColor,
         );
       case TargetPlatform.linux:
         break;

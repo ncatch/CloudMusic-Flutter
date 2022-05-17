@@ -229,6 +229,8 @@ class PlayInfoStore with ChangeNotifier {
       musicInfo.bgImgUrl = tmp.bgImgUrl;
       playMusic(tmp.id);
     }
+
+    return tmp.id;
   }
 
   removeByIndex(index) {

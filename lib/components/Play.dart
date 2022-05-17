@@ -25,6 +25,8 @@ class Play extends StatefulWidget {
 }
 
 class PlayState extends State<Play> with ShowCurrMusicList {
+  static double iconSize = 30;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -100,7 +102,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
             ),
             Positioned(
               width: width,
-              bottom: 10,
+              bottom: 20,
               child: Column(
                 children: [
                   Slider(
@@ -118,17 +120,17 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                     value: playInfoStore.sliderValue,
                   ),
                   Wrap(
-                    // alignment: WrapAlignment.center,
+                    alignment: WrapAlignment.center,
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
-                      PlayMode(),
+                      PlayMode(iconSize: iconSize - 5),
                       IconButton(
                         onPressed: playInfoStore.previous,
                         icon: Icon(Icons.skip_previous_outlined),
                         color: playInfoStore.playIndex == 0
                             ? Colors.grey
                             : Colors.white,
-                        iconSize: 20,
+                        iconSize: iconSize,
                       ),
                       IconButton(
                         onPressed: playInfoStore.play,
@@ -136,7 +138,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                             ? Icons.pause_circle_outline
                             : Icons.play_circle_outline),
                         color: Colors.white,
-                        iconSize: 30,
+                        iconSize: iconSize + 10,
                       ),
                       IconButton(
                         onPressed: playInfoStore.next,
@@ -145,7 +147,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                                 playInfoStore.musicList.length - 1
                             ? Colors.grey
                             : Colors.white,
-                        iconSize: 20,
+                        iconSize: iconSize,
                       ),
                       IconButton(
                         onPressed: () {
@@ -153,7 +155,7 @@ class PlayState extends State<Play> with ShowCurrMusicList {
                         },
                         icon: Icon(Icons.playlist_play_rounded),
                         color: Colors.white,
-                        iconSize: 20,
+                        iconSize: iconSize,
                       )
                     ],
                   ),

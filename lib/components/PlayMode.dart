@@ -15,7 +15,9 @@ import 'package:provider/provider.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
 
 class PlayMode extends StatefulWidget {
-  PlayMode({Key? key}) : super(key: key);
+  double iconSize;
+
+  PlayMode({Key? key, this.iconSize = 20}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => PlayModeState();
@@ -62,7 +64,7 @@ class PlayModeState extends State<PlayMode> {
       },
       icon: Icon(icons[playInfoStore.playMode]),
       color: Colors.white,
-      iconSize: 20,
+      iconSize: widget.iconSize,
     );
   }
 }

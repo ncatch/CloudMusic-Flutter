@@ -11,6 +11,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'Base/PrimaryScrollBehavior.dart';
+
 class Lyric extends StatefulWidget {
   Lyric({Key? key}) : super(key: key);
 
@@ -160,14 +162,17 @@ class LyricState extends State<Lyric> {
 
     return Container(
       alignment: Alignment.center,
-      child: ListView(
-        controller: _scrollController,
-        children: [
-          Container(
-            height: size.height / 2 - 190,
-          ),
-          ...lyricList,
-        ],
+      child: ScrollConfiguration(
+        behavior: PrimaryScrollBehavior(color: Colors.white70),
+        child: ListView(
+          controller: _scrollController,
+          children: [
+            Container(
+              height: size.height / 2 - 190,
+            ),
+            ...lyricList,
+          ],
+        ),
       ),
     );
   }
