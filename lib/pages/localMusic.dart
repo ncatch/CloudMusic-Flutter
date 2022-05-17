@@ -10,8 +10,11 @@ import 'package:cloudmusic_flutter/components/Base/HeightRefresh.dart';
 import 'package:cloudmusic_flutter/components/MusicList.dart';
 import 'package:cloudmusic_flutter/libs/enums.dart';
 import 'package:cloudmusic_flutter/model/MusicInfo.dart';
-import 'package:cloudmusic_flutter/utils/preference.dart';
 import 'package:flutter/material.dart';
+import 'package:cloudmusic_flutter/model/MenuInfo.dart';
+
+import '../libs/extends/Toast.dart';
+import '../utils/file.dart';
 
 class LocalMusic extends StatefulWidget {
   LocalMusic({Key? key}) : super(key: key);
@@ -35,13 +38,7 @@ class LocalMusicState extends State<LocalMusic> {
   }
 
   getLocalMusicList() async {
-    List<MusicInfo> downloadMusics = [];
-    var storage = await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC);
-
-    if (storage != null) {
-      downloadMusics = List<MusicInfo>.from(
-          storage.map<MusicInfo>((ele) => MusicInfo.fromJson(ele)));
-    }
+    List<MusicInfo> downloadMusics = await FileUtil.getDownloadMusicList();
 
     setState(() {
       musicLic = downloadMusics;
@@ -63,6 +60,23 @@ class LocalMusicState extends State<LocalMusic> {
           child: MusicList(
             type: MusicListTye.local,
             musicList: musicLic,
+            menus: [
+              MenuInfoModel(
+                '删除',
+                code: 'delete',
+                onPressed: (info) async {
+                  var cb = ShowLoading();
+
+                  await FileUtil.deleteMusic(info);
+
+                  getLocalMusicList();
+
+                  cb();
+
+                  Toast('删除成功！');
+                },
+              ),
+            ],
           ),
         ),
       ),

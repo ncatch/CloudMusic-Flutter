@@ -28,6 +28,18 @@ class FileUtil {
     }
   }
 
+  static Future<List<MusicInfo>> getDownloadMusicList() async {
+    List<MusicInfo> list = [];
+
+    var storage = await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC);
+    if (storage != null) {
+      list = List<MusicInfo>.from(
+          storage.map<MusicInfo>((ele) => MusicInfo.fromJson(ele)));
+    }
+
+    return list;
+  }
+
   static Future<String> downloadFile(
     String fileName,
     String url,
@@ -63,14 +75,7 @@ class FileUtil {
         ).then((value) async {
           info.localUrl = value;
 
-          List<MusicInfo> list = [];
-
-          var storage =
-              await PreferenceUtils.getJSON(PreferencesKey.DOWNLOAD_MUSIC);
-          if (storage != null) {
-            list = List<MusicInfo>.from(
-                storage.map<MusicInfo>((ele) => MusicInfo.fromJson(ele)));
-          }
+          List<MusicInfo> list = await getDownloadMusicList();
 
           list.add(info);
 
@@ -80,16 +85,32 @@ class FileUtil {
     });
   }
 
-  static Future<List<FileSystemEntity>> getDownloadMusicList() async {
-    await checkPath();
+  static Future deleteMusic(MusicInfo info) async {
+    List<MusicInfo> list = await getDownloadMusicList();
 
-    var musicDir = new Directory('$basePath$downloadMusicPath');
+    list.removeAt(list.indexWhere((ele) => ele.id == info.id));
 
-    if (await musicDir.exists()) {
-      return musicDir.list().toList();
-    } else {
-      musicDir.create();
-      return [];
+    File file = new File(info.localUrl);
+
+    try {
+      file.deleteSync();
+    } catch (e) {
+      print(e);
     }
+
+    PreferenceUtils.saveJSON(PreferencesKey.DOWNLOAD_MUSIC, list);
   }
+
+  // static Future<List<FileSystemEntity>> getDownloadMusicList() async {
+  //   await checkPath();
+
+  //   var musicDir = new Directory('$basePath$downloadMusicPath');
+
+  //   if (await musicDir.exists()) {
+  //     return musicDir.list().toList();
+  //   } else {
+  //     musicDir.create();
+  //     return [];
+  //   }
+  // }
 }
