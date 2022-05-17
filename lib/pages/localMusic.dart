@@ -65,13 +65,9 @@ class LocalMusicState extends State<LocalMusic> {
                 '删除',
                 code: 'delete',
                 onPressed: (info) async {
-                  var cb = ShowLoading();
-
                   await FileUtil.deleteMusic(info);
 
                   getLocalMusicList();
-
-                  cb();
 
                   Toast('删除成功！');
                 },
