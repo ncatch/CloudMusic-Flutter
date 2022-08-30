@@ -54,8 +54,7 @@ void main() async {
 
   await SentryFlutter.init(
     (options) {
-      options.dsn =
-          'http://ec900fee4c4441ebb0c3336307e84d45@www.nocatch.cn:9000/3';
+      options.dsn = senTryUrl;
       // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
       // We recommend adjusting this value in production.
       options.tracesSampleRate = 1.0;
