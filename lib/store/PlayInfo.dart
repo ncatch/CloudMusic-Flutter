@@ -59,12 +59,12 @@ class PlayInfoStore with ChangeNotifier {
         sliderValue = (position.inSeconds / duration.inSeconds);
         notifyListeners();
       })
-      ..onAudioPositionChanged.listen((e) {
+      ..onPositionChanged.listen((e) {
         position = e;
         sliderValue = (position.inSeconds / duration.inSeconds);
         notifyListeners();
       })
-      ..onPlayerCompletion.listen((event) {
+      ..onPlayerComplete.listen((event) {
         switch (playMode) {
           case PlayModes.order:
             if (playIndex < musicList.length - 1) {
@@ -185,7 +185,7 @@ class PlayInfoStore with ChangeNotifier {
   }
 
   setPlayMusic(String url) {
-    audioPlayer.setUrl(url);
+    audioPlayer.setSourceUrl(url);
     audioPlayer.setVolume(_volume);
   }
 
@@ -200,9 +200,9 @@ class PlayInfoStore with ChangeNotifier {
 
     return audioPlayer.resume().then((value) {
       sliderValue = 0.0;
-      isPlayer = value == 1;
+      isPlayer = true;
       notifyListeners();
-      return value;
+      return 1;
     });
   }
 
@@ -257,9 +257,9 @@ class PlayInfoStore with ChangeNotifier {
   play() async {
     var result;
     if (isPlayer) {
-      result = await audioPlayer.pause();
+      result = audioPlayer.pause();
     } else {
-      result = await audioPlayer.resume();
+      result = audioPlayer.resume();
     }
 
     if (result == 1) {
