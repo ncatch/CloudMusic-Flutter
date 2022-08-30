@@ -17,6 +17,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import './pages/home.dart';
 import 'libs/config.dart';
@@ -51,14 +52,23 @@ void main() async {
 
   _initSystemInfo();
 
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider.value(value: new PlayInfoStore()),
-      ChangeNotifierProvider.value(value: new SystemInfo()),
-      ChangeNotifierProvider.value(value: new User()),
-    ],
-    child: MyApp(),
-  ));
+  await SentryFlutter.init(
+    (options) {
+      options.dsn =
+          'http://ec900fee4c4441ebb0c3336307e84d45@www.nocatch.cn:9000/3';
+      // Set tracesSampleRate to 1.0 to capture 100% of transactions for performance monitoring.
+      // We recommend adjusting this value in production.
+      options.tracesSampleRate = 1.0;
+    },
+    appRunner: () => runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: new PlayInfoStore()),
+        ChangeNotifierProvider.value(value: new SystemInfo()),
+        ChangeNotifierProvider.value(value: new User()),
+      ],
+      child: MyApp(),
+    )),
+  );
 }
 
 class MyApp extends StatefulWidget {

@@ -62,51 +62,66 @@ class LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     var userStore = Provider.of<User>(context);
+
+    var textStyle = TextStyle(
+      color: Colors.black,
+    );
+    var hintStyle = TextStyle(
+      color: Colors.black45,
+    );
+
     return Scaffold(
       body: Container(
         alignment: Alignment.center,
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          children: [
-            TextField(
-              controller: phoneText,
-              keyboardType: TextInputType.phone,
-              decoration: InputDecoration(
-                labelText: '手机号',
-                hintText: '请输手机号',
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(30, 0, 30, 0),
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            children: [
+              TextField(
+                controller: phoneText,
+                keyboardType: TextInputType.phone,
+                decoration: InputDecoration(
+                    labelText: '手机号',
+                    hintText: '请输手机号',
+                    labelStyle: textStyle,
+                    hintStyle: hintStyle),
               ),
-            ),
-            TextField(
-              controller: passwordText,
-              keyboardType: TextInputType.text,
-              obscureText: !passwordVisible,
-              decoration: InputDecoration(
-                labelText: '密码',
-                hintText: '请输入密码',
-                //下面是重点
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    //根据passwordVisible状态显示不同的图标
-                    passwordVisible ? Icons.visibility : Icons.visibility_off,
-                    color: Theme.of(context).primaryColorDark,
+              TextField(
+                controller: passwordText,
+                keyboardType: TextInputType.text,
+                obscureText: !passwordVisible,
+                decoration: InputDecoration(
+                  labelText: '密码',
+                  hintText: '请输入密码',
+                  labelStyle: textStyle,
+                  hintStyle: hintStyle,
+                  //下面是重点
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      //根据passwordVisible状态显示不同的图标
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.black45,
+                    ),
+                    onPressed: () {
+                      //更新状态控制密码显示或隐藏
+                      setState(() {
+                        passwordVisible = !passwordVisible;
+                      });
+                    },
                   ),
-                  onPressed: () {
-                    //更新状态控制密码显示或隐藏
-                    setState(() {
-                      passwordVisible = !passwordVisible;
-                    });
-                  },
                 ),
               ),
-            ),
-            TextButton(
-              onPressed: () {
-                login(userStore);
-              },
-              child: Text('登录'),
-            ),
-          ],
+              TextButton(
+                onPressed: () {
+                  login(userStore);
+                },
+                child: Text('登录'),
+              ),
+            ],
+          ),
         ),
       ),
     );
